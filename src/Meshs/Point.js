@@ -21,7 +21,7 @@ class Point extends Base {
 	render() {
 		// 2D 只需要两个坐标轴标识位置
 		const vSize = 3;
-		const vLen = this.vertex.length % 3; //几个点
+		const vLen = Math.floor(this.vertex.length / 3); //几个点
 		const offset = 0;// 从数据第几位开始偏移
 		const normalLize = false;
 
