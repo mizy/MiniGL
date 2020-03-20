@@ -19,28 +19,9 @@ class MiniGL extends Base {
 
 		this.viewport = new Viewport({ miniGL: this, ...this.config });
 		this.viewport.resize();
-		this.canvas = new Canvas();
+		this.canvas = new Canvas({ miniGL: this });
 
-		this.update();
-	}
-
-	update() {
-		this.render();
-		requestAnimationFrame(() => {
-			this.update();
-		});
-	}
-
-	render() {
-		// 清空
-		this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
-		this.gl.clearDepth(1.0);
-		this.gl.enable(this.gl.DEPTH_TEST);
-		this.gl.depthFunc(this.gl.LEQUAL)
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-		this.mesh.render();
-		this.point.render();
-		this.line.render();
+		this.canvas.update();
 	}
 }
 window.MiniGL = MiniGL;

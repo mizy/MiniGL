@@ -2,12 +2,9 @@ export default {
 	vertexShader: `
 	precision mediump float;
 	attribute vec2 position;
-	attribute vec4 color;
-	attribute float size;
-	varying vec4 frag_color;
+	uniform float size;
 	void main()
 	{
-		frag_color = color;
 		gl_PointSize = size;
 		gl_Position = vec4(position,0.0,1.0);
 	}
@@ -15,10 +12,10 @@ export default {
 
 	fragmentShader: `
 	precision mediump float;
-	varying vec4 frag_color;
+	uniform vec4 color;
 	void main()
 	{
-		gl_FragColor = frag_color;
+		gl_FragColor = color;
 	}
 	`
 }

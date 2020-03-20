@@ -1,7 +1,7 @@
-import pointShader from '../Shaders/point';
+import pointShader from '../Shaders/simplePoint';
 import Base from './Base';
 
-class Point extends Base {
+class SimplePoint extends Base {
 	drawType = "POINTS";
 	shaders = {
 		vertex: pointShader.vertexShader,
@@ -9,17 +9,12 @@ class Point extends Base {
 	}
 	vertex = [];
 	vSize = 2;
+	size = 5;
+	color = [1, 0, 0, 1];
 	constructor(config) {
 		super(config);
 		this.initShader();
 		this.init();
-	}
-
-	setData(data, color, size) {
-		this.vertex = data;
-		this.setBufferData(data, "position", 2);
-		this.setBufferData(color, "color", 4);
-		this.setBufferData(size, "size", 1);
 	}
 
 	init() {
@@ -43,6 +38,9 @@ class Point extends Base {
 
 		// 加载shader程序
 		this.gl.useProgram(this.shaderPorgram);
+
+		this.gl.uniform1f(this.getUniformLocation("size"), this.size);
+		this.gl.uniform4fv(this.getUniformLocation("color"), this.color);
 
 		// 渲染
 		if (this.vertex.length)

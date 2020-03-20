@@ -1,11 +1,11 @@
-const path = require("path"); 
+const path = require("path");
 let webpackConfig = {
 	entry: "./src/index.js",
 	output: {
 		path: path.join(__dirname, "./dist"),
-		filename:"index.js"
+		filename: "index.js"
 	},
-	devtool:"inline-source-map" ,
+	devtool: "inline-source-map",
 	devServer: {
 		port: 8666,
 		open: true,
@@ -27,7 +27,7 @@ let webpackConfig = {
 						loader: "babel-loader",
 					}
 				]
-			} 
+			}
 		]
 	},
 	resolve: {
@@ -35,7 +35,7 @@ let webpackConfig = {
 			"@": path.resolve(__dirname, "src")
 		}
 	},
-	 
+
 };
- 
+
 module.exports = webpackConfig;

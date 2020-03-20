@@ -3,10 +3,10 @@
  */
 class ViewPort {
 	constructor(config) {
-		this.gl = config.miniGL;
+		this.miniGL = config.miniGL;
+		this.gl = this.miniGL.gl;
 		this.config = Object.assign({
-			width: 500,
-			height: 309
+
 		}, config.config);
 	}
 
@@ -36,10 +36,10 @@ class ViewPort {
 	 * 重新布局
 	 */
 	resize() {
-		const width = this.config.width || this.gl.container.clientWidth;
-		const height = this.config.height || this.gl.container.clientHeight
-		this.gl.canvas.width = width;
-		this.gl.canvas.height = height;
+		const width = this.config.width || this.miniGL.container.clientWidth;
+		const height = this.config.height || this.miniGL.container.clientHeight
+		this.miniGL.canvas.width = width;
+		this.miniGL.canvas.height = height;
 		this.gl.viewport(0, 0, width, height);
 		this.width = width;
 		this.height = height;
