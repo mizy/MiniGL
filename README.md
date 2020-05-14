@@ -1,3 +1,11 @@
 # MiniGL
 2d webgl renderer
-JUST A DEMO CASE
+
+# case
+![](./snapshot.png);
+
+# demo
+```
+npm i
+npm run start
+```

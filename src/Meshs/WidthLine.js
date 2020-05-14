@@ -6,20 +6,35 @@ class WidthLine extends Base {
 		vertex: shader.vertexShader,
 		fragment: shader.fragmentShader
 	}
+	offset;
 
 	constructor(config) {
+		config = Object.assign({
+			width:20,
+			z:1,
+		},config)
 		super(config);
-		this.width = config.width || 0.1;
+		this.width = 2*config.width/this.config.miniGL.viewport.height;
 		this.initShader();
 		this.init();
 	}
 
 	setData(data) {
-		if (!data.length && data.length < 4) return console.warn("need input data.length > 4");
+		const {config:{
+			miniGL:{viewport}
+		}} = this;
+		if (!data.length && data.length < 2) return console.warn("need input data.length >= 2");
+		
 		this.data = data;
 
+		const points = [];
+		data.forEach(item=>{
+			const coord = viewport.convertScreenToClip(item.x,item.y);
+			points.push(coord.x,coord.y)
+		})
+
 		// 生产双倍点for两个边
-		const res = this.calcSidePoints(data)
+		const res = this.calcSidePoints(points)
 
 		this.setBufferData(res.side, "side", 1);
 		this.setBufferData(res.nowData, "now", 2);
@@ -158,11 +173,14 @@ class WidthLine extends Base {
 		this.gl.useProgram(this.shaderPorgram);
 
 		this.gl.uniform1f(this.getUniformLocation("width"), this.width);
+		this.gl.uniform1f(this.getUniformLocation("z"), this.config.z);
+		// 不要在shader里进行坐标换算，一次性的事儿，外界转换好就行
+		this.gl.uniform1f(this.getUniformLocation("aspect"), this.config.miniGL.viewport.ratio);
 		// this.gl.uniform4fv(this.getUniformLocation("color"), false, [0.0, 1.0, 1.0, 1.0]);
 
 		// 渲染
 		if (this.indices.length)
-			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, 0);
+			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
 	}
 }
 export default WidthLine;

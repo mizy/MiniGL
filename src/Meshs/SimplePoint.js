@@ -10,6 +10,7 @@ class SimplePoint extends Base {
 	vertex = [];
 	vSize = 2;
 	size = 5;
+	offset = 0;
 	color = [1, 0, 0, 1];
 	constructor(config) {
 		super(config);
@@ -44,7 +45,7 @@ class SimplePoint extends Base {
 
 		// 渲染
 		if (this.vertex.length)
-			this.gl.drawArrays(this.gl[this.drawType], 0, vLen);
+			this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen);
 	}
 }
-export default Point;
+export default SimplePoint;

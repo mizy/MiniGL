@@ -43,6 +43,7 @@ class ViewPort {
 		this.gl.viewport(0, 0, width, height);
 		this.width = width;
 		this.height = height;
+		this.ratio = this.width/this.height;
 	}
 }
 export default ViewPort;

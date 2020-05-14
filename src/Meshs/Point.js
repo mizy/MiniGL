@@ -8,6 +8,7 @@ class Point extends Base {
 		fragment: pointShader.fragmentShader
 	}
 	vertex = [];
+	offset = 0;
 	vSize = 2;
 	constructor(config) {
 		super(config);
@@ -46,7 +47,7 @@ class Point extends Base {
 
 		// 渲染
 		if (this.vertex.length)
-			this.gl.drawArrays(this.gl[this.drawType], 0, vLen);
+			this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen);
 	}
 }
 export default Point;

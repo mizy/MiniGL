@@ -49,6 +49,7 @@ class Base {
 
 	// 生成shader程序
 	initShader() {
+		const {gl} = this;
 		// 加载shader
 		const vertexShaderObject = this.loadShader(this.shaders.vertex, this.gl.VERTEX_SHADER);
 		const fragmentShaderObject = this.loadShader(this.shaders.fragment, this.gl.FRAGMENT_SHADER);
@@ -60,7 +61,7 @@ class Base {
 		this.gl.linkProgram(shaderPorgram);
 
 		if (!this.gl.getProgramParameter(shaderPorgram, this.gl.LINK_STATUS)) {
-			console.error("shaderProgram Error:", this.gl.getProgramInfoLog(shaderPorgram));
+			console.error( 'shaderProgram Error: ', gl.getError(), '35715', gl.getProgramParameter( shaderPorgram, 35715 ), 'gl.getProgramInfoLog', gl.getProgramInfoLog( shaderPorgram ).trim());
 			return;
 		}
 

@@ -7,7 +7,6 @@ class Base {
 
 	layers = []
 
-
     /**
      * 事件监听,用法同jQuery.on
      */

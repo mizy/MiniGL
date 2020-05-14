@@ -16,10 +16,13 @@ class Canvas {
 		this.point = new Point(config);
 		this.line = new Line(config);
 		this.widthLine = new WidthLine(config);
-		this.meshs = [
-			this.mesh,
-			this.point, this.line, this.widthLine
-		];
+		this.meshs = {
+			"mesh":this.mesh,
+			"point":this.point, 
+			"line":this.line, 
+			"widthLine":this.widthLine
+		};
+		this.index = 0;
 	}
 
 	clear() {
@@ -37,15 +40,28 @@ class Canvas {
 		});
 	}
 
+	add(mesh,key){
+		key = key||++this.index;
+		this.meshs[key] = mesh;
+		return key
+	}
+
+	remove(key){
+		this.meshs[key].destroy&&this.meshs[key].destroy();
+		delete this.meshs[key]
+	}
+
 	render() {
 		// 清空
 		this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
 		this.gl.clearDepth(1.0);
-		// this.gl.enable(this.gl.DEPTH_TEST);
-		// this.gl.depthFunc(this.gl.LEQUAL)
+		this.gl.enable(this.gl.DEPTH_TEST);
+		this.gl.depthFunc(this.gl.LEQUAL)
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-		this.mesh.render();
-		this.meshs.forEach(mesh => mesh.render())
+		for(let key in this.meshs){
+			const mesh = this.meshs[key];
+			mesh.render()
+		}
 	}
 }
 export default Canvas

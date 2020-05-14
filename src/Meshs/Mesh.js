@@ -6,6 +6,7 @@ class Mesh extends Base {
 		vertex: meshShader.vertexShader,
 		fragment: meshShader.fragmentShader
 	}
+	offset=0;//array.BYTES_PER_ELEMENT * indicesEachLength
 
 	constructor(config) {
 		super(config);
@@ -56,7 +57,8 @@ class Mesh extends Base {
 
 		// 渲染
 		if (this.indices.length)
-			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, 0);
+		// offset必须乘以类型数组的长度，意味着要从内存中数据的对应字节数开始算 根据类型乘对应的BYTES_PER_ELEMENT
+			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
 	}
 }
 export default Mesh;
