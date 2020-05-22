@@ -9,27 +9,27 @@ class WidthLine extends Base {
 	offset;
 
 	constructor(config) {
+		super();
 		config = Object.assign({
 			width:20,
 			z:1,
 		},config)
-		super(config);
-		this.width = 2*config.width/this.config.miniGL.viewport.height;
-		this.initShader();
-		this.init();
+		this.init(config);
 	}
 
 	setData(data) {
-		const {config:{
+		const {
 			miniGL:{viewport}
-		}} = this;
-		if (!data.length && data.length < 2) return console.warn("need input data.length >= 2");
+		} = this;
 		
+		if (!data.length && data.length < 2) return console.warn("need input data.length >= 2");
+
+		this.width = 2*this.config.width/this.miniGL.viewport.height;
 		this.data = data;
 
 		const points = [];
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.x,item.y);
+			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
 			points.push(coord.x,coord.y)
 		})
 
@@ -134,19 +134,6 @@ class WidthLine extends Base {
 		this.res = res;
 	}
 
-	init() {
-		// this.setData([
-		// 	0, 0,
-		// 	0.5, 0,
-		// 	0.5, 0.5,
-		// ]);
-		// setTimeout(() => {
-		// 	this.addData([
-		// 		0, 0.5,
-		// 		-0.5, 0.5
-		// 	])
-		// }, 1000)
-	}
 
 	render() {
 		// 2D 只需要两个坐标轴标识位置
@@ -175,8 +162,10 @@ class WidthLine extends Base {
 		this.gl.uniform1f(this.getUniformLocation("width"), this.width);
 		this.gl.uniform1f(this.getUniformLocation("z"), this.config.z);
 		// 不要在shader里进行坐标换算，一次性的事儿，外界转换好就行
-		this.gl.uniform1f(this.getUniformLocation("aspect"), this.config.miniGL.viewport.ratio);
+		this.gl.uniform1f(this.getUniformLocation("aspect"), this.miniGL.viewport.ratio);
 		// this.gl.uniform4fv(this.getUniformLocation("color"), false, [0.0, 1.0, 1.0, 1.0]);
+
+		this.setUniformData();
 
 		// 渲染
 		if (this.indices.length)

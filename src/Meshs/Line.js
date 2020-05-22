@@ -2,7 +2,7 @@ import lineShader from '../Shaders/line';
 import Base from './Base';
 
 class Line extends Base {
-	drawType = "LINES";
+	drawType = "LINE_STRIP";
 	shaders = {
 		vertex: lineShader.vertexShader,
 		fragment: lineShader.fragmentShader
@@ -14,23 +14,23 @@ class Line extends Base {
 			z:0.1
 		},config)
 		super(config);
-		this.initShader();
-		this.init();
+		this.init(config);
+		this.uniformData = {
+			z:{
+				value:this.config.z,
+				type:"uniform1f"
+			}
+		}
 	}
 	
-
-	init() {
-		// this.setData([0, 0, 0.5, 0, 0.5, 0, 0.5, 0.5]);
-	}
-
 	setData(data) {
-		const {config:{
+		const {
 			miniGL:{viewport}
-		}} = this;
+		} = this;
 		const points = [];
 		this.data = data;
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.x,item.y);
+			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
 			points.push(coord.x,coord.y)
 		})
 
@@ -48,6 +48,7 @@ class Line extends Base {
 		const vLen = Math.floor(this.vertex.length / this.vSize); //几个点
 		const offset = 0;// 从数据第几位开始偏移
 		const normalLize = false;
+		const {uniformData  = {}} = this;
 
 		// 分别绑定数据到shader程序中
 		for (let key in this.buffers) {
@@ -58,9 +59,11 @@ class Line extends Base {
 			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset);
 			this.gl.enableVertexAttribArray(bufferPosition);
 		}
-		this.gl.uniform1f(this.getUniformLocation("z"), this.config.z);
+
 		// 加载shader程序
 		this.gl.useProgram(this.shaderPorgram);
+
+		this.setUniformData();
 
 		// 渲染
 		if (this.vertex.length) {

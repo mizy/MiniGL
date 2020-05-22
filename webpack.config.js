@@ -2,8 +2,10 @@ const path = require("path");
 let webpackConfig = {
 	entry: "./src/index.js",
 	output: {
-		path: path.join(__dirname, "./dist"),
-		filename: "index.js"
+		filename: 'MiniGL.js',
+		library: "MiniGL",
+		libraryTarget: "umd",
+		libraryExport: "default" // 默认导出
 	},
 	devtool: "inline-source-map",
 	devServer: {

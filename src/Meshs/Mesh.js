@@ -10,27 +10,22 @@ class Mesh extends Base {
 
 	constructor(config) {
 		super(config);
+		this.init(config);
 		this.vSize = 2;
-		this.initShader();
-		this.init()
-	}
-
-	init() {
-		// this.setData(
-		// 	[
-		// 		0, 0,
-		// 		0, -0.5,
-		// 		-0.5, 0,
-		// 		-0.5, -0.5,
-		// 	],
-		// 	[0, 1, 2, 2, 1, 3]
-		// )
-
 	}
 
 	setData(data, indices) {
-		this.vertex = data;
-		this.setBufferData(data, "position", 2);
+		const {
+			miniGL:{viewport}
+		} = this;
+		const points = [];
+		this.data = data;
+		data.forEach(item=>{
+			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
+			points.push(coord.x,coord.y)
+		})
+		this.vertex = points;
+		this.setBufferData(points, "position", 2);
 		this.setIndices(indices)
 	}
 
@@ -54,6 +49,8 @@ class Mesh extends Base {
 
 		// 加载shader程序
 		this.gl.useProgram(this.shaderPorgram);
+
+		this.setUniformData();
 
 		// 渲染
 		if (this.indices.length)

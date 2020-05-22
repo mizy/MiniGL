@@ -1,6 +1,7 @@
 import Base from './Base';
 import Viewport from './View/Viewport';
 import Canvas from './View/Canvas.js';
+import FlyLine from './Meshs/FlyLine';
 class MiniGL extends Base {
 	autoUpdate = false;
 
@@ -14,15 +15,15 @@ class MiniGL extends Base {
 		this.canvas = document.createElement("canvas");
 		this.container.appendChild(this.canvas);
 
-		this.gl = this.canvas.getContext("webgl", { preserveDrawingBuffer: true });
+		this.gl = this.canvas.getContext("webgl", { antialias: true,antialiasSamples: 16,preserveDrawingBuffer: true });
 		if (this.gl == null) console.error("你的浏览器不支持webgl,请更新使用chrome浏览器");
 
 		this.viewport = new Viewport({ miniGL: this, ...this.config });
 		this.viewport.resize();
-		this.canvas = new Canvas({ miniGL: this });
+		this.canvas = new Canvas({ miniGL: this,...this.config });
 
 		this.canvas.update();
 	}
 }
-window.MiniGL = MiniGL;
+MiniGL.FlyLine = FlyLine;
 export default MiniGL;

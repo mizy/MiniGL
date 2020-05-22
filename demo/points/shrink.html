@@ -8,7 +8,11 @@
 	</body>
 	<script>
 		const app = new MiniGL({
-			container:document.querySelector("#root")
+			container:document.querySelector("#root"),
+			pointConfig:{
+				isRound:true,
+				isGradual:true,
+			}
 		});
 		app.init();
 		const width = document.querySelector("#root").clientWidth;
@@ -18,14 +22,21 @@
 		const size = [];
 		for(let i = 0;i<width;i+=15){
 			for(let j = 0;j<height;j+=15){
-				const point = app.viewport.convertScreenToClip(i,j);
 				points.push(
-					point.x,point.y
+					{
+						position:{x:i,y:j},
+						color:[1,0.5,0,1],
+						size:10
+					}
 				);
-				colors.push(point.x,point.y,point.x,1);
-				size.push(5);
 			}
 		}
-		app.canvas.line.setData(points,colors,size)
+		function update(){
+			setInterval(()=>{
+				app.canvas.point.uniformData.t.value+= 2*Math.PI/180;
+			},30)
+		}
+		update();
+		app.canvas.point.setData(points);
 	</script>
 </html>

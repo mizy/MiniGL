@@ -3,7 +3,7 @@ var pkg = require('./package.json');
 const webpack = require("webpack")
 module.exports = {
 	entry: {
-		pigeonGL: './src/index.js',
+		MiniGL: './src/index.js',
 		// 'lib/three':'./src/lib/three.js'
 	},
 	output: {

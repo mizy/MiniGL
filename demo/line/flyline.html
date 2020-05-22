@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+		<div id="root" style="width: 100%; height: 100%;"></div>
+		<script src="/MiniGL.js"></script>
+	</body>
+	<script>
+		const app = new MiniGL({
+			container: document.querySelector("#root"),
+		});
+		app.init();
+		for(let i  =0 ;i<100;i++){
+			const line = new MiniGL.FlyLine({
+				length:100,
+				miniGL:app,
+				startColor:[Math.random(),Math.random(),Math.random(),0],
+				endColor:[Math.random(),Math.random(),Math.random(),1]
+			});
+			app.canvas.add(line);
+			// setData前必须add到canvas里
+			line.setData({
+				start:{
+					x:Math.random()*500,y:Math.random()*500
+				},
+				end:{
+					x:Math.random()*500,y:Math.random()*500
+				}
+			})
+			line.start();
+		}
+		
+	</script>
+</html>

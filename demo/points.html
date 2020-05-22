@@ -4,7 +4,7 @@
 	</head>
 	<body>
 		<div id="root" style="width:100%;height:100%"></div>
-		<script src="../dist/pigeonGL.js"></script>
+		<script src="/MiniGL.js"></script>
 	</body>
 	<script>
 		const app = new MiniGL({
@@ -18,14 +18,15 @@
 		const size = [];
 		for(let i = 0;i<width;i+=15){
 			for(let j = 0;j<height;j+=15){
-				const point = app.viewport.convertScreenToClip(i,j);
 				points.push(
-					point.x,point.y
+					{
+						position:{x:i,y:j},
+						color:[i/width,j/height,i/width,1],
+						size:5
+					}
 				);
-				colors.push(point.x,point.y,point.x,1);
-				size.push(5);
 			}
 		}
-		app.canvas.point.setData(points,colors,size)
+		app.canvas.point.setData(points);
 	</script>
 </html>
