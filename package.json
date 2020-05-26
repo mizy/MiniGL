@@ -31,6 +31,7 @@
 	"dependencies": {
 		"@babel/runtime": "^7.8.4",
 		"@mapbox/polyline": "^1.1.0",
-		"core-js": "^3.6.4"
+		"core-js": "^3.6.4",
+		"gl-matrix": "^3.3.0"
 	}
 }

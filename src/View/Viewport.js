@@ -1,3 +1,5 @@
+import {mat2d} from 'gl-matrix';
+
 /**
  * @class
  */
@@ -8,6 +10,7 @@ class ViewPort {
 		this.config = Object.assign({
 
 		}, config.config);
+		this.transform = mat2d.create();
 	}
 
 	/**
@@ -44,6 +47,12 @@ class ViewPort {
 		this.width = width;
 		this.height = height;
 		this.ratio = this.width/this.height;
+		// 计算好坐标转换矩阵
+		this.transform = mat2d.create();
+		mat2d.scale(this.transform,this.transform,[2 / this.width,-2 / this.height]);
+		mat2d.translate(this.transform,this.transform,[-1,1]);
+		this.invertTransform = mat2d.create();
+		mat2d.invert(this.invertTransform,this.transform)
 	}
 }
 export default ViewPort;

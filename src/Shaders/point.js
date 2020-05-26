@@ -25,6 +25,7 @@ export default {
 		return `
 		precision mediump float;
 		uniform float t;
+		uniform sampler2D map;
 		varying float vTime;
 		varying vec4 vColor;
 		void main()

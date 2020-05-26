@@ -51,10 +51,11 @@ class Base {
 	}
 
 	setTexture(key,imagePath){
-		loadTexture(imagePath);
-		this.setUniform(key,{
-			type:"uniform1i",//image
-			value:0,//0号纹理传递
+		loadTexture(imagePath).then(()=>{
+			this.setUniform(key,{
+				type:"uniform1i",//image
+				value:0,//0号纹理传递
+			});
 		});
 	}
 

@@ -1,6 +1,6 @@
-import meshShader from '../Shaders/mesh';
+import shader from '../Shaders/image';
 import Base from './Base';
-class Mesh extends Base {
+class Image extends Base {
 	drawType = "TRIANGLES";
 	
 	offset=0;//array.BYTES_PER_ELEMENT * indicesEachLength
@@ -8,35 +8,47 @@ class Mesh extends Base {
 	constructor(config) {
 		super(config);
 		this.shaders = {
-			vertex: meshShader.vertexShader,
-			fragment: meshShader.fragmentShader
+			vertex: shader.vertexShader,
+			fragment: shader.fragmentShader
 		}
 		this.uniformData = {
 			z:{
 				value:config.z||1,
 				type:"uniform1f"
 			},
-		}
+		};
 		this.init(config);
+		this.setTexture('map',config.imagePath)
 		this.vSize = 2;
 	}
 
-	setData(data, indices) {
+	setData(data) {
 		const {
 			miniGL:{viewport}
 		} = this;
-		const points = [];
-		const colors = [];
 		this.data = data;
-		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
-			const color = item.color||[1,1,0,1];
-			colors.push(...color);
-			points.push(coord.x,coord.y);
-		});
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
+		const {width,height,path,x,y} = data;
+		const points = [
+			x-width/2,y-height/2,
+			x-width/2,y+height/2,
+			x+width/2,y-height/2,
+			x+width/2,y+height/2,
+		]
+		const indices = [0,1,2,2,1,3];
+		const uv = [
+			0,0,
+			0,1,
+			1,0,
+			1,1
+		]
+		
 		this.vertex = points;
 		this.setBufferData(points, "position", 2);
-		this.setBufferData(colors, "color", 4);
+		this.setBufferData(uv, "uv", 2);
 		this.setIndices(indices)
 	}
 
@@ -69,4 +81,4 @@ class Mesh extends Base {
 			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
 	}
 }
-export default Mesh;
+export default Image;
