@@ -1,4 +1,4 @@
-import {mat2d} from 'gl-matrix';
+import {mat2d,mat3} from 'gl-matrix';
 
 /**
  * @class
@@ -48,11 +48,13 @@ class ViewPort {
 		this.height = height;
 		this.ratio = this.width/this.height;
 		// 计算好坐标转换矩阵
-		this.transform = mat2d.create();
-		mat2d.scale(this.transform,this.transform,[2 / this.width,-2 / this.height]);
-		mat2d.translate(this.transform,this.transform,[-1,1]);
-		this.invertTransform = mat2d.create();
-		mat2d.invert(this.invertTransform,this.transform)
+		this.transform = mat3.create();
+		mat3.scale(this.transform,this.transform,[2 / this.width,-2 / this.height]);
+		// 这个矩阵工具真鸡儿难用，最讨厌内部偷偷帮我做转换的，我只想要个纯工具库！
+		// gl-matrix会以初次进行换算的坐标系为基准空间，来进行换算，一般人思考都会以转换后的坐标系为基准，这里就得转换思维
+		mat3.translate(this.transform,this.transform,[-this.width/2,-this.height/2]);
+		this.invertTransform = mat3.create();
+		mat3.invert(this.invertTransform,this.transform)
 	}
 }
 export default ViewPort;

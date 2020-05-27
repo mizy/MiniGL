@@ -1,4 +1,3 @@
-import loadTexture from '../Utils/LoadTexture';
 /**
  * Base 基类方便继承以实现其他类型的情况
  */
@@ -8,10 +7,11 @@ class Base {
 	depthMask = true;
 	depthTest = true;
 	transparent = true;
-
+	uniformsNeedUpdate = true;
 	uniformLocations = {}
 	
 	init(config) {
+		
 		this.config = Object.assign({
 			type: "ok"
 		}, config);
@@ -20,7 +20,9 @@ class Base {
 		// 初始化数据数组
 		this.indices = [];
 		this.vertex = [];
-		
+		if(config.miniGL){
+			config.miniGL.canvas.add(this)
+		}
 	}
 
 	setData(data) {
@@ -28,36 +30,38 @@ class Base {
 		this.setBufferData(data, "position", 2)
 	}
 
-	setUniformData(data){
-		this.uniformData = data;
-	}
 
 	setUniformData(){
-		if(!this.uniformData)return;
+		if(!this.uniformData||!this.uniformsNeedUpdate)return;
 		for(let key in this.uniformData){
 			const item = this.uniformData[key];
 			this.setUniform(key,item)
 		}
+		// this.uniformsNeedUpdate = false;
 	}
 
 	setUniform(key,item){
-		const {value,type} = item;
-		if(type.slice(-1)==="v"||typeof value!=='object'){
-			this.gl[type](this.getUniformLocation(key),value);
+		const {gl} = this;
+ 		const {value,type,texture} = item;
+		// 矩阵
+		if(type.indexOf("uniformMatrix")>-1){
+			gl[type](this.getUniformLocation(key),false,value);
+		
+		// 图形数据
+		}else if(texture){
+			gl.activeTexture(gl.TEXTURE0);
+			gl.bindTexture(gl.TEXTURE_2D, item.texture);
+			gl[type](this.getUniformLocation(key),value);
+
+		// 行列数据
+		} else if(type.slice(-1)==="v"||typeof value!=='object'){
+			gl[type](this.getUniformLocation(key),value);
 		}else{
-			this.gl[type](this.getUniformLocation(key),value[0]||value,value[1],value[2],value[3]);
+			gl[type](this.getUniformLocation(key),value[0]||value,value[1],value[2],value[3]);
 		}
-		this.uniformData.key = item;
+		this.uniformData[key] = item;
 	}
 
-	setTexture(key,imagePath){
-		loadTexture(imagePath).then(()=>{
-			this.setUniform(key,{
-				type:"uniform1i",//image
-				value:0,//0号纹理传递
-			});
-		});
-	}
 
 	/**
 	 * 新的缓存数据
@@ -98,10 +102,25 @@ class Base {
 
 		if (!this.gl.getProgramParameter(shaderPorgram, this.gl.LINK_STATUS)) {
 			console.error( 'shaderProgram Error: ', gl.getError(),  gl.getProgramParameter( shaderPorgram, 35715 ),  gl.getProgramInfoLog( shaderPorgram ).trim());
+			console.error('fragmentLog:',gl.getShaderInfoLog( vertexShaderObject ).trim(),this.addLineNumbers(gl.getShaderSource(vertexShaderObject)))
+			console.error('vertexLog:',gl.getShaderInfoLog( fragmentShaderObject ).trim(),this.addLineNumbers(gl.getShaderSource(fragmentShaderObject)))
+			
 			return;
 		}
 
 		this.shaderPorgram = shaderPorgram;
+	}
+
+	addLineNumbers( string ) {
+
+		var lines = string.split( '\n' );
+	
+		for ( var i = 0; i < lines.length; i ++ ) {
+	
+			lines[ i ] = ( i + 1 ) + ': ' + lines[ i ];
+	
+		}
+		return lines.join( '\n' );
 	}
 
 	// 获取顶点变量地址
@@ -155,18 +174,29 @@ class Base {
 		// 获取顶点数据内存里的指针
 		this.gl = miniGL.gl;
 		this.indicesPointer = this.gl.createBuffer();
-		this.vertexPointer = this.gl.createBuffer();
 		this.initShader();
 	}
 
+	// 销毁shader
 	destroy(){
 		const shaders = this.gl.getAttachedShaders(this.shaderPorgram);
 		shaders.forEach((item)=>{
 			this.gl.deleteShader(item)
 		})
+		this.gl.deleteBuffer(this.indicesPointer);
 		this.gl.deleteProgram(this.shaderPorgram);
+		this.dispose();
+	}
+
+	//释放buffer空间
+	dispose(){
 		for (let key in this.buffers) {
 			this.gl.deleteBuffer(this.buffers[key]);
+		}
+		for (let key in this.uniformData) {
+			if(this.uniformData[key].texture){
+				this.gl.deleteTexture(this.uniformData[key].texture)
+			}
 		}
 		this.buffers = {}
 	}

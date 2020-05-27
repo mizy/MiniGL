@@ -5,7 +5,7 @@ class Mesh extends Base {
 	
 	offset=0;//array.BYTES_PER_ELEMENT * indicesEachLength
 
-	constructor(config) {
+	constructor(config={}) {
 		super(config);
 		this.shaders = {
 			vertex: meshShader.vertexShader,

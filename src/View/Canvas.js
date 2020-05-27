@@ -62,14 +62,17 @@ class Canvas {
 		gl.clearDepth(1.0);
 		gl.enable(gl.DEPTH_TEST);
 		gl.depthFunc(gl.LEQUAL)
+
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		for(let key in this.meshs){
 			const mesh = this.meshs[key];
+			// 是否支持深度测试
 			if(mesh.depthTest){
 				gl.enable(gl.DEPTH_TEST)
 			}else{
 				gl.disable(gl.DEPTH_TEST)
 			}
+			// 是否支持透明混色
 			if(mesh.transparent){
 				gl.enable(gl.BLEND);
 				gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);

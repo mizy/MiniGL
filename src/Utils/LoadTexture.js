@@ -1,21 +1,34 @@
 export default function loadTexture(gl,imagePath){
-	
+	function lg2(n){
+		return Math.log(n)/Math.log(2)
+	}
 	return new Promise((resove,reject)=>{
 		let image = new Image();
+		image.src = imagePath;
 		image.onload = ()=>{
 			const texture = gl.createTexture();
-			//1.对纹理图像进行Y轴反转
-			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-			//2.开启0号纹理单元
-			gl.activeTexture(gl.TEXTURE0);
-			//3.向target绑定纹理对象
+
+			// 挂载当前的空材质开始操作
 			gl.bindTexture(gl.TEXTURE_2D, texture);
+			// 灌入图形数据
+			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+			// 反转y轴
+			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
 
-			//4.配置纹理参数
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-			//5.配置纹理图像
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-
+			// 支持放大缩小渐进加载和插值算法，整数倍情况
+			if(lg2(image.width)===0&&lg2(image.height)===0){
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+				gl.generateMipmap(gl.TEXTURE_2D);
+			}else{
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			}
+			
+			// 取消挂载
+			gl.bindTexture(gl.TEXTURE_2D, null);
 			resove(texture)
 		}
 		image.onerror = (e)=>{

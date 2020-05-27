@@ -11,8 +11,15 @@
 			container: document.querySelector("#root"),
 		});
 		app.init();
-		const mesh = new MiniGL.Mesh({
-			map:
+		const mesh = new MiniGL.Image({
+			miniGL:app
+		});
+		mesh.setData({
+			src:'./draw.jpg',
+			width:300,
+			height:400,
+			x:20,
+			y:20,
 		})
 		app.canvas.mesh.setData(
 			[

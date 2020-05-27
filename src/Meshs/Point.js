@@ -8,7 +8,8 @@ class Point extends Base {
 	vSize = 2;
 	constructor(config) {
 		config = Object.assign({
-			isRound:true
+			isRound:true,
+			initTime:false,
 		},config);
 		super(config);
 		this.shaders = {
@@ -44,7 +45,7 @@ class Point extends Base {
 			points.push(coord.x,coord.y);
 			colors.push(...(item.color||[1,0,0,1]));
 			size.push(item.size||10);
-			vTime.push(item.initTime||2*Math.random()*Math.PI)
+			vTime.push(item.initTime||this.config.initTime||2*Math.random()*Math.PI)
 		})
 
 		this.vertex = points;
