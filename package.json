@@ -5,6 +5,7 @@
 	"main": "webpack.config.js",
 	"scripts": {
 		"start": "webpack-dev-server",
+		"watch":"webpack --watch",
 		"build": "webpack --mode=production --config webpack.config.build.js"
 	},
 	"author": "mizy.mz",

@@ -10,7 +10,7 @@ class MiniGL extends Base {
 	constructor(config) {
 		super(config);
 		this.container = config.container;
-		this.config = Object.assign({}, config);
+	 	this.config = Object.assign({}, config);
 	}
 
 	init() {

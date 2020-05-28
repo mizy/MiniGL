@@ -1,4 +1,4 @@
-import {mat2d,mat3} from 'gl-matrix';
+import {mat3} from 'gl-matrix';
 
 /**
  * @class
@@ -10,7 +10,7 @@ class ViewPort {
 		this.config = Object.assign({
 
 		}, config.config);
-		this.transform = mat2d.create();
+		this.transform = mat3.create();
 	}
 
 	/**

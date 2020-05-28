@@ -1,11 +1,19 @@
 # MiniGL
 2d webgl renderer
+![](./demo.png)
+![](./snapshot.png)
 
 # case
-![](./snapshot.png);
++ [基本图形](./demo/main.html)
++ 点
+	* [点颜色](./demo/points/points.html)
+	* [点闪烁](./demo/points/shrink.html)
++ 线
+    * [飞线](./demo/line/flyline.html)
++ 面
+	* [图片](./demo/image.index.html)
 
-# [demo](./demo/index.html)
-
+# develope
 ```
 npm i
 npm run start
