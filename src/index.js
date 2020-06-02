@@ -4,6 +4,8 @@ import Canvas from './View/Canvas.js';
 import FlyLine from './Meshs/FlyLine';
 import Mesh from './Meshs/Mesh';
 import Image from './Meshs/Image';
+import Point from './Meshs/Point';
+import MeshBase from './Meshs/Base';
 class MiniGL extends Base {
 	autoUpdate = false;
 
@@ -30,4 +32,6 @@ class MiniGL extends Base {
 MiniGL.FlyLine = FlyLine;
 MiniGL.Image = Image;
 MiniGL.Mesh = Mesh;
+MiniGL.Point = Point;
+MiniGL.MeshBase = MeshBase;
 export default MiniGL;

@@ -1,0 +1,74 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+		<div id="root" style="width:100%;height:700px"></div>
+		<script src="/index.js"></script>
+	</body>
+	<script>
+
+		const app = new MiniGL({
+			container:document.querySelector("#root"),
+		});
+		app.init();
+
+		const image = new Image();
+		image.src = './draw.jpg';
+		image.onload = ()=>{
+			main();
+		}
+		function main(){
+			const canvas = document.createElement("canvas");
+			canvas.width =image.width;
+			canvas.height =image.height;
+			const ctx = canvas.getContext("2d");
+			ctx.drawImage(image,0,0);
+			const data = ctx.getImageData(0,0,image.width,image.height).data;
+			const points = [];
+			const position = [];
+			const colors = [];
+			const size =[];
+			for(let i=0;i<image.height;i++){
+				for(let j = 0;j<image.width;j++){
+					const number = (i*image.width + j)*4;
+					const color = [
+						data[number]/255,
+						data[number+1]/255,
+						data[number+2]/255,
+						data[number+3]/255,
+					];
+					if(
+						color[0]*color[1]*color[2]<0.5
+					){
+						points.push({x:j,y:i})
+						position.push(j,i);
+						colors.push(...color);
+						size.push(2); 
+					}
+				}
+			}
+
+			 
+			app.canvas.point.setBufferDatas({
+				position,
+				color:colors,
+				size
+			});
+			update();
+			function update(){
+				setInterval(()=>{
+					const position = [];
+					const newPoints = points.map(point=>{
+						point.x += (0.5-Math.random())*0.5;
+						point.y += (0.5-Math.random())*0.5;
+						position.push(point.x,point.y)
+						return point;
+					})
+					app.canvas.point.setBufferData(position,'position',2);
+				},16)
+			}
+		}
+		
+	</script>
+</html>

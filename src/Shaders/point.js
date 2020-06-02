@@ -7,14 +7,17 @@ export default {
 		attribute float size;
 		attribute float initTime;
 		uniform float z;
+		uniform mat3 transform;
 		varying vec4 vColor;
+		uniform float t;
 		varying float vTime;
 		
 		void main()
 		{
 			vColor = color;
 			gl_PointSize = size;
-			gl_Position = vec4(position,0.0,z);
+			vec3 mPosition = transform * vec3(position,1.0);
+			gl_Position = vec4(mPosition,z);
 			vTime = initTime;
 		}
 		`
@@ -36,8 +39,8 @@ export default {
 			${map?`
 				vec4 texelColor = texture2D( map, gl_PointCoord ); 
 				gl_FragColor = texelColor;
-				
-				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2.;
+				${isGradual?`
+				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2.`:''};
 				if(texelColor.w<=0.01){
 					discard;
 				}

@@ -25,19 +25,41 @@ class Mesh extends Base {
 		const {
 			miniGL:{viewport}
 		} = this;
+		this.dispose();
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
 		const points = [];
 		const colors = [];
 		this.data = data;
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
+			const coord = [item.position.x,item.position.y];
 			const color = item.color||[1,1,0,1];
 			colors.push(...color);
-			points.push(coord.x,coord.y);
+			points.push(...coord);
 		});
 		this.vertex = points;
 		this.setBufferData(points, "position", 2);
 		this.setBufferData(colors, "color", 4);
 		this.setIndices(indices)
+	}
+
+
+	setBufferDatas({
+		position,color
+	}){
+		const {
+			miniGL:{viewport}
+		} = this;
+		this.dispose();
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
+		this.vertex = position;
+		this.setBufferData(position, "position", 2);
+		this.setBufferData(color, "color", 4);
 	}
 
 	render() {

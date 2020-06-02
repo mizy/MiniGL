@@ -2,9 +2,10 @@
 	"name": "minigl",
 	"version": "1.0.0",
 	"description": "2d webgl renderer like canvas",
-	"main": "webpack.config.js",
+	"main": "./dist/MiniGL.js",
 	"scripts": {
 		"start": "webpack-dev-server",
+		"build:demo": "webpack -p",
 		"watch":"webpack --watch",
 		"build": "webpack --mode=production --config webpack.config.build.js"
 	},
@@ -30,8 +31,6 @@
 		"webpack-dev-server": "^3.7.2"
 	},
 	"dependencies": {
-		"@babel/runtime": "^7.8.4",
-		"@mapbox/polyline": "^1.1.0",
 		"core-js": "^3.6.4",
 		"gl-matrix": "^3.3.0"
 	}

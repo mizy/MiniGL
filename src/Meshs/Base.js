@@ -10,7 +10,7 @@ class Base {
 	uniformsNeedUpdate = true;
 	uniformLocations = {}
 	
-	init(config) {
+	init(config={}) {
 		
 		this.config = Object.assign({
 			type: "ok"
@@ -30,6 +30,10 @@ class Base {
 		this.setBufferData(data, "position", 2)
 	}
 
+	setBufferData(data,key,size){
+		this.gl.deleteBuffer(this.buffers[key]);
+		this.setBufferData(data, key, size);
+	}
 
 	setUniformData(){
 		if(!this.uniformData||!this.uniformsNeedUpdate)return;

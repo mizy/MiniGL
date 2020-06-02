@@ -13,8 +13,8 @@ class Point extends Base {
 		},config);
 		super(config);
 		this.shaders = {
-			vertex: pointShader.vertexShader(config),
-			fragment: pointShader.fragmentShader(config)
+			vertex: config.vertexShader||pointShader.vertexShader(config),
+			fragment: config.fragmentShader||pointShader.fragmentShader(config)
 		};
 		this.uniformData = {
 			z:{
@@ -29,20 +29,25 @@ class Point extends Base {
 		this.init(config);
 	}
 
-
+	
 
 	setData(data) {
 		const {
 			miniGL:{viewport}
 		} = this;
+		this.dispose();
+		// 设置转换矩阵
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
 		const points = [];
 		const colors = [];
 		const size = [];
 		const vTime = [];
 		this.data = data;
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
-			points.push(coord.x,coord.y);
+			points.push(item.position.x,item.position.y);
 			colors.push(...(item.color||[1,0,0,1]));
 			size.push(item.size||10);
 			vTime.push(item.initTime||this.config.initTime||2*Math.random()*Math.PI)
@@ -53,6 +58,26 @@ class Point extends Base {
 		this.setBufferData(colors, "color", 4);
 		this.setBufferData(size, "size", 1);
 		this.setBufferData(vTime, "initTime", 1);
+	}
+
+	setBufferDatas({
+		position,color,size,initTime
+	}){
+		const {
+			miniGL:{viewport}
+		} = this;
+		this.dispose();
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
+		this.vertex = position;
+		this.setBufferData(position, "position", 2);
+		this.setBufferData(color, "color", 4);
+		this.setBufferData(size, "size", 1);
+		if(initTime){
+			this.setBufferData(initTime,'initTime',1)
+		}
 	}
 
 }
