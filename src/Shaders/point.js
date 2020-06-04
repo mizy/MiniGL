@@ -16,8 +16,8 @@ export default {
 		{
 			vColor = color;
 			gl_PointSize = size;
-			vec3 mPosition = transform * vec3(position,1.0);
-			gl_Position = vec4(mPosition,z);
+			vec3 mPosition = transform * vec3(position,1.);
+			gl_Position = vec4(mPosition.xy,z,1.);
 			vTime = initTime;
 		}
 		`

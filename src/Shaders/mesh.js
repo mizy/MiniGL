@@ -9,8 +9,8 @@ export default {
 	void main()
 	{
 		vColor = color;
-		vec3 mPosition = transform * vec3(position,z);
-		gl_Position = vec4(mPosition,1.0);
+		vec3 mPosition = transform * vec3(position,1.);
+		gl_Position = vec4(mPosition.xy,z,1.0);
 		
 	}
 	`,

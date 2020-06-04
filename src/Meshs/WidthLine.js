@@ -13,7 +13,17 @@ class WidthLine extends Base {
 		config = Object.assign({
 			width:20,
 			z:1,
-		},config)
+		},config);
+		this.uniformData = {
+			width:{
+				value:config.width,
+				type:"uniform1f"
+			},
+			z:{
+				value:config.z||1,
+				type:"uniform1f"
+			}
+		}
 		this.init(config);
 	}
 
@@ -23,23 +33,38 @@ class WidthLine extends Base {
 		} = this;
 		
 		if (!data.length && data.length < 2) return console.warn("need input data.length >= 2");
-
-		this.width = 2*this.config.width/this.miniGL.viewport.height;
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
+		this.uniformData.aspect = {
+			value: viewport.ratio,
+			type:"uniform1f"
+		}
+		this.uniformData.color = {
+			value: this.config.color||[1,0,1,1],
+			type:"uniform4fv"
+		}
+		this.uniformData.width = {
+			value: 2*this.config.width/this.miniGL.viewport.height,
+			type:"uniform1f"
+		}
 		this.data = data;
 
 		const points = [];
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
-			points.push(coord.x,coord.y)
+			const coord = viewport.convertScreenToClip(item.position.x,item.position.y)
+			points.push(item.position.x,item.position.y)
 		})
 
 		// 生产双倍点for两个边
 		const res = this.calcSidePoints(points)
 
-		this.setBufferData(res.side, "side", 1);
 		this.setBufferData(res.nowData, "now", 2);
 		this.setBufferData(res.preData, "pre", 2);
 		this.setBufferData(res.nextData, "next", 2);
+		this.setBufferData(res.side, "side", 1);
+
 		// 生成顶点
 		const indices = [];
 		const indicesLength = res.nowData.length / 2;
@@ -93,52 +118,9 @@ class WidthLine extends Base {
 			nextData
 		}
 	}
-
-	/**
-	 * 添加数据
-	 * @param  {} data
-	 */
-	addData(data) {
-		if (data.length < 4) return;
-		const { indices = [], res } = this;
-
-		// 之前有线则加入退化三角形
-		if (indices.length === 0) {
-			return this.setData(data)
-		}
-		// 退化
-		const addRes = this.calcSidePoints(data);
-		// 加入数据的点数量
-		const indicesLength = addRes.nowData.length / 2;
-		// 原来的点总数
-		const lastIndex = res.nowData.length / 2;
-		// 序号从总点数开始，小于新总点数-2
-		for (let i = lastIndex; i < (lastIndex + indicesLength - 2); i += 2) {
-			indices.push(i)
-			indices.push(i + 1);
-			indices.push(i + 2);
-			indices.push(i + 2)
-			indices.push(i + 1);
-			indices.push(i + 3);
-		}
-		res.nowData = [...res.nowData, ...addRes.nowData];
-		res.side = [...res.side, ...addRes.side];
-		res.preData = [...res.preData, ...addRes.preData];
-		res.nextData = [...res.nextData, ...addRes.nextData];
-
-		this.setBufferData(res.side, "side", 1);
-		this.setBufferData(res.nowData, "now", 2);
-		this.setBufferData(res.preData, "pre", 2);
-		this.setBufferData(res.nextData, "next", 2);
-		this.setIndices(indices);
-		this.res = res;
-	}
-
-
+ 
 	render() {
 		// 2D 只需要两个坐标轴标识位置
-		const vSize = 2;
-		const vLen = 0; //几个点
 		const offset = 0;// 从数据第几位开始偏移
 		const normalLize = false;
 
@@ -158,12 +140,6 @@ class WidthLine extends Base {
 
 		// 加载shader程序
 		this.gl.useProgram(this.shaderPorgram);
-
-		this.gl.uniform1f(this.getUniformLocation("width"), this.width);
-		this.gl.uniform1f(this.getUniformLocation("z"), this.config.z);
-		// 不要在shader里进行坐标换算，一次性的事儿，外界转换好就行
-		this.gl.uniform1f(this.getUniformLocation("aspect"), this.miniGL.viewport.ratio);
-		// this.gl.uniform4fv(this.getUniformLocation("color"), false, [0.0, 1.0, 1.0, 1.0]);
 
 		this.setUniformData();
 

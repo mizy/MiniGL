@@ -11,64 +11,38 @@ class Line extends Base {
 
 	constructor(config) {
 		config = Object.assign({
-			z:0.1
+			z:1
 		},config)
 		super(config);
-		this.init(config);
 		this.uniformData = {
 			z:{
-				value:this.config.z,
+				value:Math.min(config.z,1),
 				type:"uniform1f"
 			}
 		}
+		this.init(config);
 	}
 	
 	setData(data) {
 		const {
 			miniGL:{viewport}
 		} = this;
+		this.dispose();
 		const points = [];
+		this.uniformData.transform={
+			value:viewport.transform,
+			type:"uniformMatrix3fv"
+		}
 		this.data = data;
+		const colors = [];
 		data.forEach(item=>{
-			const coord = viewport.convertScreenToClip(item.position.x,item.position.y);
-			points.push(coord.x,coord.y)
+			points.push(item.position.x,item.position.y);
+			colors.push(...(item.color||[1,1,0,1]))
 		})
-
 		this.vertex = points;
-		this.setBufferData(points, "position", 2)
+		this.setBufferData(points, "position", 2);
+		this.setBufferData(colors, "color", 4);
 	}
-
-	addData(data) {
-		const newVertex = [...this.vertex, ...data];
-		this.setData(newVertex)
-	}
-
-	render() {
-		// 2D 只需要两个坐标轴标识位置
-		const vLen = Math.floor(this.vertex.length / this.vSize); //几个点
-		const offset = 0;// 从数据第几位开始偏移
-		const normalLize = false;
-		const {uniformData  = {}} = this;
-
-		// 分别绑定数据到shader程序中
-		for (let key in this.buffers) {
-			const bufferData = this.buffers[key];
-			const bufferPosition = this.getAttribLocation(key);
-			// 分别绑定数据到shader程序中
-			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset);
-			this.gl.enableVertexAttribArray(bufferPosition);
-		}
-
-		// 加载shader程序
-		this.gl.useProgram(this.shaderPorgram);
-
-		this.setUniformData();
-
-		// 渲染
-		if (this.vertex.length) {
-			this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen);
-		}
-	}
+	
 }
 export default Line;

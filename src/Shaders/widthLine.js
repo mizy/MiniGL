@@ -9,13 +9,17 @@ export default {
 	attribute float side;
 	uniform float width;
 	uniform float aspect;
-	varying vec2 vColor;
+	uniform mat3 transform;
 	void main()
 	{
-		
-		vec2 _now = vec2(now);
-		vec2 _next = vec2(next);
-		vec2 _pre = vec2(pre);
+		// 先转换坐标系
+		vec2 mNow = (transform*vec3(now,1.)).xy;
+		vec2 mNext = (transform*vec3(next,1.)).xy;
+		vec2 mPre = (transform*vec3(pre,1.)).xy;
+		vec2 _now = vec2(mNow);
+		vec2 _next = vec2(mNext);
+		vec2 _pre =  vec2(mPre);
+	
 		// 先把本坐标系的坐标放大，和真实的外界坐标一样,这样求出来的相对向量是准确的，如果在后面之间对normal进行变化，就会得出错误的结果
 		_now.x *= aspect;
 		_next.x *= aspect;
@@ -31,18 +35,17 @@ export default {
 		float ratio = sqrt(1.0 - pow(dot(normal,point0_1),2.0));
 		vec2 dir = normal * width/ratio * .5 * side;
 
-
-	    // 得出的x坐标会被放大，这里要除掉
-		gl_Position = vec4(now.x + dir.x/aspect,now.y+dir.y , 0.0 , 1.0);
+		// 得出的x坐标会被放大，这里要除掉,记得要用转换后坐标进行加减
+		gl_Position = vec4(mNow.x + dir.x/aspect,mNow.y+dir.y , 1., 1.);
 	}
 	`,
 
 	fragmentShader: `
 	precision lowp float;
-	varying vec2 vColor;
+	uniform vec4 color;
 	void main()
 	{
-		gl_FragColor = vec4(1.,0., 0., 1.0);
+		gl_FragColor = color;
 	}
 	`
 }
