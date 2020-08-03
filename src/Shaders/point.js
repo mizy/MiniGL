@@ -28,6 +28,7 @@ export default {
 		return `
 		precision mediump float;
 		uniform float t;
+		uniform float antialias;
 		uniform sampler2D map;
 		varying float vTime;
 		varying vec4 vColor;
@@ -51,6 +52,8 @@ export default {
 				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2. ;`:''}
 			`}
 		${isRound?`
+				float smoothSideRatio = smoothstep(0.,antialias,(0.5-distance));
+				gl_FragColor.w *= smoothSideRatio;
 			}else{
 				discard;
 			}

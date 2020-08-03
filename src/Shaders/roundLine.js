@@ -7,6 +7,7 @@ export default {
 	attribute vec2 pre;
 	attribute vec2 next;
 	attribute float side;
+	attribute float status;
 	uniform float width;
 	uniform float aspect;
 	uniform mat3 transform;
@@ -15,7 +16,7 @@ export default {
 	void main()
 	{
 		vSide = side;
-
+		
 		// 先转换坐标系
 		vec2 mNow = (transform*vec3(now,1.)).xy;
 		vec2 mNext = (transform*vec3(next,1.)).xy;
@@ -29,16 +30,21 @@ export default {
 		_next.x *= aspect;
 		_pre.x *= aspect;
 		
-		vec2 point0_1 = normalize(_now - _pre);
-		vec2 point2_1 = normalize(_next - _now);
-		vec2 point2_1_0v = normalize(point2_1 + point0_1);
-		
-		vec2 normal = vec2( -point2_1_0v.y , point2_1_0v.x );
-		vec2 offsets = offset*normal;
+		vec2 _dir = normalize(status*_now - status*_pre + (1.0-status)*_next - (1.0-status)*_now);
 
-		//这个算法下先放大,求出的Normal比例在放大的坐标系下是对的，根据这个normal求出放大的比例
-		float ratio = sqrt(1.0 - pow(dot(normal,point0_1),2.0));
-		vec2 dir = normal * width/ratio * .5 * side + offsets;
+		vec2 normal = vec2( -_dir.y , _dir.x );
+		vec2 dir = normal * width * .5 * side;
+
+		// 偏移量
+		if(offset!=0.){
+			vec2 point21 = normalize(_next - _now);
+			vec2 point10 = normalize(_now - _pre);
+			vec2 offsetDir = normalize( point21 + point10);
+			vec2 offsetNormal = vec2( -offsetDir.y, offsetDir.x);
+			float ratio = sqrt(1.0 - pow(dot(offsetNormal,point10),2.0));
+			vec2 offsets =  offsetNormal * offset/ratio  ;
+			dir += offsets;
+		}
 
 		// 得出的x坐标会被放大，这里要除掉,记得要用转换后坐标进行加减
 		gl_Position = vec4(mNow.x + dir.x/aspect,mNow.y+dir.y , 1., 1.);
@@ -51,9 +57,9 @@ export default {
 	varying float vSide;
 	void main()
 	{
-		float smoothSideRatio = max(0.1,smoothstep(0.,0.4,(1. - abs(vSide))));
+		float smoothSideRatio = max(0.1,smoothstep(0.,0.3,(1. - abs(vSide))));
 		gl_FragColor = color;
-		gl_FragColor.w = smoothSideRatio;
+		gl_FragColor.w *= smoothSideRatio;
 	}
 	`
 }

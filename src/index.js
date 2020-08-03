@@ -6,6 +6,8 @@ import Mesh from './Meshs/Mesh';
 import Image from './Meshs/Image';
 import Point from './Meshs/Point';
 import MeshBase from './Meshs/Base';
+import RoundLine from './Meshs/RoundLine/index';
+import WidthLine from './Meshs/WidthLine';
 class MiniGL extends Base {
 	autoUpdate = false;
 
@@ -34,4 +36,7 @@ MiniGL.Image = Image;
 MiniGL.Mesh = Mesh;
 MiniGL.Point = Point;
 MiniGL.MeshBase = MeshBase;
+MiniGL.WidthLine = WidthLine;
+MiniGL.RoundLine = RoundLine;
+
 export default MiniGL;

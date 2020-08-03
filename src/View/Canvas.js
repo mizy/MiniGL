@@ -22,11 +22,13 @@ class Canvas {
 		this.add(this.point);
 		this.add(this.line);
 		this.add(this.widthLine);
-		this.index = 0;
 	}
 
-	clear() {
-
+	dispose() {
+		for(let x in this.meshs){
+			this.remove(x)
+		}
+		this.meshs = []
 	}
 
 	toDataUrl() {
@@ -79,6 +81,7 @@ class Canvas {
 			}else{
 				gl.disable(gl.BLEND)
 			}
+			// 写入深度缓冲
 			gl.depthMask(mesh.depthMask)
 			mesh.render()
 		}

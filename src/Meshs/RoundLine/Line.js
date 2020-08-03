@@ -1,6 +1,6 @@
-import shader from '../Shaders/widthLine';
-import Base from './Base';
-class WidthLine extends Base {
+import shader from '@/Shaders/roundLine.js';
+import Base from '../Base';
+class RoundLine extends Base {
 	drawType = "TRIANGLES"//"TRIANGLE_STRIP";
 	shaders = {
 		vertex: shader.vertexShader,
@@ -58,32 +58,23 @@ class WidthLine extends Base {
 		})
 
 		// 生产双倍点for两个边
-		const res = this.calcSidePoints(points)
+		const res = this.calcSidePoints(data)
 
 		this.setBufferData(res.nowData, "now", 2);
 		this.setBufferData(res.preData, "pre", 2);
 		this.setBufferData(res.nextData, "next", 2);
 		this.setBufferData(res.side, "side", 1);
+		this.setBufferData(res.status, "status", 1);
 
 		// 生成顶点
 		const indices = [];
-		const indicesLength = res.nowData.length / 2;
-		// TRIANGLES情况
-		for (let i = 0; i < indicesLength - 2; i += 2) {
-			indices.push(i)
-			indices.push(i + 1);
-			indices.push(i + 2);
-			indices.push(i + 2)
-			indices.push(i + 1);
-			indices.push(i + 3);
+		for (let j = 0;j < data.length - 1;j++) {
+			const n = j * 4;
+			indices.push(
+				n, n + 1, n + 2,
+				n + 2, n + 1, n + 3
+			);
 		}
-		// Strip退化方案太反人类，不hack 了
-		// for (let i = 0; i < indicesLength; i++) {
-		// 	//012 213 233 336 366 667 678
-		// 	// 4 =>3 5=>6 //退化过程
-		// 	// data[length - 1], 
-		// 	indices.push(i);
-		// }
 		this.setIndices(indices)
 		this.res = res;
 	}
@@ -94,28 +85,52 @@ class WidthLine extends Base {
 		let nextData = [];
 		let preData = [];
 		let nowData = [];
-		// 生产双倍点for两个边
-		for (let i = 0; i < length; i += 2) {
-			side.push(1, -1)
-			nowData.push(data[i], data[i + 1], data[i], data[i + 1]);
+		let status = [];
+
+ 		// 生产双倍点for两个边
+		for (let i = 0; i < length-1; i ++) {
+			let point1 = data[i].position;
+			let point0 = data[i - 1]?data[i-1].position: {x: 2 * data[i].position.x - data[i + 1].position.x, y: 2 * data[i].position.y - data[i + 1].position.y};
+			let point2 = data[i + 1]?data[i+1].position: {x: 2 * data[i].position.x - data[i - 1].position.x, y: 2 * data[i].position.y - data[i - 1].position.y};
+			side.push(1, -1);
+			preData.push(
+				point0.x, point0.y,
+				point0.x, point0.y
+			);
+			nowData.push(
+				point1.x, point1.y,
+				point1.x, point1.y
+			);
+			nextData.push(
+				point2.x, point2.y, 
+				point2.x, point2.y
+			);
+			const j = i + 1;
+			point1 = data[j].position;
+			point0 = data[j - 1] ?data[j-1].position: {x: 2 * data[j].position.x - data[j + 1].position.x, y: 2 * data[j].position.y - data[j + 1].position.y};
+			point2 = data[j + 1] ?data[j+1].position: {x: 2 * data[j].position.x - data[j - 1].position.x, y: 2 * data[j].position.y - data[j - 1].position.y};
+			side.push(1, -1);
+			preData.push(
+				point0.x, point0.y,
+				point0.x, point0.y
+			);
+			nowData.push(
+				point1.x, point1.y,
+				point1.x, point1.y
+			);
+			nextData.push(
+				point2.x, point2.y, 
+				point2.x, point2.y
+			);
+			status.push(0, 0, 1, 1);
 		}
-		const next = [2 * data[length - 2] - data[length - 4], 2 * data[length - 1] - data[length - 3]]
-		nextData = [
-			...nowData,
-			...next, ...next
-		];
-		nextData.splice(0, 4);
-		const pre = [2 * data[0] - data[2], 2 * data[1] - data[3]]
-		preData = [
-			...pre,
-			...pre,
-			...nowData];
+	 
 		return {
-			nowData,
 			preData,
 			nowData,
+			nextData,
 			side,
-			nextData
+			status,
 		}
 	}
  
@@ -144,8 +159,10 @@ class WidthLine extends Base {
 		this.setUniformData();
 
 		// 渲染
-		if (this.indices.length)
+		if (this.indices.length){
 			this.gl.drawElements(this.gl[this.drawType], this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
+
+		}
 	}
 }
-export default WidthLine;
+export default RoundLine;

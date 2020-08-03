@@ -25,6 +25,10 @@ class Point extends Base {
 				value:1,
 				type:"uniform1f"
 			},
+			antialias:{
+				value:0.1,
+				type:"uniform1f"
+			}
 		}
 		this.init(config);
 	}

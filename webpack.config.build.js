@@ -18,6 +18,11 @@ module.exports = {
 	optimization: {
 		minimizer: []
 	},
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "src")
+		}
+	},
 	module: {
 		rules: [
 			{
