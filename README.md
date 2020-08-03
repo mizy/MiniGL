@@ -10,6 +10,7 @@
 	* [点闪烁](./demo/points/shrink.html)
 + 线
     * [飞线](./demo/line/flyline.html)
+	* [宽度线](./demo/line/meshline.html)
 + 面
 	* [图片](./demo/image.index.html)
 
