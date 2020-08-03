@@ -7,7 +7,7 @@ let webpackConfig = {
 		libraryTarget: "umd",
 		libraryExport: "default" // 默认导出
 	},
-	devtool: "source-map",
+	devtool: "eval-source-map",
 	devServer: {
 		port: 8666,
 		open: true,
