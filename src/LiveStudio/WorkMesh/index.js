@@ -1,6 +1,6 @@
-import meshShader from '../Shaders/mesh';
-import Base from './Base';
-class Mesh extends Base {
+import meshShader from './shader';
+import Base from '@/Meshs/Base';
+class WorkMesh extends Base {
 	drawType = "TRIANGLES";
 	
 	offset=0;//array.BYTES_PER_ELEMENT * indicesEachLength
@@ -120,8 +120,9 @@ class Mesh extends Base {
 		if (this.indices.length){
 			const drawType = this.config.wireFrame?"LINES":this.gl[this.drawType];
 			// offset必须乘以类型数组的长度，意味着要从内存中数据的对应字节数开始算 根据类型乘对应的BYTES_PER_ELEMENT
-			this.gl.drawElements(drawType, this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
+			this.gl.drawElements(LINES, this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
+			
 		}
 	}
 }
-export default Mesh;
+export default WorkMesh;

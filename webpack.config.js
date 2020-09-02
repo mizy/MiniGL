@@ -12,7 +12,8 @@ let webpackConfig = {
 		port: 8666,
 		open: true,
 		host: "0.0.0.0",
-		hot: true
+		hot: true,
+		
 	},
 	stats: "minimal",
 	module: {

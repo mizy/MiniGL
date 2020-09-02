@@ -121,6 +121,7 @@ class Mesh extends Base {
 			const drawType = this.config.wireFrame?"LINES":this.gl[this.drawType];
 			// offset必须乘以类型数组的长度，意味着要从内存中数据的对应字节数开始算 根据类型乘对应的BYTES_PER_ELEMENT
 			this.gl.drawElements(drawType, this.indices.length, this.gl.UNSIGNED_SHORT, this.offset);
+			
 		}
 	}
 }

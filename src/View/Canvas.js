@@ -82,7 +82,7 @@ class Canvas {
 				gl.disable(gl.BLEND)
 			}
 			// 写入深度缓冲
-			gl.depthMask(mesh.depthMask)
+			gl.depthMask(mesh.depthMask);
 			mesh.render()
 		}
 	}
