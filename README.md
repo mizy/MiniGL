@@ -4,15 +4,17 @@
 ![](./snapshot.png)
 
 # case
-+ [基本图形](./demo/main.html)
++ [基本图形](https://mizy.github.io/MiniGL/demo/main.html)
 + 点
-	* [点颜色](./demo/points/points.html)
-	* [点闪烁](./demo/points/shrink.html)
+	* [点颜色](https://mizy.github.io/MiniGL/demo/points/points.html)
+	* [点闪烁](https://mizy.github.io/MiniGL/demo/points/shrink.html)
 + 线
-    * [飞线](./demo/line/flyline.html)
-	* [宽度线](./demo/line/meshline.html)
+    * [飞线](https://mizy.github.io/MiniGL/demo/line/flyline.html)
+	* [宽度线](https://mizy.github.io/MiniGL/demo/line/meshline.html)
 + 面
-	* [图片](./demo/image.index.html)
+	* [图片](https://mizy.github.io/MiniGL/demo/image/index.html)
++ shader
+	* [自定义shader](https://mizy.github.io/MiniGL/demo/customShader/index.html)
 
 # develope
 ```

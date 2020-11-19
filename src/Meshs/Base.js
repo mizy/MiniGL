@@ -8,7 +8,9 @@ class Base {
 	depthTest = true;
 	transparent = true;
 	uniformsNeedUpdate = true;
-	uniformLocations = {}
+	uniformLocations = {};
+	needRender=true;//是否需要重绘
+	
 	
 	init(config={}) {
 		
@@ -20,6 +22,10 @@ class Base {
 		// 初始化数据数组
 		this.indices = [];
 		this.vertex = [];
+		if(config.shaders){
+			this.shaders = {...this.shaders,...config.shaders}
+		}
+		
 		if(config.miniGL){
 			config.miniGL.canvas.add(this)
 		}
@@ -171,6 +177,10 @@ class Base {
 		// 渲染
 		if (this.vertex.length)
 			this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen);
+	}
+
+	afterRender(){
+		
 	}
 
 	onAdd(miniGL){

@@ -43,7 +43,11 @@ class Canvas {
 			this.update(endTime - time);
 		});
 	}
-
+	/**
+	 * @param  {} mesh
+	 * @param  {} [key]
+	 * @returns {String} key
+	 */
 	add(mesh,key){
 		key = key?key:++this.index;
 		this.meshs[key] = mesh;
@@ -56,7 +60,7 @@ class Canvas {
 		delete this.meshs[key]
 	}
 
-	render() {
+	render(delta) {
 		const {gl} = this;
 		this.miniGL.fire("beforerender")
 		// 清空
@@ -83,7 +87,10 @@ class Canvas {
 			}
 			// 写入深度缓冲
 			gl.depthMask(mesh.depthMask);
-			mesh.render()
+			if(mesh.needRender){
+				mesh.render(delta);
+				mesh.afterRender()
+			}
 		}
 	}
 }

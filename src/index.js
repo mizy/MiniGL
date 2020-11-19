@@ -8,6 +8,7 @@ import Point from './Meshs/Point';
 import MeshBase from './Meshs/Base';
 import RoundLine from './Meshs/RoundLine/index';
 import WidthLine from './Meshs/WidthLine';
+import Rect from './Shapes/Rect';
 class MiniGL extends Base {
 	autoUpdate = false;
 
@@ -38,5 +39,7 @@ MiniGL.Point = Point;
 MiniGL.MeshBase = MeshBase;
 MiniGL.WidthLine = WidthLine;
 MiniGL.RoundLine = RoundLine;
+// 暂时做形状没有意义，本来是要专心做2d特效库的,另外去做形状，做重了和canvas性能没差了，还是专心利用gpu多进程运算
+MiniGL.Rect = Rect;
 
 export default MiniGL;
