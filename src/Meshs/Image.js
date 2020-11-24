@@ -83,7 +83,7 @@ class Image extends Base {
 	render() {
 		// 2D 只需要两个坐标轴标识位置
 		const offset = 0;// 从数据第几位开始偏移
-		const normalLize = false;
+		const normalize = false;
 		const {gl} = this;
 
 		// 图片加载完了再说
@@ -97,7 +97,7 @@ class Image extends Base {
 			const bufferPosition = this.getAttribLocation(key);
 			// 分别绑定数据到shader程序中
 			gl.bindBuffer(gl.ARRAY_BUFFER, bufferData);
-			gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], gl.FLOAT, normalLize, 0, offset);
+			gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], gl.FLOAT, normalize, 0, offset);
 			gl.enableVertexAttribArray(bufferPosition);
 		}
 

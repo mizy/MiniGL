@@ -10,7 +10,11 @@ class ViewPort {
 		this.config = Object.assign({
 
 		}, config.config);
-		this.transform = mat3.create();
+		this.transform = mat3.create();// 2d视图转换矩阵
+		this.convertTransform  = mat3.create();//空间转换矩阵
+		this.scale = 1;
+		this.translate = [0,0];
+		this.rotation = Math.PI*2;//弧度
 	}
 
 	/**
@@ -47,14 +51,18 @@ class ViewPort {
 		this.width = width;
 		this.height = height;
 		this.ratio = this.width/this.height;
+		this.makeMatrix();
+	}
+
+	makeMatrix(){
 		// 计算好坐标转换矩阵
-		this.transform = mat3.create();
-		mat3.scale(this.transform,this.transform,[2 / this.width,-2 / this.height]);
-		// 这个矩阵工具真鸡儿难用，最讨厌内部偷偷帮我做转换的，我只想要个纯工具库！
-		// gl-matrix会以初次进行换算的坐标系为基准空间，来进行换算，一般人思考都会以转换后的坐标系为基准，这里就得转换思维
-		mat3.translate(this.transform,this.transform,[-this.width/2,-this.height/2]);
-		this.invertTransform = mat3.create();
-		mat3.invert(this.invertTransform,this.transform)
+		const transform = mat3.create();
+		mat3.scale(transform,transform,[2 / this.width,-2 / this.height]);
+		// gl-matrix会以初次进行换算的坐标系为基准空间，来进行换算
+		// 也就是说每次进行转换的时候，都是在原矩阵上做计算和转换，而不只是改变矩阵的值
+		mat3.translate(transform,transform,[-this.width/2,-this.height/2]);
+		this.matrix = transform;
+		mat3.copy(this.transform,transform);
 	}
 }
 export default ViewPort;

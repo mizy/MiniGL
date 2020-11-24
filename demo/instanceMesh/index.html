@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+        <pre>
+			webgl2.0实例数组的例子。
+			由于实例数组大部分情况都需进行自定义计算，所以最好自定义shader
+		</pre>
+		<div id="root" style="width: 100%; height: 100%;"></div>
+		<script src="../../dist/index.js"></script>
+	</body>
+	<script>
+		const app = new MiniGL({
+			container: document.querySelector("#root"),
+		});
+		app.init();
+		const mesh = new MiniGL.InstanceMesh()
+		// 先添加到canvas中
+		const meshKey = app.canvas.add(mesh);
+		mesh.setData(
+			[
+				{ position: { x: 0, y: 10 } },
+				{ position: { x: 0, y: 20 } },
+				{ position: { x: 10, y: 10 } },
+				{ position: { x: 10, y: 20 } },
+			],
+			[0, 1, 2, 2, 1, 3]
+        );
+        const instanceData =[];
+        for(let i =0;i<64;i++){
+            instanceData.push([
+                200+(100-i)*Math.cos(Math.PI*i/16),
+                200-(100-i)*Math.sin(Math.PI*i/16),
+                i/32 //透明度
+            ]);
+        }
+        mesh.setInstanceData(instanceData);
+		// 添加uniform
+		mesh.uniformData.t = {
+			type:"uniform1f",
+			value:0
+		};
+		mesh.uniformsNeedUpdate = true;//需要更新uniformData
+		// 循环渲染
+		setInterval(()=>{
+			if(mesh.uniformData.t.value<Math.PI*2){
+				mesh.uniformData.t.value += 0.05
+			}else{
+				mesh.uniformData.t.value = 0;
+			}
+		},20)
+	</script>
+</html>

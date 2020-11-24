@@ -104,7 +104,7 @@ class Line extends Base {
 
 	render() {
 		// 2D 只需要两个坐标轴标识位置
-		const normalLize = false;
+		const normalize = false;
 		const length = this.vertex.length/2;
 		const {uniformData  = {},config} = this;
 		if(!this.startFlag)return;
@@ -120,7 +120,7 @@ class Line extends Base {
 			const bufferPosition = this.getAttribLocation(key);
 			// 分别绑定数据到shader程序中
 			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, 0);
+			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, 0);
 			this.gl.enableVertexAttribArray(bufferPosition);
 		}
 

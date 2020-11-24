@@ -1,4 +1,4 @@
-# MiniGL
+# [MiniGL](https://mizy.github.io)
 2d webgl renderer
 ![](./demo.png)
 ![](./snapshot.png)

@@ -36,10 +36,7 @@ class Base {
 		this.setBufferData(data, "position", 2)
 	}
 
-	setBufferData(data,key,size){
-		this.gl.deleteBuffer(this.buffers[key]);
-		this.setBufferData(data, key, size);
-	}
+	
 
 	setUniformData(){
 		if(!this.uniformData||!this.uniformsNeedUpdate)return;
@@ -52,15 +49,18 @@ class Base {
 
 	setUniform(key,item){
 		const {gl} = this;
- 		const {value,type,texture} = item;
+ 		const {value,type,texture,textureUnit=0} = item;
 		// 矩阵
 		if(type.indexOf("uniformMatrix")>-1){
 			gl[type](this.getUniformLocation(key),false,value);
 		
 		// 图形数据
 		}else if(texture){
-			gl.activeTexture(gl.TEXTURE0);
+			// 激活纹理单元0，这里可以配置激活多个纹理单元，用来完成一个shader里多个纹理叠加处理的后期效果
+			gl.activeTexture(gl[`TEXTURE${textureUnit}`]);
+			// 绑定纹理到单元0上
 			gl.bindTexture(gl.TEXTURE_2D, item.texture);
+			// 传值
 			gl[type](this.getUniformLocation(key),value);
 
 		// 行列数据
@@ -158,14 +158,14 @@ class Base {
 		// 2D 只需要两个坐标轴标识位置
 		const vLen = Math.ceil(this.vertex.length / this.vSize); //几个点
 		const offset = 0;// 从数据第几位开始偏移
-		const normalLize = false;
+		const normalize = false;
 
 		for (let key in this.buffers) {
 			const bufferData = this.buffers[key];
 			const bufferPosition = this.getAttribLocation(key);
 			// 分别绑定数据到shader程序中
 			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset);
+			this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset);
 			this.gl.enableVertexAttribArray(bufferPosition);
 		}
 

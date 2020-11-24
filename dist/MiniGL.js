@@ -808,14 +808,14 @@ var Meshs_Base_Base = /*#__PURE__*/function () {
 
       var offset = 0; // 从数据第几位开始偏移
 
-      var normalLize = false;
+      var normalize = false;
 
       for (var key in this.buffers) {
         var bufferData = this.buffers[key];
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset);
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset);
         this.gl.enableVertexAttribArray(bufferPosition);
       } // 加载shader程序
 
@@ -1002,14 +1002,14 @@ var Mesh_Mesh = /*#__PURE__*/function (_Base) {
       // 2D 只需要两个坐标轴标识位置
       var offset = 0; // 从数据第几位开始偏移
 
-      var normalLize = false; // 分别绑定数据到shader程序中
+      var normalize = false; // 分别绑定数据到shader程序中
 
       for (var key in this.buffers) {
         var bufferData = this.buffers[key];
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset);
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset);
         this.gl.enableVertexAttribArray(bufferPosition);
       } // 使用顶点数据
 
@@ -1389,14 +1389,14 @@ var WidthLine_WidthLine = /*#__PURE__*/function (_Base) {
       // 2D 只需要两个坐标轴标识位置
       var offset = 0; // 从数据第几位开始偏移
 
-      var normalLize = false;
+      var normalize = false;
 
       for (var key in this.buffers) {
         var bufferData = this.buffers[key];
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset); //todo:webgl2.0 实例数组能减少同样形状但渲染不同的高性能方案
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset); //todo:webgl2.0 实例数组能减少同样形状但渲染不同的高性能方案
 
         this.gl.enableVertexAttribArray(bufferPosition);
       } // 使用顶点数据
@@ -1828,7 +1828,7 @@ var FlyLine_Line = /*#__PURE__*/function (_Base) {
     key: "render",
     value: function render() {
       // 2D 只需要两个坐标轴标识位置
-      var normalLize = false;
+      var normalize = false;
       var length = this.vertex.length / 2;
       var _this$uniformData = this.uniformData,
           uniformData = _this$uniformData === void 0 ? {} : _this$uniformData,
@@ -1846,7 +1846,7 @@ var FlyLine_Line = /*#__PURE__*/function (_Base) {
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, 0);
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, 0);
         this.gl.enableVertexAttribArray(bufferPosition);
       } // 加载shader程序
 
@@ -2016,7 +2016,7 @@ var Image_Image = /*#__PURE__*/function (_Base) {
       // 2D 只需要两个坐标轴标识位置
       var offset = 0; // 从数据第几位开始偏移
 
-      var normalLize = false;
+      var normalize = false;
       var gl = this.gl; // 图片加载完了再说
 
       if (!this.uniformData['u_Sampler']) {
@@ -2029,7 +2029,7 @@ var Image_Image = /*#__PURE__*/function (_Base) {
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferData);
-        gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], gl.FLOAT, normalLize, 0, offset);
+        gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], gl.FLOAT, normalize, 0, offset);
         gl.enableVertexAttribArray(bufferPosition);
       } // 使用顶点数据
 
@@ -2208,14 +2208,14 @@ var Line_RoundLine = /*#__PURE__*/function (_Base) {
       // 2D 只需要两个坐标轴标识位置
       var offset = 0; // 从数据第几位开始偏移
 
-      var normalLize = false;
+      var normalize = false;
 
       for (var key in this.buffers) {
         var bufferData = this.buffers[key];
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData);
-        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalLize, 0, offset); //todo:webgl2.0 实例数组能减少同样形状但渲染不同的高性能方案
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset); //todo:webgl2.0 实例数组能减少同样形状但渲染不同的高性能方案
 
         this.gl.enableVertexAttribArray(bufferPosition);
       } // 使用顶点数据
