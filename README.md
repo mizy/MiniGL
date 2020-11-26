@@ -1,5 +1,8 @@
 # [MiniGL](https://mizy.github.io)
-2d WebGL renderer，纯原生手写的2d渲染库，支持基础图形渲染和鼠标交互操作，使用glMatrix做矩阵库，可以进行自由图形变换
+2d WebGL renderer，
++ 纯原生2d渲染库，支持基础图形渲染和鼠标交互操作，使用glMatrix做矩阵库，
++ 可以进行自由图形变换,支持原生shader,webGL2.0
++ 可用于高性能2d渲染场景
  
 ![](./demo.png)
 ![](./snapshot.png)

@@ -27,7 +27,6 @@ class Controller {
         });
         container.addEventListener("wheel",(e)=>{
             e.preventDefault();
-            console.log(e.pageX,e.pageY);
             this.zoom(e.deltaY>0?0.99:1.01,e.pageX,e.pageY)
         });
     }

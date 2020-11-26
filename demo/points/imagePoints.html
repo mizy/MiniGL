@@ -60,8 +60,8 @@
 				setInterval(()=>{
 					const position = [];
 					const newPoints = points.map(point=>{
-						point.x += (0.5-Math.random())*0.5;
-						point.y += (0.5-Math.random())*0.5;
+						point.x += (0.5-Math.random())*2;
+						point.y += (0.5-Math.random())*2;
 						position.push(point.x,point.y)
 						return point;
 					})
