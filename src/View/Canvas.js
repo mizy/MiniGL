@@ -1,15 +1,16 @@
 
-import Mesh from '../Meshs/Mesh';
-import Point from '../Meshs/Point';
-import Line from '../Meshs/Line';
-import WidthLine from '../Meshs/WidthLine';
+import Mesh from '../Mesh/Mesh';
+import Point from '../Mesh/Point';
+import Line from '../Mesh/Line';
+import WidthLine from '../Mesh/WidthLine';
+import {mat3} from 'gl-matrix';
 /**
  * @class
  */
 class Canvas {
 	constructor(config) {
 		this.index = 0;
-		this.meshs = {};
+		this.meshes = [];
 		this.miniGL = config.miniGL;
 		this.gl = this.miniGL.gl;
 		// 基础渲染以下类，其他形状让让用户自己new
@@ -17,7 +18,7 @@ class Canvas {
 		this.mesh = new Mesh(config.meshConfig);
 		this.point = new Point(config.pointConfig);
 		this.line = new Line(config.lineConfig);
-		this.widthLine = new WidthLine(config.widthLineConfig);
+        this.widthLine = new WidthLine(config.widthLineConfig);
 		this.add(this.mesh);
 		this.add(this.point);
 		this.add(this.line);
@@ -25,73 +26,107 @@ class Canvas {
 	}
 
 	dispose() {
-		for(let x in this.meshs){
-			this.remove(x)
-		}
-		this.meshs = []
+		this.meshes.forEach(item=>{
+            this.remove(item);
+            item.destroy && item.destroy();
+        });
+		this.meshes = [];
 	}
 
 	toDataUrl() {
 		return this.gl.canvas.toDataUrl();
 	}
 
-	update(delta=16) {
-		this.render(delta);
+	update = ()=>{
 		const time = new Date().getTime();
-		requestAnimationFrame(() => {
-			const endTime =  new Date().getTime()
-			this.update(endTime - time);
-		});
+        const delta = time - this.beforeTime;
+        this.beforeTime = time;
+		this.render(delta);
+		requestAnimationFrame(this.update);
 	}
 	/**
 	 * @param  {} mesh
 	 * @param  {} [key]
 	 * @returns {String} key
 	 */
-	add(mesh,key){
-		key = key?key:++this.index;
-		this.meshs[key] = mesh;
-		mesh.onAdd&&mesh.onAdd(this.miniGL)
-		return key
+	add(mesh) {
+		this.meshes.push(mesh);
+        mesh.onAdd && mesh.onAdd(this.miniGL);
+        mesh.parent = this;
+		return mesh;
 	}
 
-	remove(key){
-		this.meshs[key].destroy&&this.meshs[key].destroy();
-		delete this.meshs[key]
-	}
+	remove(child) {
+        const index = this.meshes.indexOf(child);
+		this.meshes.splice(index, 1);
+    }
+
+    addChild() {
+        this.add.call(this, ...arguments);
+    }
+
+    removeChild() {
+        this.remove.call(this, ...arguments);
+    }
 
 	render(delta) {
 		const {gl} = this;
-		this.miniGL.fire("beforerender")
+		this.miniGL.fire('beforerender', delta);
 		// 清空
-		gl.clearColor(1.0, 1.0, 1.0, 1.0);
 		gl.clearDepth(1.0);
-		gl.enable(gl.DEPTH_TEST);
-		gl.depthFunc(gl.LEQUAL)
+        // gl.enable(gl.DEPTH_TEST);
+        gl.disable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LEQUAL);
+        gl.disable(gl.CULL_FACE);
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		for(let key in this.meshs){
-			const mesh = this.meshs[key];
-			// 是否支持深度测试
-			if(mesh.depthTest){
-				gl.enable(gl.DEPTH_TEST)
-			}else{
-				gl.disable(gl.DEPTH_TEST)
-			}
-			// 是否支持透明混色
-			if(mesh.transparent){
-				gl.enable(gl.BLEND);
-				gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			}else{
-				gl.disable(gl.BLEND)
-			}
-			// 写入深度缓冲
-			gl.depthMask(mesh.depthMask);
-			if(mesh.needRender){
-				mesh.render(delta);
-				mesh.afterRender()
-			}
+		for (let key in this.meshes) {
+            this.renderMesh(this.meshes[key], delta);
 		}
-	}
+    }
+
+    /**
+     * @param  {} mesh
+     * @param  {} delta
+     * @param  {} parentMatrix 一级级传下来的矩阵
+     */
+    renderMesh(mesh, delta, parentMatrix) {
+        const {gl} = this;
+
+        const blendMode = (mesh.texture || {}).premultiplyAlpha ? 'ONE' : 'SRC_ALPHA';
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl[blendMode], mesh.blendMode || gl.ONE_MINUS_SRC_ALPHA);
+
+        // 写入深度缓冲
+        if (mesh.visible) {
+            this.makeTransform(mesh, parentMatrix);
+            mesh.render(delta);
+            // 更新子元素
+            if (mesh.children) {
+                mesh.children.forEach(item=>{
+                    this.renderMesh(item, delta, mesh.uniformData.modelView.value);
+                });
+            }
+        }
+    }
+
+    makeTransform(item, parentMatrix) {
+        if (parentMatrix) {
+            const modelView = mat3.mul(mat3.create(), parentMatrix, item.matrix);
+            item.uniformData.modelView = {
+                value: modelView,
+                type: 'uniformMatrix3fv'
+            };
+        } else {
+            item.uniformData.modelView = {
+                value: item.matrix,
+                type: 'uniformMatrix3fv'
+            };
+        }
+        item.uniformData.transform = {
+            value: this.miniGL.viewport.transform,
+            type: 'uniformMatrix3fv'
+        };
+    }
 }
-export default Canvas
+export default Canvas;

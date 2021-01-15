@@ -17,7 +17,7 @@
 		app.init();
 		const mesh = new MiniGL.InstanceMesh()
 		// 先添加到canvas中
-		const meshKey = app.canvas.add(mesh);
+		app.canvas.add(mesh);
 		mesh.setData(
 			[
 				{ position: { x: 0, y: 10 } },
@@ -35,20 +35,16 @@
                 i/32 //透明度
             ]);
         }
+        // 可以自定义shader添加更多属性，这里设置的x,y,z分别为偏移量和透明度
+        // attribute vec3 instanceOffset;// 偏移数据
+        // 
+        // vColor = color;
+        // vColor.a = instanceOffset.z;
+		// vec3 mPosition = transform * vec3(vec2(position.x+instanceOffset.x,position.y+instanceOffset.y),z);
+        // gl_Position = vec4(mPosition.xy,z,1.0);
+        
         mesh.setInstanceData(instanceData);
-		// 添加uniform
-		mesh.uniformData.t = {
-			type:"uniform1f",
-			value:0
-		};
-		mesh.uniformsNeedUpdate = true;//需要更新uniformData
-		// 循环渲染
-		setInterval(()=>{
-			if(mesh.uniformData.t.value<Math.PI*2){
-				mesh.uniformData.t.value += 0.05
-			}else{
-				mesh.uniformData.t.value = 0;
-			}
-		},20)
+		 
+		
 	</script>
 </html>

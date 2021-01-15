@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body  >
+        <div id="root" style="width: 100%; height: 100%;"></div>
+		<script src="./libs/dragonBones.js"></script>
+		<script src="../../dist/index.js"></script>
+	</body>
+	<script>
+		const app = new MiniGL({
+			container: document.querySelector("#root"),
+		});
+        app.init();  
+        let resource = {
+            image:[]
+        }
+        Promise.all([
+            MiniGL.Util.Loader.loadImage('./model/shizuku/shizuku.1024/texture_00.png').then(image=>{
+                resource.image[0] = image;
+            }),
+            MiniGL.Util.Loader.loadImage('./model/shizuku/shizuku.1024/texture_01.png').then(image=>{
+                resource.image[1] = image;
+            }),
+            MiniGL.Util.Loader.loadImage('./model/shizuku/shizuku.1024/texture_02.png').then(image=>{
+                resource.image[2] = image;
+            }),
+            MiniGL.Util.Loader.loadImage('./model/shizuku/shizuku.1024/texture_03.png').then(image=>{
+                resource.image[3] = image;
+            }),
+            MiniGL.Util.Loader.load('./model/shizuku/shizuku_ske.json').then(json=>{
+                resource['json'] = json;
+            })]).then(()=>{
+                // 资源加载完毕，开始执行
+                const dragonBones = new MiniGL.DragonBones(app);
+                dragonBones.parseDragonBonesData(resource.json,'shizuku');
+                dragonBones.updateTextureAtlases(resource.image,'shizuku');
+               
+                const armatureDisplay = dragonBones.buildArmatureDisplay("shizuku", "shizuku");
+                armatureDisplay.translate(400,400);
+                armatureDisplay.scale(0.3,0.3);
+                armatureDisplay.getAnimation().play("idle_02");
+                window.dragonBones =dragonBones;
+            });
+		 
+	</script>
+</html>

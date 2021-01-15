@@ -12,7 +12,7 @@ export default {
 		vColor = color;
         vColor.a = instanceOffset.z;
 
-		vec3 mPosition = transform * vec3(vec2(position.x+instanceOffset.x,position.y+instanceOffset.y),1.);
+		vec3 mPosition = transform * vec3(vec2(position.x+instanceOffset.x,position.y+instanceOffset.y),z);
 		gl_Position = vec4(mPosition.xy,z,1.0);
 	}
 	`,
@@ -24,4 +24,4 @@ export default {
 		gl_FragColor = vColor;
 	}
 	`
-}
+};

@@ -3,26 +3,27 @@ export default {
 	// 没有坐标因相机而变化的情况，所以不用再shader中运算，可以减少cpu的调用率
 	// 发现还是会大规模常常对坐标进行替换，那还是放进shader中运算吧
 	vertexShader: `
-	precision mediump float;
+	precision highp float;
 	attribute vec2 position;
 	attribute vec4 color;
-	uniform mat3 transform;
+    uniform mat3 transform;
+    uniform mat3 modelView;
 	uniform float z;
 	varying vec4 vColor;
 	void main()
 	{
 		vColor = color;
-		vec3 mPosition = transform * vec3(position,1.);
+		vec3 mPosition = transform * modelView * vec3(position,1.);
 		gl_Position = vec4(mPosition.xy,z,1.);
 	}
 	`,
 
 	fragmentShader: `
-	precision mediump float;
+	precision highp float;
 	varying vec4 vColor;
 	void main()
 	{
 		gl_FragColor = vColor;
 	}
 	`
-}
+};

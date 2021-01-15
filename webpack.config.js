@@ -1,33 +1,33 @@
-const path = require("path");
+const path = require('path');
 let webpackConfig = {
-	entry: "./src/index.js",
+	entry: './src/index.js',
 	output: {
 		filename: 'index.js',
-		library: "MiniGL",
-		libraryTarget: "umd",
-		libraryExport: "default" // 默认导出
+		library: 'MiniGL',
+		libraryTarget: 'umd',
+		libraryExport: 'default' // 默认导出
 	},
-	devtool: "eval-source-map",
+	devtool: 'eval-source-map',
 	devServer: {
 		port: 8666,
 		open: true,
-		host: "0.0.0.0",
-		hot: true,
-		
+		host: '0.0.0.0',
+		hot: true
+
 	},
-	stats: "minimal",
+	stats: 'minimal',
 	module: {
 		rules: [
 			{
 				test: /\.(png|svg|jpg|gif)$/,
-				use: ["file-loader"]
+				use: ['file-loader']
 			},
 			{
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
 				use: [
 					{
-						loader: "babel-loader",
+						loader: 'babel-loader'
 					}
 				]
 			}
@@ -35,9 +35,9 @@ let webpackConfig = {
 	},
 	resolve: {
 		alias: {
-			"@": path.resolve(__dirname, "src")
+			'@': path.resolve(__dirname, 'src')
 		}
-	},
+	}
 
 };
 

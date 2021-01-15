@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: View/Canvas.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: View/Canvas.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import Mesh from '../Meshs/Mesh';
+import Point from '../Meshs/Point';
+import Line from '../Meshs/Line';
+import WidthLine from '../Meshs/WidthLine';
+import {mat3} from 'gl-matrix';
+/**
+ * @class
+ */
+class Canvas {
+	constructor(config) {
+		this.index = 0;
+		this.meshs = [];
+		this.miniGL = config.miniGL;
+		this.gl = this.miniGL.gl;
+		// 基础渲染以下类，其他形状让让用户自己new
+		// 牺牲一些性能，渲染多次drawElements来避免通过退化三角形合并形状，导致的事件处理困难（需要分层处理合并的图层，然后按照像素去检测，比较恶心）
+		this.mesh = new Mesh(config.meshConfig);
+		this.point = new Point(config.pointConfig);
+		this.line = new Line(config.lineConfig);
+		this.widthLine = new WidthLine(config.widthLineConfig);
+		this.add(this.mesh);
+		this.add(this.point);
+		this.add(this.line);
+		this.add(this.widthLine);
+	}
+
+	dispose() {
+		this.meshs.forEach(item=>{
+            this.remove(item);
+            item.destroy &amp;&amp; item.destroy();
+        });
+		this.meshs = [];
+	}
+
+	toDataUrl() {
+		return this.gl.canvas.toDataUrl();
+	}
+
+	update = ()=>{
+		const time = new Date().getTime();
+        const delta = time - this.beforeTime;
+        this.beforeTime = time;
+		this.render(delta);
+		requestAnimationFrame(this.update);
+	}
+	/**
+	 * @param  {} mesh
+	 * @param  {} [key]
+	 * @returns {String} key
+	 */
+	add(mesh) {
+		this.meshs.push(mesh);
+        mesh.onAdd &amp;&amp; mesh.onAdd(this.miniGL);
+        mesh.parent = this;
+		return mesh;
+	}
+
+	remove(child) {
+        const index = this.meshs.indexOf(child);
+		this.meshs.splice(index, 1);
+    }
+
+    addChild() {
+        this.add.call(this, ...arguments);
+    }
+
+    removeChild() {
+        this.remove.call(this, ...arguments);
+    }
+
+	render(delta) {
+		const {gl} = this;
+		this.miniGL.fire('beforerender', delta);
+		// 清空
+		gl.clearColor(1.0, 1.0, 1.0, 1.0);
+		gl.clearDepth(1.0);
+		gl.enable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LEQUAL);
+
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		for (let key in this.meshs) {
+            this.renderMesh(this.meshs[key], delta);
+		}
+    }
+
+    /**
+     * @param  {} mesh
+     * @param  {} delta
+     * @param  {} parentMatrix 一级级传下来的矩阵
+     */
+    renderMesh(mesh, delta, parentMatrix) {
+        const {gl} = this;
+        // 是否支持深度测试
+        if (mesh.depthTest) {
+            gl.enable(gl.DEPTH_TEST);
+        } else {
+            gl.disable(gl.DEPTH_TEST);
+        }
+        // 是否支持透明混色
+        if (mesh.transparent) {
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        } else {
+            gl.disable(gl.BLEND);
+        }
+        // 写入深度缓冲
+        gl.depthMask(mesh.depthMask);
+        if (mesh.visible) {
+            this.makeTransform(mesh, parentMatrix);
+            mesh.render(delta);
+            // 更新子元素
+            if (mesh.children &amp;&amp; mesh.children.length) {
+                mesh.children.forEach(item=>{
+                    this.renderMesh(item, delta, mesh.uniformData.modelView.value);
+                });
+            }
+        }
+    }
+
+    makeTransform(item, parentMatrix) {
+        if (parentMatrix) {
+            const modelView = mat3.mul(mat3.create(), parentMatrix, item.matrix);
+            item.uniformData.modelView = {
+                value: modelView,
+                type: 'uniformMatrix3fv'
+            };
+        } else {
+            item.uniformData.modelView = {
+                value: item.matrix,
+                type: 'uniformMatrix3fv'
+            };
+        }
+        item.uniformData.transform = {
+            value: this.miniGL.viewport.transform,
+            type: 'uniformMatrix3fv'
+        };
+    }
+}
+export default Canvas;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Base.html">Base</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Group.html">Group</a></li><li><a href="MiniGLArmatureDisplay.html">MiniGLArmatureDisplay</a></li><li><a href="MiniGLSlot.html">MiniGLSlot</a></li><li><a href="MiniTextureData.html">MiniTextureData</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ViewPort.html">ViewPort</a></li></ul><h3>Interfaces</h3><ul><li><a href="ShapeUtil.html">ShapeUtil</a></li></ul><h3>Global</h3><ul><li><a href="global.html#load">load</a></li><li><a href="global.html#loadImage">loadImage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Jan 12 2021 17:32:03 GMT+0800 (China Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -25,7 +25,8 @@
 				{
 					vColor = color;
 					vec3 mPosition = transform * vec3(position,1.);
-					mPosition.x = mPosition.x * sin(t);
+                    mPosition.x = mPosition.x * sin(t);
+                    mPosition.y = mPosition.y * cos(t);
 					gl_Position = vec4(mPosition.xy,z,1.0);
 					
 				}
@@ -37,8 +38,8 @@
 				void main()
 				{
 					float dis = distance(gl_FragCoord, vec4(400.*sin(t),400.*cos(t),1., 1.));
-					float alpha = dis/300.;
-					gl_FragColor = vec4((sin(t)+1.)/2.,vColor.g,vColor.b,alpha);
+					float g = dis/300.;
+					gl_FragColor = vec4((sin(t)+1.)/2.,g,1.,(sin(t)+1.5)/2.);
 				}
 				`
 			}

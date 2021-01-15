@@ -1,6 +1,6 @@
 export default {
-	vertexShader:(config)=>{
-		return  `
+	vertexShader: (config)=>{
+		return `
 		precision mediump float;
 		attribute vec2 position;
 		attribute vec4 color;
@@ -20,11 +20,11 @@ export default {
 			gl_Position = vec4(mPosition.xy,z,1.);
 			vTime = initTime;
 		}
-		`
+		`;
 	},
 
-	fragmentShader: ({isRound,map,isGradual})=>{
-		console.log(isRound)
+	fragmentShader: ({isRound, map, isGradual})=>{
+		console.log(isRound);
 		return `
 		precision mediump float;
 		uniform float t;
@@ -35,30 +35,30 @@ export default {
 		void main()
 		{
 			float distance = distance(gl_PointCoord, vec2(0.5, 0.5));
-		${isRound?`
-			if (distance <= 0.5){`:''}
-			${map?`
+		${isRound ? `
+			if (distance <= 0.5){` : ''}
+			${map ? `
 				vec4 texelColor = texture2D( map, gl_PointCoord ); 
 				gl_FragColor = texelColor;
-				${isGradual?`
-				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2.`:''};
+				${isGradual ? `
+				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2.` : ''};
 				if(texelColor.w<=0.01){
 					discard;
 				}
-			`:`
+			` : `
 				gl_FragColor = vColor;
-				${isGradual?`
+				${isGradual ? `
 				gl_FragColor.w = 1. - distance*2.;
-				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2. ;`:''}
+				gl_FragColor.w *= sin(t+vTime)*0.75/2. + 1.-0.75/2. ;` : ''}
 			`}
-		${isRound?`
+		${isRound ? `
 				float smoothSideRatio = smoothstep(0.,antialias,(0.5-distance));
 				gl_FragColor.w *= smoothSideRatio;
 			}else{
 				discard;
 			}
-		`:''}
+		` : ''}
 		}
-		`
+		`;
 	}
-}
+};

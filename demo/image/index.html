@@ -13,7 +13,9 @@
 		app.init();
 		const mesh = new MiniGL.Image({
 			miniGL:app
-		});
+        });
+        
+        // 此处也可以先加载图片在传入texture
 		mesh.setData({
 			src:'./draw.jpg',
 			width:300,
