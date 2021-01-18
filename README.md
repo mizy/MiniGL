@@ -3,6 +3,7 @@
 + 纯原生2d渲染库，支持基础图形渲染和鼠标交互操作，使用glMatrix做通用矩阵库。
 + 可以进行自由图形变换,支持原生shader,webGL2.0
 + 可用于高性能2d渲染场景
++ 现已支持龙骨动画^_^
  
 ![](./demo.png)
 ![](./snapshot2.png)
@@ -21,7 +22,7 @@
 	* [自定义shader](https://mizy.github.io/MiniGL/demo/customShader/index.html)
 + InstanceMesh(webGL2)
 	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/index.html)
-+ 龙骨动画 
++ DragonBones动画 
 	* [骨骼动画](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
     * [Mesh动画](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
 

@@ -5,7 +5,7 @@
 	<body  >
         <div id="root" style="width: 100%; height: 100%;"></div>
 		<script src="./libs/dragonBones.js"></script>
-		<script src="../../dist/index.js"></script>
+		<script src="/index.js"></script>
 	</body>
 	<script>
 		const app = new MiniGL({
@@ -41,7 +41,94 @@
                 armatureDisplay.scale(0.3,0.3);
                 armatureDisplay.getAnimation().play("idle_02");
                 window.dragonBones =dragonBones;
+                makeEyeMove(armatureDisplay);
             });
-		 
+		 const makeEyeMove = (display)=>{
+            const armature = display.getArmature();
+            const animation = display.getAnimation();
+            const canvas = armature.armatureData.canvas;
+            const animationNames = [
+                "PARAM_ANGLE_X",
+                "PARAM_ANGLE_Y",
+                "PARAM_ANGLE_Z",
+                "PARAM_EYE_BALL_X",
+                "PARAM_EYE_BALL_Y",
+                "PARAM_BODY_X",
+                "PARAM_BODY_Y",
+                "PARAM_BODY_Z",
+                "PARAM_BODY_ANGLE_X",
+                "PARAM_BODY_ANGLE_Y",
+                "PARAM_BODY_ANGLE_Z",
+                "PARAM_BREATH",
+            ];
+            const {offsetWidth,offsetHeight} = app.container;
+            const {x,y,width,height} = canvas; 
+            const nowX = x*0.3+400;
+            const nowY = y*0.3+400;
+            let pX = 0;
+            let pY = 0;
+            app.container.addEventListener("mousemove",(e)=>{
+                const {offsetX,offsetY} = e;
+                 pX = Math.min((offsetX - nowX)/nowX,1);
+                 pY = -Math.min((offsetY - nowY)/nowY,1);
+               })
+            app.on("beforerender",(delta)=>{
+                animationNames.forEach(animationName=>{
+                    if (!animation.hasAnimation(animationName)) {
+                        return;
+                    }
+                    let animationState = animation.getState(animationName, 1);
+                    if (!animationState) {
+                        animationState = animation.fadeIn(animationName, 0.1, 1, 1, animationName);
+                        if (animationState) {
+                            animationState.resetToPose = false;
+                            animationState.stop();
+                        }
+                    }
+                    if (!animationState) {
+                        return;
+                    }
+                    let p =0;
+                    switch (animationName) {
+                        case "PARAM_ANGLE_X":
+                        case "PARAM_EYE_BALL_X":
+                            p = (pX + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_ANGLE_Y":
+                        case "PARAM_EYE_BALL_Y":
+                            p = (pY + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_ANGLE_Z":
+                            p = (-pX * pY + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_BODY_X":
+                        case "PARAM_BODY_ANGLE_X":
+                            p = (pX + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_BODY_Y":
+                        case "PARAM_BODY_ANGLE_Y":
+                            p = (-pX * pY + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_BODY_Z":
+                        case "PARAM_BODY_ANGLE_Z":
+                            p = (-pX * pY + 1.0) * 0.5;
+                            break;
+
+                        case "PARAM_BREATH":
+                            p = (Math.sin(app.canvas.beforeTime*0.002) + 1.0) * 0.5;
+                            console.log(p)
+                            break;
+                    }
+
+                    animationState.currentTime = p * animationState.totalTime;
+                })
+            
+            })
+         }
 	</script>
 </html>

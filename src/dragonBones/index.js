@@ -1,4 +1,4 @@
-const { DragonBones, BaseFactory = () => { }, BuildArmaturePackage, BaseObject, Armature } = window.dragonBones || {};
+const { DragonBones, BaseFactory = null, BuildArmaturePackage, BaseObject, Armature } = window.dragonBones || {};
 import MiniGLSlot from './MiniGLSlot';
 import MiniGLTextureAtlasData from './MiniGLTextureAtlasData';
 import MiniGLArmatureDisplay from './MiniGLArmatureDisplay';
@@ -7,6 +7,10 @@ import MiniGL from '../index';
 class DragonBoneObject extends BaseFactory {
     constructor(miniGL) {
         super();
+        if (!BaseFactory) {
+            throw new Error('请先加载DragonBones基础JS库！');
+        }
+
         this.miniGL = miniGL;
         this.getDragonBonesInstance();
         this.display = new MiniGLArmatureDisplay();
@@ -36,7 +40,6 @@ class DragonBoneObject extends BaseFactory {
     buildArmatureDisplay(armatureName, dragonBonesName = '', skinName = '', textureAtlasName = '') {
         const armature = this.buildArmature(armatureName, dragonBonesName, skinName, textureAtlasName);
         this._dragonBonesInstance.clock.add(armature);
-
         return armature.display;
     }
 
