@@ -28,6 +28,7 @@ class MiniGLTextureAtlasData extends TextureAtlasData {
                     console.log(textureData);
                 }
                 const renderTexture = new Texture(miniGL);
+                console.log(textureData.name);
                 renderTexture.create({image: texture, rect: textureData.region, reverseY: false, name: textureData.name});
                 textureData.renderTexture = renderTexture;
             }

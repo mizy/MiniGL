@@ -1,0 +1,138 @@
+{
+    "name": "Ubbie",
+    "height": 512,
+    "SubTexture": [
+        {
+            "name": "shade",
+            "x": 114,
+            "height": 30,
+            "y": 294,
+            "width": 130
+        },
+        {
+            "name": "pifeng",
+            "x": 233,
+            "height": 106,
+            "y": 186,
+            "width": 174
+        },
+        {
+            "name": "hand_r1",
+            "x": 460,
+            "height": 89,
+            "y": 83,
+            "width": 40
+        },
+        {
+            "name": "hand_r2",
+            "x": 114,
+            "height": 39,
+            "y": 214,
+            "width": 68
+        },
+        {
+            "name": "hand_l11",
+            "x": 469,
+            "height": 62,
+            "y": 174,
+            "width": 40
+        },
+        {
+            "name": "hand_l22",
+            "x": 246,
+            "height": 61,
+            "y": 294,
+            "width": 38
+        },
+        {
+            "name": "leg_r",
+            "x": 452,
+            "height": 80,
+            "y": 1,
+            "width": 57
+        },
+        {
+            "name": "leg_l",
+            "x": 409,
+            "height": 77,
+            "y": 186,
+            "width": 58
+        },
+        {
+            "name": "body",
+            "x": 1,
+            "height": 97,
+            "y": 214,
+            "width": 111
+        },
+        {
+            "name": "hand_l1",
+            "x": 1,
+            "height": 62,
+            "y": 313,
+            "width": 40
+        },
+        {
+            "name": "head_2",
+            "x": 1,
+            "height": 211,
+            "y": 1,
+            "width": 230
+        },
+        {
+            "name": "hand_l2",
+            "x": 43,
+            "height": 61,
+            "y": 313,
+            "width": 38
+        },
+        {
+            "name": "eye_hmj",
+            "x": 233,
+            "height": 83,
+            "y": 101,
+            "width": 225
+        },
+        {
+            "name": "eye2",
+            "x": 286,
+            "height": 19,
+            "y": 326,
+            "width": 104
+        },
+        {
+            "name": "eye",
+            "x": 114,
+            "height": 25,
+            "y": 255,
+            "width": 100
+        },
+        {
+            "name": "mouth",
+            "x": 469,
+            "height": 17,
+            "y": 238,
+            "width": 29
+        },
+        {
+            "name": "apple_",
+            "x": 409,
+            "height": 60,
+            "y": 265,
+            "width": 72
+        },
+        {
+            "name": "logo24",
+            "x": 233,
+            "frameHeight": 107,
+            "height": 98,
+            "y": 1,
+            "frameY": -5,
+            "frameX": -3,
+            "frameWidth": 224,
+            "width": 217
+        }
+    ],
+    "imagePath": "Ubbie_tex.png",
+    "width": 512
+}

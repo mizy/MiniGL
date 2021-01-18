@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+        <div id="root" style="width: 100%; height: 100%;background-color: black;"></div>
+		<script src="./libs/dragonBones.js"></script>
+		<script src="../../dist/index.js"></script>
+	</body>
+	<script>
+		const app = new MiniGL({
+			container: document.querySelector("#root"),
+		});
+        app.init();
+        let resource = {}
+        Promise.all([
+            MiniGL.Util.Loader.loadImage('./model/Ubbie_tex.png').then(image=>{
+                resource.image = image;
+            }),
+            MiniGL.Util.Loader.load('./model/Ubbie_tex.json').then(json=>{
+                resource['json'] = json;
+            }),
+            MiniGL.Util.Loader.load('./model/Ubbie_ske.dbbin',{
+                responseType:"arrayBuffer"
+            }).then(data=>{
+                resource.data = data;
+            })]).then(()=>{
+                // 资源加载完毕，开始执行
+                const dragonBones = new MiniGL.DragonBones(app);
+                dragonBones.parseDragonBonesData(resource.data);
+                dragonBones.parseTextureAtlasData(resource.json,resource.image);
+                window.ro =dragonBones;
+               
+                const armatureDisplay = dragonBones.buildArmatureDisplay("ubbie","Ubbie");
+                armatureDisplay.translate(500,500)
+                armatureDisplay.getAnimation().play("walk");
+            });
+		 
+	</script>
+</html>

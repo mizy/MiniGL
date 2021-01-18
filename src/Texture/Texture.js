@@ -16,6 +16,7 @@ class Texture {
         if (rect) {
             this.canvas.width = rect.width;
             this.canvas.height = rect.height;
+            this.canvas.setAttribute('data-name', name);
             this.ctx.drawImage(image, -rect.x, -rect.y);
             image = this.canvas;
         }
