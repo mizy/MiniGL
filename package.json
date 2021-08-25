@@ -4,14 +4,16 @@
 	"description": "2d webgl renderer like canvas",
 	"main": "./dist/MiniGL.js",
 	"scripts": {
-		"start": "webpack-dev-server",
+		"start": "webpack serve",
 		"build:demo": "webpack -p",
 		"watch": "webpack --watch",
 		"doc": "jsdoc -c jsdoc.json",
-        "build": "webpack --mode=production --config webpack.config.build.js",
-        "makeDts":"dtsmake -s ./src/MiniGL.js "
-    },
-    "files":["./dist"],
+		"build": "webpack --mode=production --config webpack.config.build.js",
+		"makeDts": "dtsmake -s ./src/MiniGL.js "
+	},
+	"files": [
+		"./dist"
+	],
 	"author": "mizy.mz",
 	"license": "ISC",
 	"devDependencies": {
@@ -27,13 +29,13 @@
 		"babel-loader": "^8.0.6",
 		"clean-webpack-plugin": "^3.0.0",
 		"css-loader": "",
-        "dtsmake": "0.0.10",
-        "eslint": "^5.15.1",
+		"dtsmake": "0.0.10",
+		"eslint": "^5.15.1",
 		"jsdoc": "^3.6.6",
-		"webpack": "^4.41.6",
+		"webpack": "^5.42.1",
 		"webpack-bundle-analyzer": "^3.3.2",
-		"webpack-cli": "^3.3.4",
-		"webpack-dev-server": "^3.7.2"
+		"webpack-cli": "^4.7.2",
+		"webpack-dev-server": "^3.11.2"
 	},
 	"dependencies": {
 		"core-js": "^3.6.4",
