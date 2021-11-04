@@ -1,5 +1,5 @@
 export default {
-	vertexShader: `
+    vertexShader: `
 	precision lowp float;
 	attribute vec2 position;
     attribute vec4 color;
@@ -16,7 +16,7 @@ export default {
 		gl_Position = vec4(mPosition.xy,z,1.0);
 	}
 	`,
-	fragmentShader: `
+    fragmentShader: `
 	precision lowp float;
 	varying vec4 vColor;
 	void main()

@@ -107,6 +107,7 @@ class Controller {
         mat3.translate(this.matrix, this.matrix, this.viewport.translate);
         mat3.scale(this.matrix, this.matrix, [scale, scale]);
         mat3.mul(this.viewport.transform, this.viewport.matrix, this.matrix);
+        console.log(this.viewport.transform)
     }
 
     /**

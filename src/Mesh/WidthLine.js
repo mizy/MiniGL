@@ -31,10 +31,7 @@ class WidthLine extends Base {
 
 		if (!data.length && data.length < 2) return console.warn('need input data.length >= 2');
 
-		this.uniformData.aspect = {
-			value: viewport.ratio,
-			type: 'uniform1f'
-		};
+		
 		this.uniformData.color = {
 			value: this.config.color || [1, 0, 1, 1],
 			type: 'uniform4fv'

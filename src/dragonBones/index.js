@@ -61,8 +61,6 @@ class DragonBoneObject extends BaseFactory {
     _buildSlot(_dataPackage, slotData, armature) {
         const slot = BaseObject.borrowObject(MiniGLSlot);
         const sprite = new MiniGL.Image();
-        sprite.depthTest = true;
-        sprite.depthMask = true;
         slot.init(
             slotData, armature, sprite, sprite
         );

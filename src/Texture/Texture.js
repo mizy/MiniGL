@@ -1,6 +1,6 @@
 class Texture {
     /**
-     * @param {Boolean} 是否支持预乘，默认为true，会提前乘rgb*a，减少背景色的影响
+     * @param {Boolean} 是否支持预乘，默认为true，会提前乘好rgb*a，不需要再次乘alpha
      */
     premultiplyAlpha = true;
     constructor(miniGL) {

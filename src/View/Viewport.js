@@ -43,14 +43,22 @@ class ViewPort {
 	 * 重新布局
 	 */
 	resize() {
-		const width = this.config.width || this.miniGL.container.clientWidth;
-		const height = this.config.height || this.miniGL.container.clientHeight;
-		this.miniGL.canvas.width = width;
-		this.miniGL.canvas.height = height;
-		this.gl.viewport(0, 0, width, height);
+        const ratio = window.devicePixelRatio;
+        this.pixelRatio = ratio;
+		const width = (this.config.width || this.miniGL.container.clientWidth);
+		const height = (this.config.height || this.miniGL.container.clientHeight);
+        const renderWidth = width*ratio;
+        const renderHeight = height*ratio
+		this.miniGL.canvasDOM.width = renderWidth;
+		this.miniGL.canvasDOM.height = renderHeight;
+        this.miniGL.canvasDOM.style.width = width+'px';
+        this.miniGL.canvasDOM.style.height = height+'px';
+		this.gl.viewport(0, 0, renderWidth, renderHeight);
+        this.renderWidth = renderWidth;
+        this.renderHeight = renderHeight;
 		this.width = width;
 		this.height = height;
-		this.ratio = this.width / this.height;
+		this.ratio = width / height;
 		this.makeMatrix();
 	}
 

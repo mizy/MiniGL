@@ -22,7 +22,6 @@ class MiniGL extends Base {
                 alpha: true,
                 antialias: true,
                 antialiasSamples: 16,
-                premultipliedAlpha: false,
                 stencil: true,
                 powerPreference: 'high-performance',
                 preserveDrawingBuffer: true
@@ -32,10 +31,10 @@ class MiniGL extends Base {
 
 	init() {
         const {contextOption = {}} = this.config;
-		this.canvas = document.createElement('canvas');
-		this.container.appendChild(this.canvas);
+		this.canvasDOM = document.createElement('canvas');
+		this.container.appendChild(this.canvasDOM);
 
-		this.gl = this.canvas.getContext('webgl2', contextOption);
+		this.gl = this.canvasDOM.getContext('webgl2', contextOption);
 		if (this.gl == null) {
 			return console.error('你的浏览器不支持webgl2,请更新使用chrome浏览器');
 		}

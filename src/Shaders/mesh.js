@@ -1,6 +1,6 @@
 export default {
-	vertexShader: `
-	precision lowp float;
+    vertexShader: `
+	precision highp float;
 	attribute vec2 position;
 	attribute vec4 color;
 	varying vec4 vColor;
@@ -15,8 +15,8 @@ export default {
 		
 	}
 	`,
-	fragmentShader: `
-	precision lowp float;
+    fragmentShader: `
+	precision highp float;
 	varying vec4 vColor;
 	void main()
 	{
