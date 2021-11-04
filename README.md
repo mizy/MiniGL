@@ -24,7 +24,7 @@
 	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/index.html)
 + DragonBones动画 
 	* [骨骼动画](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
-    * [Mesh动画](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
+    * [Mesh动画-眼部追踪](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
 
 # 扩展
 + 继承MiniGL.Group,并复写setData,render方法和shaders属性来生成一个具有子元素操纵能力的类
@@ -35,6 +35,8 @@
 ```
     uniform mat3 transform; //视图转换矩阵
     uniform mat3 modelView; // 模型转换矩阵
+    uniform float pixelRatio;; // 渲染倍数
+    uniform float ratio;; // 渲染宽高比
 ```
 使用如下
 ```
