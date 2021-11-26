@@ -1,4 +1,4 @@
-import {mat3} from 'gl-matrix';
+import { mat3 } from 'gl-matrix';
 /**
  * Base 基类方便继承以实现其他类型的情况
  */
@@ -11,7 +11,7 @@ class Base {
     uniformsNeedUpdate = true;
     uniformLocations = {};
     visible = true;// 是否需要重绘
-    uniformData={
+    uniformData = {
         z: {
             value: 1,
             type: 'uniform1f'
@@ -29,7 +29,6 @@ class Base {
         this.buffersSize = [];
         // 初始化数据数组
         this.indices = [];
-        this.vertex = [];
 
         // 初始化模型转换矩阵，这个矩阵按需引用
         this.matrix = mat3.create();
@@ -48,7 +47,6 @@ class Base {
     }
 
     setData(data) {
-        this.vertex = data;
         this.setBufferData(data, 'position', 2);
     }
 
@@ -60,11 +58,11 @@ class Base {
         }
         // this.uniformsNeedUpdate = false;
     }
-     /**
-      * @param  {} texture
-      * @param  {} key='u_Sampler'
-      */
-     setTexture(texture, key = 'u_Sampler') {
+    /**
+     * @param  {} texture
+     * @param  {} key='u_Sampler'
+     */
+    setTexture(texture, key = 'u_Sampler') {
         this.uniformData[key] = {
             type: 'uniform1i', // image
             value: 0, // 0号纹理传递
@@ -183,7 +181,7 @@ class Base {
     render() {
         if (!this.shaders) return;
         // 2D 只需要两个坐标轴标识位置
-        const vLen = Math.ceil(this.vertex.length / this.vSize); // 几个点
+        const vLen = Math.ceil((this.vertexLength) / this.vSize); // 几个点
         const offset = 0;// 从数据第几位开始偏移
         const normalize = false;
 
@@ -202,7 +200,7 @@ class Base {
         this.setUniformData();
 
         // 渲染
-        if (this.vertex.length) { this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen); }
+        if (this.vertexLength) { this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen); }
     }
 
     afterRender() {
