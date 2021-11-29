@@ -1,10 +1,10 @@
-import {mat3} from 'gl-matrix';
+import { mat3 } from 'gl-matrix';
 class Controller {
     constructor(config) {
         this.miniGL = config.miniGL;
         this.viewport = this.miniGL.viewport;
-		this.gl = this.miniGL.gl;
-		this.config = Object.assign({
+        this.gl = this.miniGL.gl;
+        this.config = Object.assign({
             // 默认参数
         }, config.config);
         if (!config.disableController) {
@@ -14,9 +14,9 @@ class Controller {
     }
 
     addEvents() {
-        const {container} = this.miniGL;
-        container.addEventListener('mousedown', (e)=>{
-            if (e.ctrlKey) {e.preventDefault();return;}
+        const { container } = this.miniGL;
+        container.addEventListener('mousedown', (e) => {
+            if (e.ctrlKey) { e.preventDefault(); return; }
             this.startXY = {
                 x: e.offsetX,
                 y: e.offsetY,
@@ -25,27 +25,27 @@ class Controller {
             };
             this.addMoveEvents();
         });
-        container.addEventListener('wheel', (e)=>{
+        container.addEventListener('wheel', (e) => {
             e.preventDefault();
             this.zoom(e.deltaY > 0 ? 0.99 : 1.01, e.pageX, e.pageY);
         });
     }
 
     addMoveEvents() {
-        const {container} = this.miniGL;
+        const { container } = this.miniGL;
         container.addEventListener('mousemove', this.onMouseMove);
         container.addEventListener('mouseup', this.onMouseUp);
     }
 
-    onMouseMove = (e)=>{
+    onMouseMove = (e) => {
 
         const x = e.offsetX - this.startXY.x + this.startXY.startX;
         const y = e.offsetY - this.startXY.y + this.startXY.startY;
         this.moveTo(x, y);
     }
 
-    onMouseUp=()=>{
-        const {container} = this.miniGL;
+    onMouseUp = () => {
+        const { container } = this.miniGL;
         container.removeEventListener('mousemove', this.onMouseMove);
         container.removeEventListener('mouseup', this.onMouseUp);
     }
@@ -84,12 +84,12 @@ class Controller {
      * @param  {} y
      */
     moveTo(x, y) {
-        const {scale} = this.viewport;
+        const { scale } = this.viewport;
         this.transform(scale, x, y);
     }
 
     move(x, y) {
-        const {scale} = this.viewport;
+        const { scale } = this.viewport;
         x = x + this.viewport.translate[0];
         y = y + this.viewport.translate[1];
         this.transform(scale, x, y);
@@ -107,7 +107,6 @@ class Controller {
         mat3.translate(this.matrix, this.matrix, this.viewport.translate);
         mat3.scale(this.matrix, this.matrix, [scale, scale]);
         mat3.mul(this.viewport.transform, this.viewport.matrix, this.matrix);
-        console.log(this.viewport.transform)
     }
 
     /**
@@ -121,7 +120,7 @@ class Controller {
     }
 
     rotate(rad, cx = this.viewport.width / 2, cy = this.viewport.height / 2) {
-        const {transform} = this.viewport;
+        const { transform } = this.viewport;
         this.viewport.rotation += rad;
         mat3.translate(transform, transform, [cx, cy]);// 再平移回去
         mat3.rotate(transform, transform, rad);// 再平移回去

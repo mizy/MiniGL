@@ -1,44 +1,44 @@
 {
-	"name": "mini-gl",
-	"version": "1.0.0",
-	"description": "2d webgl renderer like canvas",
-	"main": "./dist/MiniGL.js",
-	"scripts": {
-		"start": "webpack serve",
-		"build:demo": "webpack -p",
-		"watch": "webpack --watch",
-		"doc": "jsdoc -c jsdoc.json",
-		"build": "webpack --mode=production --config webpack.config.build.js",
-		"makeDts": "dtsmake -s ./src/MiniGL.js "
-	},
-	"files": [
-		"./dist"
-	],
-	"author": "mizy.mz",
-	"license": "ISC",
-	"devDependencies": {
-		"@babel/core": "^7.12.3",
-		"@babel/plugin-proposal-class-properties": "^7.4.4",
-		"@babel/plugin-proposal-decorators": "^7.4.4",
-		"@babel/plugin-syntax-dynamic-import": "^7.2.0",
-		"@babel/plugin-transform-runtime": "^7.8.3",
-		"@babel/preset-env": "^7.12.1",
-		"@babel/preset-react": "^7.0.0",
-		"@babel/types": "^7.4.4",
-		"babel-eslint": "^10.0.1",
-		"babel-loader": "^8.0.6",
-		"clean-webpack-plugin": "^3.0.0",
-		"css-loader": "",
-		"dtsmake": "0.0.10",
-		"eslint": "^5.15.1",
-		"jsdoc": "^3.6.6",
-		"webpack": "^5.42.1",
-		"webpack-bundle-analyzer": "^3.3.2",
-		"webpack-cli": "^4.7.2",
-		"webpack-dev-server": "^3.11.2"
-	},
-	"dependencies": {
-		"core-js": "^3.6.4",
-		"gl-matrix": "^3.3.0"
-	}
+    "name": "mini-gl",
+    "version": "1.0.0",
+    "description": "2d webgl renderer like canvas",
+    "main": "./dist/MiniGL.js",
+    "scripts": {
+        "start": "webpack serve",
+        "build:demo": "webpack -p",
+        "watch": "webpack --watch",
+        "doc": "jsdoc -c jsdoc.json",
+        "build": "webpack --mode=production --config webpack.config.build.js",
+        "makeDts": "dtsmake -s ./src/MiniGL.js "
+    },
+    "files": [
+        "./dist"
+    ],
+    "author": "mizy.mz",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.12.3",
+        "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+        "@babel/plugin-transform-runtime": "^7.8.3",
+        "@babel/preset-env": "^7.12.1",
+        "@babel/preset-react": "^7.0.0",
+        "@babel/types": "^7.4.4",
+        "babel-eslint": "^10.0.1",
+        "babel-loader": "^8.0.6",
+        "clean-webpack-plugin": "^3.0.0",
+        "css-loader": "",
+        "dtsmake": "0.0.10",
+        "eslint": "^5.15.1",
+        "jsdoc": "^3.6.6",
+        "webpack": "^5.42.1",
+        "webpack-bundle-analyzer": "^3.3.2",
+        "webpack-cli": "^4.7.2",
+        "webpack-dev-server": "^3.11.2"
+    },
+    "dependencies": {
+        "core-js": "^3.6.4",
+        "gl-matrix": "^3.3.0"
+    }
 }

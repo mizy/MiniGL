@@ -12,12 +12,11 @@ import WidthLine from './Mesh/WidthLine';
 import Group from './Group/Group.js';
 import DragonBones from './dragonBones/index.js';
 class MiniGL extends Base {
-	autoUpdate = false;
-
-	constructor(config) {
-		super(config);
-		this.container = config.container;
-	 	this.config = Object.assign({
+    autoUpdate = false;
+    constructor(config) {
+        super(config);
+        this.container = config.container;
+        this.config = Object.assign({
             contextOption: {
                 alpha: true,
                 antialias: true,
@@ -26,26 +25,26 @@ class MiniGL extends Base {
                 powerPreference: 'high-performance',
                 preserveDrawingBuffer: true
             }
-         }, config);
-	}
+        }, config);
+    }
 
-	init() {
-        const {contextOption = {}} = this.config;
-		this.canvasDOM = document.createElement('canvas');
-		this.container.appendChild(this.canvasDOM);
+    init() {
+        const { contextOption = {} } = this.config;
+        this.canvasDOM = document.createElement('canvas');
+        this.container.appendChild(this.canvasDOM);
 
-		this.gl = this.canvasDOM.getContext('webgl2', contextOption);
-		if (this.gl == null) {
-			return console.error('你的浏览器不支持webgl2,请更新使用chrome浏览器');
-		}
+        this.gl = this.canvasDOM.getContext('webgl2', contextOption);
+        if (this.gl == null) {
+            return console.error('你的浏览器不支持webgl2,请更新使用chrome浏览器');
+        }
 
-		this.viewport = new Viewport({ miniGL: this, ...this.config });
-		this.viewport.resize();
-		this.canvas = new Canvas({ miniGL: this, ...this.config });
-		this.controller = new Controller({miniGL: this, ...this.config});
+        this.viewport = new Viewport({ miniGL: this, ...this.config });
+        this.viewport.resize();
+        this.canvas = new Canvas({ miniGL: this, ...this.config });
+        this.controller = new Controller({ miniGL: this, ...this.config });
 
-		this.canvas.update();
-	}
+        this.canvas.update();
+    }
 }
 MiniGL.FlyLine = FlyLine;
 MiniGL.Image = Image;

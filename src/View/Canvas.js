@@ -20,8 +20,8 @@ class Canvas {
         this.line = new Line(config.lineConfig);
         this.widthLine = new WidthLine(config.widthLineConfig);
         this.add(this.mesh);
-        this.add(this.point);
         this.add(this.line);
+        this.add(this.point);
         this.add(this.widthLine);
     }
 
@@ -37,12 +37,15 @@ class Canvas {
         return this.gl.canvas.toDataUrl();
     }
 
+    status = 'update';
+
     update = () => {
         const time = new Date().getTime();
         const delta = time - this.beforeTime;
         this.beforeTime = time;
         this.render(delta);
-        requestAnimationFrame(this.update);
+        if (this.status === 'update')
+            requestAnimationFrame(this.update);
     }
     /**
      * @param  {} mesh
@@ -80,9 +83,9 @@ class Canvas {
         gl.disable(gl.CULL_FACE);
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        for (let key in this.meshes) {
-            this.renderMesh(this.meshes[key], delta);
-        }
+        this.meshes.forEach(mesh => {
+            this.renderMesh(mesh, delta);
+        })
     }
 
     /**
@@ -111,15 +114,15 @@ class Canvas {
         }
     }
 
-    makeNeedUniform(item){
+    makeNeedUniform(item) {
         item.uniformData.aspect = {
-			value: this.miniGL.viewport.ratio,
-			type: 'uniform1f'
-		};
+            value: this.miniGL.viewport.ratio,
+            type: 'uniform1f'
+        };
         item.uniformData.pixelRatio = {
-			value: this.miniGL.viewport.pixelRatio,
-			type: 'uniform1f'
-		};
+            value: this.miniGL.viewport.pixelRatio,
+            type: 'uniform1f'
+        };
     }
 
     makeTransform(item, parentMatrix) {

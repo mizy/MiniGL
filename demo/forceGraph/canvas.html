@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+		<div id="root" style="width:100%;height:100%">
+        <canvas ></canvas>
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-quadtree@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
+	</body>
+	<script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext('2d');
+		const width = document.querySelector("#root").clientWidth*2;
+		const height = document.querySelector("#root").clientHeight*2;
+        canvas.style.width = width/2 + 'px';
+        canvas.style.height = height/2 + 'px';
+        canvas.width = width;
+        canvas.height = height;
+
+		const points = [];
+		const size = [];
+        const links = [];
+        const number = 5000;
+		for(let i = 0;i<number;i+=1){
+            const x = Math.random()*width;
+            const y = Math.random()*height
+            points.push(
+                {
+                    id:i,
+                    x,y,
+                }
+            );
+		}
+        for(let i = 0;i<number;i+=1){
+            const source = Math.floor(Math.random()*number);
+            const target = Math.floor(Math.random()*number);
+            links.push(
+                {
+                    source,
+                    target
+                }
+            );
+		}
+ 
+        const simulation = d3.forceSimulation(points)
+        .force("link", d3.forceLink(links))
+        .force("charge", d3.forceManyBody())
+        .force("collide", d3.forceCollide(30*window.devicePixelRatio).strength(0.2).iterations(5))
+        .force("center", d3.forceCenter(width/2,height/2))
+        .alpha(0.2)
+        simulation.on("tick",()=>{
+            ctx.clearRect(0, 0, width, height);
+            ctx.beginPath();
+            links.forEach((d)=>{
+                ctx.moveTo(d.source.x, d.source.y);
+                ctx.lineTo(d.target.x, d.target.y);
+            });
+            ctx.strokeStyle = "#aaa";
+            ctx.stroke();
+
+            ctx.strokeStyle = "#fff";
+            for (let d of points) {
+                ctx.beginPath();
+                ctx.moveTo(d.x + 30, d.y);
+                ctx.arc(d.x, d.y, 30, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(245,22,144,1)';
+                ctx.fill();
+                ctx.stroke();
+            }
+        });
+       
+	</script>
+</html>

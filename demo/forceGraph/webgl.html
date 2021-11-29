@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<title>MiniGL</title>
+	</head>
+	<body>
+		<div id="root" style="width:100%;height:100%"></div>
+		<script src="../../dist/index.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-quadtree@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+        <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
+	</body>
+	<script>
+        const colors = [[0.1,0.1,0.4],[0.4,0.1,0.1],[0.1,0.4,0.1]]
+		const app = new MiniGL({
+			container:document.querySelector("#root")
+		});
+		app.init();
+		const width = document.querySelector("#root").clientWidth;
+		const height = document.querySelector("#root").clientHeight;
+		const points = [];
+		const size = [];
+        const links = [];
+        const number = 5000;
+		for(let i = 0;i<number;i+=1){
+            const x = Math.random()*width;
+            const y = Math.random()*height
+            points.push(
+                {
+                    id:i,
+                    x,y,
+                    position:{x,y},
+                    color:[x/width,y/height,i/width,1],
+                    size:30
+                }
+            );
+		}
+        const linkPoints = [];
+        for(let i = 0;i<number;i+=1){
+            const source = Math.floor(Math.random()*number);
+            const target = Math.floor(Math.random()*number);
+            links.push(
+                {
+                    source,
+                    target
+                }
+            );
+            linkPoints.push({position:points[source]},{position:points[target]})
+		}
+
+        app.canvas.point.setData(points);
+        app.canvas.line.config.color = [0.8,0.1,0,1];
+        app.canvas.line.uniformData.z.value = 0.8;
+        app.canvas.line.setData(linkPoints);
+
+        const simulation = d3.forceSimulation(points)
+        .force("link", d3.forceLink(links))
+        .force("charge", d3.forceManyBody())
+        .force("collide", d3.forceCollide(30).strength(0.2).iterations(5))
+        .force("center", d3.forceCenter(width/2,height/2))
+        .alpha(0.2)
+        simulation.on("tick",()=>{
+            const vertex = [];
+            points.forEach(item=>{
+                vertex.push(item.x,item.y)
+            })
+            const linksPoints = [];
+            linkPoints.forEach(item=>{
+                linksPoints.push(item.position.x,item.position.y)
+            })
+            app.canvas.point.updateBufferData(vertex, 'position');
+            app.canvas.line.updateBufferData(linksPoints, 'position');
+        });
+        app.canvas.line.drawType = 'LINES';
+	</script>
+</html>

@@ -17,6 +17,7 @@ class Base {
             type: 'uniform1f'
         }
     };
+    vertex = []
     constructor(config) {
         this.init(config);
     }
@@ -102,7 +103,7 @@ class Base {
      * @param  {} data
      * @param  {} name
      */
-    setBufferData(data, name, size) {
+    setBufferData(data, name, size, bufferType) {
         // 没有的话初始化复用一个
         if (!this.buffers[name]) {
             this.buffers[name] = this.gl.createBuffer();
@@ -111,7 +112,19 @@ class Base {
 
         // 顶点buffer
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers[name]);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(data), this.gl.STATIC_DRAW);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(data), this.gl[bufferType || 'STATIC_DRAW']);
+    }
+
+    /**
+     * 更新缓冲区数据
+     * @param {Array} data 
+     * @param {string} name 
+     * @param {number} offset 
+     */
+    updateBufferData(data, name, offset = 0) {
+        // 顶点buffer
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers[name]);
+        this.gl.bufferSubData(this.gl.ARRAY_BUFFER, offset, new Float32Array(data));
     }
 
     setIndices(indices) {
@@ -181,7 +194,7 @@ class Base {
     render() {
         if (!this.shaders) return;
         // 2D 只需要两个坐标轴标识位置
-        const vLen = Math.ceil((this.vertexLength) / this.vSize); // 几个点
+        const vLen = Math.ceil((this.vertex.length) / this.vSize); // 几个点
         const offset = 0;// 从数据第几位开始偏移
         const normalize = false;
 
@@ -200,7 +213,7 @@ class Base {
         this.setUniformData();
 
         // 渲染
-        if (this.vertexLength) { this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen); }
+        if (this.vertex.length) { this.gl.drawArrays(this.gl[this.drawType], this.offset, vLen); }
     }
 
     afterRender() {
@@ -243,6 +256,7 @@ class Base {
     // 释放buffer空间
     dispose() {
         for (let key in this.buffers) {
+            this.gl.disableVertexAttribArray(this.buffers[key])
             this.gl.deleteBuffer(this.buffers[key]);
         }
         for (let key in this.uniformData) {
