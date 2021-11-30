@@ -7,10 +7,9 @@
         <canvas ></canvas>
 
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
-        <script src="https://cdn.jsdelivr.net/npm/d3-quadtree@3"></script>
-        <script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+        
         <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/d3/7.0.0/d3.min.js"></script>
 	</body>
 	<script>
         const canvas = document.querySelector("canvas");
@@ -73,6 +72,9 @@
                 ctx.stroke();
             }
         });
-       
+       const time = new Date().getTime();
+       simulation.on("end",()=>{
+         console.log(new Date().getTime() - time)
+       })
 	</script>
 </html>
