@@ -4,6 +4,7 @@ export default Group;
  * @class
  */
 declare class Group extends Base {
+    constructor(config: any);
     children: any[];
     childId: number;
     addChild(child: any): void;

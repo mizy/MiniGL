@@ -10,7 +10,8 @@ class Point extends Base {
     constructor(config) {
         config = Object.assign({
             isRound: true,
-            initTime: false
+            initTime: false,
+            sizeAttenuation: true,
         }, config);
         super(config);
         this.shaders = {
@@ -56,6 +57,10 @@ class Point extends Base {
         this.setBufferData(vTime, 'initTime', 1);
     }
 
+    /**
+     * 
+     * @param {any} param 入参
+     */
     setBufferDatas({
         position, color, size, initTime
     }) {

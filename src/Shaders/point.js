@@ -1,5 +1,5 @@
 export default {
-	vertexShader: (config)=>{
+	vertexShader: (config) => {
 		return `
 		precision mediump float;
 		attribute vec2 position;
@@ -10,13 +10,14 @@ export default {
 		uniform mat3 transform;
 		varying vec4 vColor;
 		uniform float t;
+		uniform float scale;
         uniform float pixelRatio;
 		varying float vTime;
 		
 		void main()
 		{
 			vColor = color;
-			gl_PointSize = size * pixelRatio;
+			gl_PointSize = size * pixelRatio ${config.sizeAttenuation ? '/scale' : ''};
 			vec3 mPosition = transform * vec3(position,1.);
 			gl_Position = vec4(mPosition.xy,z,1.);
 			vTime = initTime;
@@ -24,8 +25,7 @@ export default {
 		`;
 	},
 
-	fragmentShader: ({isRound, map, isGradual})=>{
-		console.log(isRound);
+	fragmentShader: ({ isRound, map, isGradual }) => {
 		return `
 		precision mediump float;
 		uniform float t;

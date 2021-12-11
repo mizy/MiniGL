@@ -5,26 +5,26 @@
 + 可用于高性能2d渲染场景
 + 现已支持龙骨动画^_^
  
-![](./demo.png)
+![](./public/demo.png)
 ![](./snapshot2.png)
 
 # case
-+ [基本图形](https://mizy.github.io/MiniGL/demo/main.html)
++ [基本图形](https://mizy.github.io/MiniGL/public/demo/main.html)
 + 点
-	* [点颜色](https://mizy.github.io/MiniGL/demo/points/points.html)
-	* [点闪烁](https://mizy.github.io/MiniGL/demo/points/shrink.html)
+	* [点颜色](https://mizy.github.io/MiniGL/public/demo/points/points.html)
+	* [点闪烁](https://mizy.github.io/MiniGL/public/demo/points/shrink.html)
 + 线
-    * [飞线](https://mizy.github.io/MiniGL/demo/line/flyline.html)
-	* [宽度线](https://mizy.github.io/MiniGL/demo/line/meshline.html)
+    * [飞线](https://mizy.github.io/MiniGL/public/demo/line/flyline.html)
+	* [宽度线](https://mizy.github.io/MiniGL/public/demo/line/meshline.html)
 + 面
-	* [图片](https://mizy.github.io/MiniGL/demo/image/index.html)
+	* [图片](https://mizy.github.io/MiniGL/public/demo/image/index.html)
 + shader
-	* [自定义shader](https://mizy.github.io/MiniGL/demo/customShader/index.html)
+	* [自定义shader](https://mizy.github.io/MiniGL/public/demo/customShader/index.html)
 + InstanceMesh(webGL2)
-	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/index.html)
+	* [instanceMesh](https://mizy.github.io/MiniGL/public/demo/instanceMesh/index.html)
 + DragonBones动画 
-	* [骨骼动画](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
-    * [Mesh动画-眼部追踪](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
+	* [骨骼动画](https://mizy.github.io/MiniGL/public/demo/dragonBones/index.html)
+    * [Mesh动画-眼部追踪](https://mizy.github.io/MiniGL/public/demo/dragonBones/eyetrack.html)
 
 # 扩展
 + 继承MiniGL.Group,并复写setData,render方法和shaders属性来生成一个具有子元素操纵能力的类

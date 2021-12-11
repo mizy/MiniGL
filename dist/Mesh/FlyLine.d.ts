@@ -1,5 +1,6 @@
 export default Line;
 declare class Line extends Base {
+    constructor(config: any);
     drawType: string;
     bezierLine: BezierLine;
     data: any;

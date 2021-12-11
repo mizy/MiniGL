@@ -123,6 +123,10 @@ class Canvas {
             value: this.miniGL.viewport.pixelRatio,
             type: 'uniform1f'
         };
+        item.uniformData.scale = {
+            value: this.miniGL.viewport.scale,
+            type: 'uniform1f'
+        };
     }
 
     makeTransform(item, parentMatrix) {

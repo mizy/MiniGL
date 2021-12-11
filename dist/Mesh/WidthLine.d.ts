@@ -1,5 +1,6 @@
 export default WidthLine;
 declare class WidthLine extends Base {
+    constructor(config: any);
     drawType: string;
     data: any;
     res: {

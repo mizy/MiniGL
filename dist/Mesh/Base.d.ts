@@ -3,6 +3,10 @@ export default Base;
  * Base 基类方便继承以实现其他类型的情况
  */
 declare class Base {
+    /**
+     *
+     * @param {any} config
+     */
     constructor(config: any);
     vSize: number;
     offset: number;

@@ -1,8 +1,9 @@
 const path = require('path');
 let webpackConfig = {
-    entry: './src/index.js',
+    entry: {
+        index: "./src/index.js",
+    },
     output: {
-        filename: 'index.js',
         library: 'MiniGL',
         libraryTarget: 'umd',
         libraryExport: 'default' // 默认导出
@@ -12,9 +13,9 @@ let webpackConfig = {
         port: 8666,
         open: true,
         host: '0.0.0.0',
-        hot: true
-
+        hot: true,
     },
+    mode: "development",
     stats: 'minimal',
     module: {
         rules: [

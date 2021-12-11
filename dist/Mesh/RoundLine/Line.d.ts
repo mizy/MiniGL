@@ -1,5 +1,6 @@
 export default RoundLine;
 declare class RoundLine extends Base {
+    constructor(config: any);
     drawType: string;
     data: any;
     res: {

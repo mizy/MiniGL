@@ -18,6 +18,10 @@ class Base {
         }
     };
     vertex = []
+    /**
+     * 
+     * @param {any} config 
+     */
     constructor(config) {
         this.init(config);
     }

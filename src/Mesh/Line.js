@@ -7,7 +7,7 @@ class Line extends Base {
 		vertex: lineShader.vertexShader,
 		fragment: lineShader.fragmentShader
 	}
-	offset=0;
+	offset = 0;
 
 	constructor(config) {
 		config = Object.assign({
@@ -28,13 +28,28 @@ class Line extends Base {
 		const points = [];
 		this.data = data;
 		const colors = [];
-		data.forEach(item=>{
+		data.forEach(item => {
 			points.push(item.position.x, item.position.y);
-			colors.push(...(item.color || this.config.color || [1, 1, 0, 1]));
+			colors.push(...(item.color || this.config.color || [1, 0, 1, 1]));
 		});
 		this.vertex = points;
 		this.setBufferData(points, 'position', 2);
 		this.setBufferData(colors, 'color', 4);
+	}
+
+	/**
+	 * 
+	 * @param {any} param 入参
+	 */
+	setBufferDatas({
+		position, color
+	}) {
+		this.dispose();
+		this.vertex = position;
+		position && this.setBufferData(position, 'position', 2);
+
+		color && this.setBufferData(color, 'color', 4);
+
 	}
 
 }
