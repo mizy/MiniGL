@@ -107,7 +107,7 @@ class Base {
      * @param  {} data
      * @param  {} name
      */
-    setBufferData(data, name, size, bufferType) {
+    setBufferData(data, name, size, bufferType = this.bufferType) {
         // 没有的话初始化复用一个
         if (!this.buffers[name]) {
             this.buffers[name] = this.gl.createBuffer();

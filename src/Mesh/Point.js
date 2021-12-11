@@ -6,7 +6,7 @@ class Point extends Base {
     vertex = [];
     offset = 0;
     vSize = 2;
-    bufferType = 'GL_DYNAMIC_DRAW';
+    bufferType = 'DYNAMIC_DRAW';
     constructor(config) {
         config = Object.assign({
             isRound: true,
