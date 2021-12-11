@@ -1311,7 +1311,7 @@ var Base = /*#__PURE__*/function () {
     value: function initConfig(config) {}
     /**
      * 地图添加图层时调用,由子类实现
-     * @param {Map} map
+     * @param {any} map
      */
 
   }, {
@@ -4181,6 +4181,11 @@ var MiniGL = /*#__PURE__*/function (_Base) {
 
   var _super = src_createSuper(MiniGL);
 
+  /**
+   * 
+   * @param {object} config 
+   * @param {HTMLDivElement} config.container
+   */
   function MiniGL(config) {
     var _this;
 

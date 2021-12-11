@@ -6,7 +6,7 @@
 class Base {
 
     layers = []
-    _listeners={}
+    _listeners = {}
 
     /**
      * 事件监听,用法同jQuery.on
@@ -63,7 +63,7 @@ class Base {
 
     /**
      * 地图添加图层时调用,由子类实现
-     * @param {Map} map
+     * @param {any} map
      */
     onAdd(map) {
         this.miniGL = map;

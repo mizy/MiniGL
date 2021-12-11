@@ -13,6 +13,11 @@ import Group from './Group/Group.js';
 import DragonBones from './dragonBones/index.js';
 class MiniGL extends Base {
     autoUpdate = false;
+    /**
+     * 
+     * @param {object} config 
+     * @param {HTMLDivElement} config.container
+     */
     constructor(config) {
         super(config);
         this.container = config.container;

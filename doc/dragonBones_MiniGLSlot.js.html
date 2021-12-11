@@ -50,6 +50,8 @@ class MiniGLSlot extends Slot {
 
     _disposeDisplay(value, isRelease) {
         // value.destroy();
+        value.parent.remove(value);
+        value.destroy();
     }
 
     // 更新前函数
@@ -60,6 +62,7 @@ class MiniGLSlot extends Slot {
 
     // 添加到骨架容器中
     _addDisplay() {
+        if (this._renderDisplay.parent) {this._renderDisplay.parent.removeChild(this._renderDisplay);}
         this._armature.display.addChild(this._renderDisplay);
     }
 
@@ -76,10 +79,11 @@ class MiniGLSlot extends Slot {
     }
 
     _updateZOrder() {
-        const index = this._renderDisplay.childId;
+        const index = this._renderDisplay.zOrder;
         if (index === this._zOrder) {
             return;
         }
+        this._armatureDisplay.removeChild(this._renderDisplay);
         this._armatureDisplay.addChildAt(this._renderDisplay, this._zOrder);
     }
 
@@ -110,7 +114,9 @@ class MiniGLSlot extends Slot {
 
     _updateColor() {
         const alpha = this._colorTransform.alphaMultiplier * this._globalAlpha;
-        this._renderDisplay.alpha = alpha;
+        try {
+            this._renderDisplay.uniformData.alpha.value = alpha;
+        } catch (e) {}
     }
 
     _updateFrame() {
@@ -153,11 +159,6 @@ class MiniGLSlot extends Slot {
 
                     // 这一步生成所需要的点和uv和索引
                     const uvs = [];const vertices = [];const indices = [];
-                    const meshNode = meshDisplay.$renderNode;
-
-                    meshNode.uvs.length = vertexCount * 2;
-                    meshNode.vertices.length = vertexCount * 2;
-                    meshNode.indices.length = triangleCount * 3;
 
                     for (let i = 0, l = vertexCount * 2; i &lt; l; ++i) {
                         vertices[i] = floatArray[vertexOffset + i] * scale;
@@ -168,15 +169,13 @@ class MiniGLSlot extends Slot {
                         indices[i] = intArray[this._geometryData.offset + BinaryOffset.GeometryVertexIndices + i];
                     }
 
-                    // 构造image的数据
-                    meshDisplay.uniformData.offset = {
-                        value: [this._pivotX, this._pivotY],
-                        type: 'uniform2f'
-                    };
-                    meshDisplay.setTextureData(currentTextureData);
-                    this.setBufferData(vertices, 'position', 2);
-                    this.setBufferData(uvs, 'uv', 2);
-                    this.setIndices(indices);
+                    meshDisplay.dispose();
+                    meshDisplay.setTexture(currentTextureData.renderTexture);
+                    meshDisplay.setBufferData(vertices, 'position', 2);
+                    meshDisplay.setBufferData(uvs, 'uv', 2);
+                    meshDisplay.setIndices(indices);
+
+                    meshDisplay.vertex = vertices;
 
                     const isSkinned = this._geometryData.weight !== null;
                     const isSurface = this._parent._boneData.type !== BoneType.Bone;
@@ -191,7 +190,7 @@ class MiniGLSlot extends Slot {
                     const texture = currentTextureData.renderTexture;
                     normalDisplay.setData({
                         texture,
-                        width: textureWidth, height: textureHeight, x: -this._pivotX, y: -this._pivotY
+                        width: textureWidth, height: textureHeight
                     });
                 }
                 this._visibleDirty = true;
@@ -199,7 +198,6 @@ class MiniGLSlot extends Slot {
                 return;
             }
         }
-        this._renderDisplay.texture.dispose();
         this._renderDisplay.visible = false;
     }
 
@@ -288,9 +286,7 @@ class MiniGLSlot extends Slot {
                     meshDisplay.vertex[i + 1] = y;
                 }
             }
-
             meshDisplay.setBufferData(meshDisplay.vertex, 'position', 2);
-
         }
 
     }
@@ -301,11 +297,12 @@ class MiniGLSlot extends Slot {
 
     _updateTransform() {
         const matrix = this.globalTransformMatrix;
-
-        this._renderDisplay.setMatrix(mat3.fromValues(
+        const newMatrix = mat3.fromValues(
             matrix.a, matrix.b, 0,
             matrix.c, matrix.d, 0,
-            matrix.tx, matrix.ty, 1));
+            matrix.tx, matrix.ty, 1);
+        mat3.translate(newMatrix, newMatrix, [-this._pivotX, -this._pivotY]);
+        this._renderDisplay.setMatrix(newMatrix);
     }
 }
 MiniGLSlot.toString = function() {
@@ -323,13 +320,13 @@ export default MiniGLSlot;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Base.html">Base</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Group.html">Group</a></li><li><a href="MiniGLArmatureDisplay.html">MiniGLArmatureDisplay</a></li><li><a href="MiniGLSlot.html">MiniGLSlot</a></li><li><a href="MiniTextureData.html">MiniTextureData</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ViewPort.html">ViewPort</a></li></ul><h3>Interfaces</h3><ul><li><a href="ShapeUtil.html">ShapeUtil</a></li></ul><h3>Global</h3><ul><li><a href="global.html#load">load</a></li><li><a href="global.html#loadImage">loadImage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Base.html">Base</a></li><li><a href="Canvas.html">Canvas</a></li><li><a href="Group.html">Group</a></li><li><a href="MiniGL.html">MiniGL</a></li><li><a href="MiniGLArmatureDisplay.html">MiniGLArmatureDisplay</a></li><li><a href="MiniGLSlot.html">MiniGLSlot</a></li><li><a href="MiniTextureData.html">MiniTextureData</a></li><li><a href="Rect.html">Rect</a></li><li><a href="ViewPort.html">ViewPort</a></li></ul><h3>Interfaces</h3><ul><li><a href="ShapeUtil.html">ShapeUtil</a></li></ul><h3>Global</h3><ul><li><a href="global.html#load">load</a></li><li><a href="global.html#loadImage">loadImage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Jan 12 2021 17:32:03 GMT+0800 (China Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Dec 11 2021 13:13:37 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>
