@@ -1,6 +1,6 @@
 {
     "name": "mini-gl",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "2d webgl renderer like canvas",
     "main": "./dist/MiniGL.js",
     "scripts": {
@@ -9,7 +9,7 @@
         "watch": "webpack --watch",
         "doc": "jsdoc -c jsdoc.json",
         "build": "webpack --mode=production --config webpack.config.build.js",
-        "makeDts": "dtsmake -s ./src/MiniGL.js "
+        "makeDts": "dtsmake -s ./dist/MiniGL.js "
     },
     "files": [
         "./dist"
@@ -35,10 +35,10 @@
         "webpack": "^5.42.1",
         "webpack-bundle-analyzer": "^3.3.2",
         "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^3.11.2",
+        "core-js": "^3.6.4"
     },
     "dependencies": {
-        "core-js": "^3.6.4",
         "gl-matrix": "^3.3.0"
     }
 }

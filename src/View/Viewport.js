@@ -47,8 +47,8 @@ class ViewPort {
         this.pixelRatio = ratio;
 		const width = (this.config.width || this.miniGL.container.clientWidth);
 		const height = (this.config.height || this.miniGL.container.clientHeight);
-        const renderWidth = width*ratio;
-        const renderHeight = height*ratio
+        const renderWidth = width * ratio;
+		const renderHeight = height * ratio;
 		this.miniGL.canvasDOM.width = renderWidth;
 		this.miniGL.canvasDOM.height = renderHeight;
         this.miniGL.canvasDOM.style.width = width+'px';

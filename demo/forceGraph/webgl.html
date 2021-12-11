@@ -19,7 +19,7 @@
 		const points = [];
 		const size = [];
         const links = [];
-        const number = 5000;
+        const number = 10000;
 		for(let i = 0;i<number;i+=1){
             const x = Math.random()*width;
             const y = Math.random()*height
@@ -70,10 +70,18 @@
             app.canvas.line.updateBufferData(linksPoints, 'position');
         });
         app.canvas.line.drawType = 'LINES';
-
+        app.container.addEventListener("click",(e)=>{
+            const {offsetX,offsetY} = e;
+            points.forEach(item=>{
+                const dis = Math.sqrt(Math.pow(item.x - offsetX,2)+Math.pow(item.y - offsetY,2));
+                if(dis<15){
+                    console.log(item.position)
+                }
+            })
+        });
         const time = new Date().getTime();
         simulation.on("end",()=>{
-            console.log(new Date().getTime() - time)
+            console.log(new Date().getTime() - time);
         })
 	</script>
 </html>
