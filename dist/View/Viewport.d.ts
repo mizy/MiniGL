@@ -12,6 +12,14 @@ declare class ViewPort {
     scale: number;
     translate: number[];
     rotation: number;
+    convertScreenToWorld(x?: number, y?: number): {
+        x: number;
+        y: number;
+    };
+    convertWorldToScreen(x?: number, y?: number): {
+        x: number;
+        y: number;
+    };
     /**
      * @param  {} x=0
      * @param  {} y=0

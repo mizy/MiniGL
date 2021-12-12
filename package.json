@@ -1,6 +1,6 @@
 {
     "name": "mini-gl",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "2d webgl renderer like canvas",
     "main": "./dist/MiniGL.js",
     "scripts": {

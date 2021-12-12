@@ -4,8 +4,11 @@ declare class Controller {
     miniGL: any;
     viewport: any;
     gl: any;
+    status: string;
     config: any;
     matrix: mat3;
+    disable(): void;
+    enable(): void;
     addEvents(): void;
     startXY: {
         x: any;
@@ -23,11 +26,11 @@ declare class Controller {
      */
     zoomTo(scale: any, cx: any, cy: any): void;
     /**
-     * @param  {} scale
-     * @param  {} cx
-     * @param  {} cy
+     * @param  {number} scale 当前基础的放大倍率
+     * @param  {number} cx
+     * @param  {number} cy
      */
-    zoom(scale: any, cx: any, cy: any): void;
+    zoom(scale: number, cx: number, cy: number): void;
     /**
      * @param  {} x
      * @param  {} y

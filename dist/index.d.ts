@@ -2,26 +2,13 @@ export default MiniGL;
 declare class MiniGL extends Base {
     /**
      *
-     * @param {object} config
+     * @param {any} config
      * @param {HTMLDivElement} config.container
      */
-    constructor(config: {
-        container: HTMLDivElement;
-    });
+    constructor(config: any);
     autoUpdate: boolean;
-    container: HTMLDivElement;
-    config: {
-        contextOption: {
-            alpha: boolean;
-            antialias: boolean;
-            antialiasSamples: number;
-            stencil: boolean;
-            powerPreference: string;
-            preserveDrawingBuffer: boolean;
-        };
-    } & {
-        container: HTMLDivElement;
-    };
+    container: any;
+    config: any;
     init(): void;
     canvasDOM: HTMLCanvasElement;
     gl: RenderingContext;

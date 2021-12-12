@@ -47,7 +47,7 @@ declare class Base {
      * @param  {} data
      * @param  {} name
      */
-    setBufferData(data: any, name: any, size: any, bufferType: any): void;
+    setBufferData(data: any, name: any, size: any, bufferType?: any): void;
     /**
      * 更新缓冲区数据
      * @param {Array} data

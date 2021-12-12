@@ -173,7 +173,9 @@ var Base = /*#__PURE__*/function () {
 
   }, {
     key: "setBufferData",
-    value: function setBufferData(data, name, size, bufferType) {
+    value: function setBufferData(data, name, size) {
+      var bufferType = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : this.bufferType;
+
       // 没有的话初始化复用一个
       if (!this.buffers[name]) {
         this.buffers[name] = this.gl.createBuffer();
@@ -1425,13 +1427,33 @@ var ViewPort = /*#__PURE__*/function () {
     this.translate = [0, 0];
     this.rotation = Math.PI * 2; // 弧度
   }
-  /**
-   * @param  {} x=0
-   * @param  {} y=0
-   */
-
 
   (0,createClass/* default */.Z)(ViewPort, [{
+    key: "convertScreenToWorld",
+    value: function convertScreenToWorld() {
+      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      return {
+        x: (x - this.translate[0]) / this.scale,
+        y: (y - this.translate[1]) / this.scale
+      };
+    }
+  }, {
+    key: "convertWorldToScreen",
+    value: function convertWorldToScreen() {
+      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      return {
+        x: this.scale * x + this.translate[0],
+        y: this.scale * y + this.translate[1]
+      };
+    }
+    /**
+     * @param  {} x=0
+     * @param  {} y=0
+     */
+
+  }, {
     key: "convertScreenToClip",
     value: function convertScreenToClip() {
       var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -1660,7 +1682,7 @@ var Mesh = /*#__PURE__*/function (_Base) {
 ;// CONCATENATED MODULE: ./src/Shaders/point.js
 /* harmony default export */ const point = ({
   vertexShader: function vertexShader(config) {
-    return "\n\t\tprecision mediump float;\n\t\tattribute vec2 position;\n\t\tattribute vec4 color;\n\t\tattribute float size;\n\t\tattribute float initTime;\n\t\tuniform float z;\n\t\tuniform mat3 transform;\n\t\tvarying vec4 vColor;\n\t\tuniform float t;\n\t\tuniform float scale;\n        uniform float pixelRatio;\n\t\tvarying float vTime;\n\t\t\n\t\tvoid main()\n\t\t{\n\t\t\tvColor = color;\n\t\t\tgl_PointSize = size * pixelRatio ".concat(config.sizeAttenuation ? '/scale' : '', ";\n\t\t\tvec3 mPosition = transform * vec3(position,1.);\n\t\t\tgl_Position = vec4(mPosition.xy,z,1.);\n\t\t\tvTime = initTime;\n\t\t}\n\t\t");
+    return "\n\t\tprecision mediump float;\n\t\tattribute vec2 position;\n\t\tattribute vec4 color;\n\t\tattribute float size;\n\t\tattribute float initTime;\n\t\tuniform float z;\n\t\tuniform mat3 transform;\n\t\tvarying vec4 vColor;\n\t\tuniform float t;\n\t\tuniform float scale;\n        uniform float pixelRatio;\n\t\tvarying float vTime;\n\t\t\n\t\tvoid main()\n\t\t{\n\t\t\tvColor = color;\n\t\t\tgl_PointSize = size * pixelRatio ".concat(config.sizeAttenuation ? '* scale' : '', ";\n\t\t\tvec3 mPosition = transform * vec3(position,1.);\n\t\t\tgl_Position = vec4(mPosition.xy,z,1.);\n\t\t\tvTime = initTime;\n\t\t}\n\t\t");
   },
   fragmentShader: function fragmentShader(_ref) {
     var isRound = _ref.isRound,
@@ -1711,7 +1733,7 @@ var Point = /*#__PURE__*/function (_Base) {
 
     (0,defineProperty/* default */.Z)((0,assertThisInitialized/* default */.Z)(_this), "vSize", 2);
 
-    (0,defineProperty/* default */.Z)((0,assertThisInitialized/* default */.Z)(_this), "bufferType", 'GL_DYNAMIC_DRAW');
+    (0,defineProperty/* default */.Z)((0,assertThisInitialized/* default */.Z)(_this), "bufferType", 'DYNAMIC_DRAW');
 
     _this.shaders = {
       vertex: config.vertexShader || point.vertexShader(config),
@@ -2171,6 +2193,7 @@ var Controller = /*#__PURE__*/function () {
     (0,classCallCheck/* default */.Z)(this, Controller);
 
     (0,defineProperty/* default */.Z)(this, "onMouseMove", function (e) {
+      if (_this.status === 'disable') return;
       var x = e.offsetX - _this.startXY.x + _this.startXY.startX;
       var y = e.offsetY - _this.startXY.y + _this.startXY.startY;
 
@@ -2186,6 +2209,7 @@ var Controller = /*#__PURE__*/function () {
     this.miniGL = config.miniGL;
     this.viewport = this.miniGL.viewport;
     this.gl = this.miniGL.gl;
+    this.status = 'enable';
     this.config = Object.assign({// 默认参数
     }, config.config);
 
@@ -2197,6 +2221,16 @@ var Controller = /*#__PURE__*/function () {
   }
 
   (0,createClass/* default */.Z)(Controller, [{
+    key: "disable",
+    value: function disable() {
+      this.status = 'disable';
+    }
+  }, {
+    key: "enable",
+    value: function enable() {
+      this.status = 'enable';
+    }
+  }, {
     key: "addEvents",
     value: function addEvents() {
       var _this2 = this;
@@ -2243,20 +2277,20 @@ var Controller = /*#__PURE__*/function () {
       this.zoom(changeScale, cx, cy);
     }
     /**
-     * @param  {} scale
-     * @param  {} cx
-     * @param  {} cy
+     * @param  {number} scale 当前基础的放大倍率
+     * @param  {number} cx
+     * @param  {number} cy
      */
 
   }, {
     key: "zoom",
     value: function zoom(scale, cx, cy) {
-      // 求变换前的屏幕坐标
-      var canvasPos = [(cx - this.viewport.translate[0]) / this.viewport.scale, (cy - this.viewport.translate[1]) / this.viewport.scale];
+      // 求世界坐标
+      var canvasPos = this.viewport.convertScreenToWorld(cx, cy);
       var nextScale = scale * this.viewport.scale; // 求出变换后的偏移坐标
 
-      var x = cx - canvasPos[0] * nextScale;
-      var y = cy - canvasPos[1] * nextScale;
+      var x = cx - canvasPos.x * nextScale;
+      var y = cy - canvasPos.y * nextScale;
       this.transform(nextScale, x, y);
     } // 这个x,y是当前屏幕的x,y,变换后的
 
@@ -4212,7 +4246,7 @@ var MiniGL = /*#__PURE__*/function (_Base) {
 
   /**
    * 
-   * @param {object} config 
+   * @param {any} config 
    * @param {HTMLDivElement} config.container
    */
   function MiniGL(config) {
@@ -4233,7 +4267,8 @@ var MiniGL = /*#__PURE__*/function (_Base) {
         stencil: true,
         powerPreference: 'high-performance',
         preserveDrawingBuffer: true
-      }
+      },
+      pointConfig: {}
     }, config);
     return _this;
   }

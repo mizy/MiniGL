@@ -15,7 +15,7 @@ class MiniGL extends Base {
     autoUpdate = false;
     /**
      * 
-     * @param {object} config 
+     * @param {any} config 
      * @param {HTMLDivElement} config.container
      */
     constructor(config) {
