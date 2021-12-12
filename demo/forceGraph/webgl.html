@@ -11,7 +11,10 @@
 	<script>
         const colors = [[0.1,0.1,0.4],[0.4,0.1,0.1],[0.1,0.4,0.1]]
 		const app = new MiniGL({
-			container:document.querySelector("#root")
+			container:document.querySelector("#root"),
+            pointConfig:{
+                sizeAttenuation:true
+            }
 		});
 		app.init();
 		const width = document.querySelector("#root").clientWidth;
@@ -19,7 +22,7 @@
 		const points = [];
 		const size = [];
         const links = [];
-        const number = 10000;
+        const number = 5000;
 		for(let i = 0;i<number;i+=1){
             const x = Math.random()*width;
             const y = Math.random()*height
@@ -33,8 +36,9 @@
                 }
             );
 		}
+
         const linkPoints = [];
-        for(let i = 0;i<number;i+=1){
+        for(let i = 1;i<number;i+=1){
             const source = Math.floor(Math.random()*number);
             const target = Math.floor(Math.random()*number);
             links.push(
@@ -54,7 +58,7 @@
         const simulation = d3.forceSimulation(points)
         .force("link", d3.forceLink(links))
         .force("charge", d3.forceManyBody())
-        .force("collide", d3.forceCollide(30).strength(0.2).iterations(5))
+        .force("collide", d3.forceCollide(30).strength(0.2))
         .force("center", d3.forceCenter(width/2,height/2))
         .alpha(0.2)
         simulation.on("tick",()=>{
@@ -72,10 +76,12 @@
         app.canvas.line.drawType = 'LINES';
         app.container.addEventListener("click",(e)=>{
             const {offsetX,offsetY} = e;
+            const {x,y} = app.viewport.convertScreenToWorld(offsetX,offsetY);
+            console.log(x,y)
             points.forEach(item=>{
-                const dis = Math.sqrt(Math.pow(item.x - offsetX,2)+Math.pow(item.y - offsetY,2));
+                const dis = Math.sqrt(Math.pow(item.x - x,2)+Math.pow(item.y - y,2));
                 if(dis<15){
-                    console.log(item.position)
+                    console.log(item,x,y)
                 }
             })
         });

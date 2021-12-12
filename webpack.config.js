@@ -11,6 +11,9 @@ let webpackConfig = {
     devtool: 'eval-source-map',
     devServer: {
         port: 8666,
+        static: {
+            directory: path.join(__dirname),
+        },
         open: true,
         host: '0.0.0.0',
         hot: true,

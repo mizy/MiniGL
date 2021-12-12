@@ -29,7 +29,8 @@ class MiniGL extends Base {
                 stencil: true,
                 powerPreference: 'high-performance',
                 preserveDrawingBuffer: true
-            }
+            },
+            pointConfig: {}
         }, config);
     }
 

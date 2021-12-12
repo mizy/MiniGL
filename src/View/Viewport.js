@@ -1,4 +1,4 @@
-import {mat3} from 'gl-matrix';
+import { mat3 } from 'gl-matrix';
 
 /**
  * @class
@@ -15,6 +15,19 @@ class ViewPort {
 		this.scale = 1;
 		this.translate = [0, 0];
 		this.rotation = Math.PI * 2;// 弧度
+	}
+
+	convertScreenToWorld(x = 0, y = 0) {
+		return {
+			x: (x - this.translate[0]) / this.scale,
+			y: (y - this.translate[1]) / this.scale,
+		};
+	}
+	convertWorldToScreen(x = 0, y = 0) {
+		return {
+			x: this.scale * x + this.translate[0],
+			y: this.scale * y + this.translate[1],
+		};
 	}
 
 	/**
@@ -43,19 +56,19 @@ class ViewPort {
 	 * 重新布局
 	 */
 	resize() {
-        const ratio = window.devicePixelRatio;
-        this.pixelRatio = ratio;
+		const ratio = window.devicePixelRatio;
+		this.pixelRatio = ratio;
 		const width = (this.config.width || this.miniGL.container.clientWidth);
 		const height = (this.config.height || this.miniGL.container.clientHeight);
-        const renderWidth = width * ratio;
+		const renderWidth = width * ratio;
 		const renderHeight = height * ratio;
 		this.miniGL.canvasDOM.width = renderWidth;
 		this.miniGL.canvasDOM.height = renderHeight;
-        this.miniGL.canvasDOM.style.width = width+'px';
-        this.miniGL.canvasDOM.style.height = height+'px';
+		this.miniGL.canvasDOM.style.width = width + 'px';
+		this.miniGL.canvasDOM.style.height = height + 'px';
 		this.gl.viewport(0, 0, renderWidth, renderHeight);
-        this.renderWidth = renderWidth;
-        this.renderHeight = renderHeight;
+		this.renderWidth = renderWidth;
+		this.renderHeight = renderHeight;
 		this.width = width;
 		this.height = height;
 		this.ratio = width / height;

@@ -4,6 +4,7 @@ class Controller {
         this.miniGL = config.miniGL;
         this.viewport = this.miniGL.viewport;
         this.gl = this.miniGL.gl;
+        this.status = 'enable';
         this.config = Object.assign({
             // 默认参数
         }, config.config);
@@ -11,6 +12,14 @@ class Controller {
             this.addEvents();
         }
         this.matrix = mat3.create();
+    }
+
+    disable() {
+        this.status = 'disable'
+    }
+
+    enable() {
+        this.status = 'enable';
     }
 
     addEvents() {
@@ -38,7 +47,7 @@ class Controller {
     }
 
     onMouseMove = (e) => {
-
+        if (this.status === 'disable') return;
         const x = e.offsetX - this.startXY.x + this.startXY.startX;
         const y = e.offsetY - this.startXY.y + this.startXY.startY;
         this.moveTo(x, y);
@@ -61,20 +70,17 @@ class Controller {
     }
 
     /**
-     * @param  {} scale
-     * @param  {} cx
-     * @param  {} cy
+     * @param  {number} scale 当前基础的放大倍率
+     * @param  {number} cx
+     * @param  {number} cy
      */
     zoom(scale, cx, cy) {
-        // 求变换前的屏幕坐标
-        const canvasPos = [
-            (cx - this.viewport.translate[0]) / this.viewport.scale,
-            (cy - this.viewport.translate[1]) / this.viewport.scale
-        ];
+        // 求世界坐标
+        const canvasPos = this.viewport.convertScreenToWorld(cx, cy);
         const nextScale = scale * this.viewport.scale;
         // 求出变换后的偏移坐标
-        const x = cx - canvasPos[0] * nextScale;
-        const y = cy - canvasPos[1] * nextScale;
+        const x = cx - canvasPos.x * nextScale;
+        const y = cy - canvasPos.y * nextScale;
         this.transform(nextScale, x, y);
     }
 
