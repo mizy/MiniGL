@@ -70,32 +70,31 @@ class InstanceMesh extends Base {
         this.setIndices(indices);
     }
 
-    setIndices(input) {
-        let indices = [];
-        // 支持显示网格线
-        if (this.config.wireFrame && this.drawType === 'TRIANGLES') {
-            for (let i = 0; i < input.length - 2; i += 3) {
-                indices.push(input[i], input[i + 1], input[i + 1], input[i + 2], input[i + 2], input[i]);
-            }
-        } else {
-            indices = input;
-        }
-        this.indices = indices;
-        this.count = !this.count ? indices.length : this.count;
-        // 顶点buffer
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer);
-        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW);
-    }
-
     // 设置实例数组
     setInstanceData(instanceData) {
+        this.disposeInstanceData();
         this.instanceData = instanceData;
         const eachLength = instanceData[0].length;
         const arr = [];
         this.instanceData.forEach(item => {
             arr.push(...item);
         });
-        this.setBufferData(arr, 'instanceOffset', eachLength);
+        this.setInstanceBufferData(arr, 'instanceOffset', eachLength);
+    }
+
+
+    instanceDataBuffers = {};
+    setInstanceBufferData(data, name, length, instanceDivisor = 1) {
+        this.setBufferData(data, name, length);
+        this.instanceDataBuffers[name] = instanceDivisor;
+    }
+
+    disposeInstanceData() {
+        for (let key in this.instanceDataBuffers) {
+            this.gl.disableVertexAttribArray(this.buffers[key])
+            this.gl.deleteBuffer(this.buffers[key]);
+        }
+        this.instanceDataBuffers = {};
     }
 
     render() {
@@ -114,7 +113,9 @@ class InstanceMesh extends Base {
             this.gl.enableVertexAttribArray(bufferPosition);
         }
         // 加载实例偏移数组，这里写死instanceOffset的数据指针名，注意不要导致命名冲突了
-        this.gl.vertexAttribDivisor(this.getAttribLocation('instanceOffset'), this.config.instanceDivisor);
+        for (let key in this.instanceDataBuffers) {
+            this.gl.vertexAttribDivisor(this.getAttribLocation(key), this.instanceDataBuffers[key]);
+        }
 
         // 使用顶点数据
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer);

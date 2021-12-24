@@ -12,6 +12,168 @@ return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 247:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(785);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(671);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(144);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(340);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(963);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(120);
+/* harmony import */ var _InstanceMesh__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(947);
+
+
+
+
+
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0,_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0,_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0,_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+
+/**
+ * @class
+ */
+
+var Arrow = /*#__PURE__*/function (_InstanceMesh) {
+  (0,_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z)(Arrow, _InstanceMesh);
+
+  var _super = _createSuper(Arrow);
+
+  function Arrow() {
+    var _this;
+
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+      // 一个值对应几个对象
+      instanceDivisor: 1
+    };
+
+    (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z)(this, Arrow);
+
+    _this = _super.call(this, config);
+    _this.shaders = {
+      vertex: "\n            precision highp float;\n            attribute vec2 position;\n            attribute mat3 instanceOffset;\n            attribute vec4 instanceColor;\n\t        varying vec4 vColor;\n            uniform mat3 transform;\n            uniform float z;\n            void main()\n            {\n                vColor = instanceColor;\n                vec3 mPosition = transform * vec3(position,z);\n                gl_Position = vec4(mPosition.xy,z,1.0);\n            }",
+      fragment: "\n            precision highp float;\n            varying vec4 vColor;\n            void main()\n            {\n                gl_FragColor = vColor;\n            }\n            "
+    };
+    _this.uniformData = {
+      z: {
+        value: config.z || 1,
+        type: 'uniform1f'
+      }
+    };
+
+    _this.init(config);
+
+    _this.vSize = 2;
+    return _this;
+  }
+
+  (0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .Z)(Arrow, [{
+    key: "afterAdd",
+    value: function afterAdd() {
+      this.setData([{
+        position: {
+          x: -10,
+          y: 20
+        }
+      }, {
+        position: {
+          x: 0,
+          y: 0
+        }
+      }, {
+        position: {
+          x: 10,
+          y: 20
+        }
+      }], [0, 1, 2]);
+    }
+  }, {
+    key: "setData",
+    value: function setData(data, indices) {
+      this.dispose();
+      var points = [];
+      var colors = [];
+      this.data = data;
+      data.forEach(function (item) {
+        var coord = [item.position.x, item.position.y];
+        points.push.apply(points, coord);
+      });
+      this.vertex = points;
+      this.setBufferData(points, 'position', 2);
+      this.setIndices(indices);
+    } // 设置实例数组
+
+  }, {
+    key: "setInstanceData",
+    value: function setInstanceData(instanceData) {
+      this.disposeInstanceData();
+      this.instanceData = instanceData;
+      var instanceOffset = [];
+      var instanceColor = [];
+      this.instanceData.forEach(function (item) {
+        instanceOffset.push.apply(instanceOffset, (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z)(item.instanceOffset));
+        instanceColor.push.apply(instanceColor, (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z)(item.instanceColor));
+      });
+      this.setInstanceBufferData(instanceOffset, 'instanceOffset', 9, 3);
+      this.setInstanceBufferData(instanceColor, 'instanceColor', 4, 3);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      // 2D 只需要两个坐标轴标识位置
+      var offset = 0; // 从数据第几位开始偏移
+
+      var normalize = false; // 分别绑定数据到shader程序中
+
+      for (var key in this.buffers) {
+        if (this.instanceDataBuffers[key]) {
+          continue;
+        }
+
+        var bufferData = this.buffers[key];
+        var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferData); // 绑定数据
+        // 挂载到对应的指针上
+
+        this.gl.vertexAttribPointer(bufferPosition, this.buffersSize[key], this.gl.FLOAT, normalize, 0, offset);
+        this.gl.enableVertexAttribArray(bufferPosition);
+      } // 加载实例偏移数组，这里写死instanceOffset的数据指针名，注意不要导致命名冲突了
+
+
+      for (var _key in this.instanceDataBuffers) {
+        this.gl.vertexAttribDivisor(this.getAttribLocation(_key), this.instanceDataBuffers[_key]);
+      } // 使用顶点数据
+
+
+      this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer); // 加载shader程序
+
+      this.gl.useProgram(this.shaderProgram); // 配置uniform
+
+      this.setUniformData(); // 渲染
+
+      if (this.indices.length) {
+        var drawType = this.config.wireFrame ? 'LINES' : this.gl[this.drawType]; // offset必须乘以类型数组的长度，意味着要从内存中数据的对应字节数开始算 根据类型乘对应的TypeArray.BYTES_PER_ELEMENT
+
+        this.gl.drawElementsInstanced(drawType, this.count, this.gl.UNSIGNED_SHORT, this.offset, this.instanceData.length);
+      }
+    }
+  }]);
+
+  return Arrow;
+}(_InstanceMesh__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Arrow);
+
+/***/ }),
+
 /***/ 33:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -204,7 +366,8 @@ var Base = /*#__PURE__*/function () {
   }, {
     key: "setIndices",
     value: function setIndices(indices) {
-      this.indices = indices; // 顶点buffer
+      this.indices = indices;
+      this.count = !this.count ? indices.length : this.count; // 顶点buffer
 
       this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer);
       this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW);
@@ -312,7 +475,12 @@ var Base = /*#__PURE__*/function () {
       if (this.shaders && !this.shaderProgram) {
         this.initShader();
       }
+
+      this.afterAdd();
     }
+  }, {
+    key: "afterAdd",
+    value: function afterAdd() {}
   }, {
     key: "translate",
     value: function translate(x, y) {
@@ -439,6 +607,8 @@ var InstanceMesh = /*#__PURE__*/function (_Base) {
 
     (0,defineProperty/* default */.Z)((0,assertThisInitialized/* default */.Z)(_this), "offset", 0);
 
+    (0,defineProperty/* default */.Z)((0,assertThisInitialized/* default */.Z)(_this), "instanceDataBuffers", {});
+
     _this.shaders = {
       vertex: instanceMeshShader.vertexShader,
       fragment: instanceMeshShader.fragmentShader
@@ -504,37 +674,36 @@ var InstanceMesh = /*#__PURE__*/function (_Base) {
       this.setBufferData(color, 'color', 4);
       this.setBufferData(uvs, 'uv', 2);
       this.setIndices(indices);
-    }
-  }, {
-    key: "setIndices",
-    value: function setIndices(input) {
-      var indices = []; // 支持显示网格线
-
-      if (this.config.wireFrame && this.drawType === 'TRIANGLES') {
-        for (var i = 0; i < input.length - 2; i += 3) {
-          indices.push(input[i], input[i + 1], input[i + 1], input[i + 2], input[i + 2], input[i]);
-        }
-      } else {
-        indices = input;
-      }
-
-      this.indices = indices;
-      this.count = !this.count ? indices.length : this.count; // 顶点buffer
-
-      this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer);
-      this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW);
     } // 设置实例数组
 
   }, {
     key: "setInstanceData",
     value: function setInstanceData(instanceData) {
+      this.disposeInstanceData();
       this.instanceData = instanceData;
       var eachLength = instanceData[0].length;
       var arr = [];
       this.instanceData.forEach(function (item) {
         arr.push.apply(arr, (0,toConsumableArray/* default */.Z)(item));
       });
-      this.setBufferData(arr, 'instanceOffset', eachLength);
+      this.setInstanceBufferData(arr, 'instanceOffset', eachLength);
+    }
+  }, {
+    key: "setInstanceBufferData",
+    value: function setInstanceBufferData(data, name, length) {
+      var instanceDivisor = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+      this.setBufferData(data, name, length);
+      this.instanceDataBuffers[name] = instanceDivisor;
+    }
+  }, {
+    key: "disposeInstanceData",
+    value: function disposeInstanceData() {
+      for (var key in this.instanceDataBuffers) {
+        this.gl.disableVertexAttribArray(this.buffers[key]);
+        this.gl.deleteBuffer(this.buffers[key]);
+      }
+
+      this.instanceDataBuffers = {};
     }
   }, {
     key: "render",
@@ -545,6 +714,10 @@ var InstanceMesh = /*#__PURE__*/function (_Base) {
       var normalize = false; // 分别绑定数据到shader程序中
 
       for (var key in this.buffers) {
+        if (this.instanceDataBuffers[key]) {
+          continue;
+        }
+
         var bufferData = this.buffers[key];
         var bufferPosition = this.getAttribLocation(key); // 分别绑定数据到shader程序中
 
@@ -556,7 +729,10 @@ var InstanceMesh = /*#__PURE__*/function (_Base) {
       } // 加载实例偏移数组，这里写死instanceOffset的数据指针名，注意不要导致命名冲突了
 
 
-      this.gl.vertexAttribDivisor(this.getAttribLocation('instanceOffset'), this.config.instanceDivisor); // 使用顶点数据
+      for (var _key in this.instanceDataBuffers) {
+        this.gl.vertexAttribDivisor(this.getAttribLocation(_key), this.instanceDataBuffers[_key]);
+      } // 使用顶点数据
+
 
       this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer); // 加载shader程序
 
@@ -4239,6 +4415,7 @@ function src_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || 
 
 
 
+
 var MiniGL = /*#__PURE__*/function (_Base) {
   (0,inherits/* default */.Z)(MiniGL, _Base);
 
@@ -4319,6 +4496,8 @@ MiniGL.Group = Group_Group;
 MiniGL.Util = (__webpack_require__(88)/* ["default"] */ .Z);
 MiniGL.Texture = (__webpack_require__(776)/* ["default"] */ .Z);
 MiniGL.DragonBones = dragonBones;
+MiniGL.Arrow = (__webpack_require__(247)/* ["default"] */ .Z);
+MiniGL.glMatrix = external_gl_matrix_;
 /* harmony default export */ const src = (MiniGL);
 })();
 

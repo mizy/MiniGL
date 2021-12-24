@@ -133,6 +133,7 @@ class Base {
 
     setIndices(indices) {
         this.indices = indices;
+        this.count = !this.count ? indices.length : this.count;
         // 顶点buffer
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indicesPointer);
         this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW);
@@ -235,7 +236,10 @@ class Base {
         if (this.shaders && !this.shaderProgram) {
             this.initShader();
         }
+        this.afterAdd()
     }
+
+    afterAdd() { }
 
     translate(x, y) {
         mat3.translate(this.matrix, this.matrix, [x, y]);

@@ -11,6 +11,7 @@ import RoundLine from './Mesh/RoundLine/index';
 import WidthLine from './Mesh/WidthLine';
 import Group from './Group/Group.js';
 import DragonBones from './dragonBones/index.js';
+import * as glMatrix from 'gl-matrix';
 class MiniGL extends Base {
     autoUpdate = false;
     /**
@@ -67,4 +68,6 @@ MiniGL.Group = Group;
 MiniGL.Util = require('./Utils').default;
 MiniGL.Texture = require('./Texture/Texture').default;
 MiniGL.DragonBones = DragonBones;
+MiniGL.Arrow = require("./Mesh/Arrow").default;
+MiniGL.glMatrix = glMatrix;
 export default MiniGL;
