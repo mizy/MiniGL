@@ -1,4 +1,3 @@
-import { BinaryOffset, BoneType, BlendMode } from './Enum';
 import MiniGLTextureAtlasData from './MiniGLTextureAtlasData';
 import { mat3 } from 'gl-matrix';
 //<reference path="./DragonBones.d.ts" />
@@ -69,15 +68,15 @@ class MiniGLSlot extends dragonBones.Slot {
     _updateBlendMode() {
         const { miniGL: { gl } } = this._armatureDisplay;
         switch (this._blendMode) {
-            case BlendMode.Normal:
+            case dragonBones.BlendMode.Normal:
                 this._renderDisplay.blendMode = gl.ONE_MINUS_SRC_ALPHA;
                 break;
 
-            case BlendMode.Add:
+            case dragonBones.BlendMode.Add:
                 this._renderDisplay.blendMode = gl.ONE_MINUS_DST_ALPHA;
                 break;
 
-            case BlendMode.Erase:
+            case dragonBones.BlendMode.Erase:
                 this._renderDisplay.blendMode = gl.DST_ALPHA;
                 break;
 
@@ -118,9 +117,9 @@ class MiniGLSlot extends dragonBones.Slot {
                     const data = this._geometryData.data;
                     const intArray = data.intArray;
                     const floatArray = data.floatArray;
-                    const vertexCount = intArray[this._geometryData.offset + BinaryOffset.GeometryVertexCount];
-                    const triangleCount = intArray[this._geometryData.offset + BinaryOffset.GeometryTriangleCount];
-                    let vertexOffset = intArray[this._geometryData.offset + BinaryOffset.GeometryFloatOffset];
+                    const vertexCount = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
+                    const triangleCount = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryTriangleCount];
+                    let vertexOffset = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryFloatOffset];
 
                     if (vertexOffset < 0) {
                         vertexOffset += 65536; // Fixed out of bounds bug.
@@ -140,7 +139,7 @@ class MiniGLSlot extends dragonBones.Slot {
                     }
 
                     for (let i = 0; i < triangleCount * 3; ++i) {
-                        indices[i] = intArray[this._geometryData.offset + BinaryOffset.GeometryVertexIndices + i];
+                        indices[i] = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryVertexIndices + i];
                     }
 
                     meshDisplay.dispose();
@@ -152,7 +151,7 @@ class MiniGLSlot extends dragonBones.Slot {
                     meshDisplay.vertex = vertices;
 
                     const isSkinned = this._geometryData.weight !== null;
-                    const isSurface = this._parent._boneData.type !== BoneType.Bone;
+                    const isSurface = this._parent._boneData.type !== dragonBones.BoneType.Bone;
                     if (isSkinned || isSurface) {
                         this._identityTransform();
                     }
@@ -189,15 +188,15 @@ class MiniGLSlot extends dragonBones.Slot {
             const data = geometryData.data;
             const intArray = data.intArray;
             const floatArray = data.floatArray;
-            const vertexCount = intArray[geometryData.offset + BinaryOffset.GeometryVertexCount];
-            let weightFloatOffset = intArray[weightData.offset + BinaryOffset.WeigthFloatOffset];
+            const vertexCount = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
+            let weightFloatOffset = intArray[weightData.offset + dragonBones.BinaryOffset.WeigthFloatOffset];
 
             if (weightFloatOffset < 0) {
                 weightFloatOffset += 65536; // Fixed out of bounds bug.
             }
 
             for (
-                let i = 0, iD = 0, iB = weightData.offset + BinaryOffset.WeigthBoneIndices + bones.length, iV = weightFloatOffset, iF = 0;
+                let i = 0, iD = 0, iB = weightData.offset + dragonBones.BinaryOffset.WeigthBoneIndices + bones.length, iV = weightFloatOffset, iF = 0;
                 i < vertexCount;
                 ++i
             ) {
@@ -231,12 +230,12 @@ class MiniGLSlot extends dragonBones.Slot {
             meshDisplay.setBufferData(meshDisplay.vertex, 'position', 2);
 
         } else {
-            const isSurface = this._parent._boneData.type !== BoneType.Bone;
+            const isSurface = this._parent._boneData.type !== dragonBones.BoneType.Bone;
             const data = geometryData.data;
             const intArray = data.intArray;
             const floatArray = data.floatArray;
-            const vertexCount = intArray[geometryData.offset + BinaryOffset.GeometryVertexCount];
-            let vertexOffset = intArray[geometryData.offset + BinaryOffset.GeometryFloatOffset];
+            const vertexCount = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
+            let vertexOffset = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryFloatOffset];
 
             if (vertexOffset < 0) {
                 vertexOffset += 65536; // Fixed out of bounds bug.
