@@ -1,4 +1,4 @@
-import MiniGL from "../../index";
+import MiniGL from "../../MiniGL";
 import { PointData } from "../Mesh";
 import Line from "./Line";
 import LinePoint from "./LinePoint";

@@ -3,7 +3,7 @@ import Point from "../Mesh/Point";
 import Line from "../Mesh/Line";
 import WidthLine from "../Mesh/WidthLine";
 import { mat3 } from "gl-matrix";
-import MiniGL, { MiniGLConfig } from "..";
+import MiniGL, { MiniGLConfig } from "../MiniGL";
 /**
  * @class
  */

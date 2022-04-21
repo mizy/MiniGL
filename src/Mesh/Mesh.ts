@@ -9,7 +9,6 @@ export interface PointData {
     color?: [number, number, number, number];
     [key: string]: any;
 }
-console.log(Base);
 class Mesh extends Base {
     drawType = "TRIANGLES";
     data: PointData[];

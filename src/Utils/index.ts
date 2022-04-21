@@ -1,6 +1,6 @@
 
 import * as Loader from './Loader';
-const Util = {
+const Utils = {
     Loader
 };
-export default Util;
+export default Utils;

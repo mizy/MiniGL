@@ -1,7 +1,7 @@
 export default {
-	// 先求连接线然后再求垂线
-	// 求出等比放大的值
-	vertexShader: `
+    // 先求连接线然后再求垂线
+    // 求出等比放大的值
+    vertexShader: `
 	precision lowp float;
 	attribute vec2 now;
 	attribute vec2 pre;
@@ -51,15 +51,15 @@ export default {
 	}
 	`,
 
-	fragmentShader: `
+    fragmentShader: `
 	precision lowp float;
 	uniform vec4 color;
 	varying float vSide;
 	void main()
 	{
-		float smoothSideRatio = max(0.1,smoothstep(0.,0.3,(1. - abs(vSide))));
+		float smoothSideRatio = max(0.1,smoothstep(0.,0.1,(1. - abs(vSide))));
 		gl_FragColor = color;
 		gl_FragColor.w *= smoothSideRatio;
 	}
-	`
-}
+	`,
+};

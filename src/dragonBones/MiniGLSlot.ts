@@ -1,21 +1,21 @@
-import {BinaryOffset, BoneType, BlendMode} from './Enum';
+import { BinaryOffset, BoneType, BlendMode } from './Enum';
 import MiniGLTextureAtlasData from './MiniGLTextureAtlasData';
-import {mat3} from 'gl-matrix';
-
+import { mat3 } from 'gl-matrix';
+//<reference path="./DragonBones.d.ts" />
 /**
  * 骨骼插槽
  * @class
  */
 class MiniGLSlot extends dragonBones.Slot {
+    _updateGlueMesh(): void {
+    }
     private _armatureDisplay: any;
     private _renderDisplay: any;
-    private _colorFilter: any;
 
     _onClear() {
         super._onClear.call(this);
         this._armatureDisplay = null; //
         this._renderDisplay = null; //
-        this._colorFilter = null;
     }
 
     _initDisplay(value, isRetain) {
@@ -31,12 +31,12 @@ class MiniGLSlot extends dragonBones.Slot {
     // 更新前函数
     _onUpdateDisplay() {
         this._armatureDisplay = this._armature.display;
-        this._renderDisplay = this._display ? this._display : this._rawDisplay ;
+        this._renderDisplay = this._display ? this._display : this._rawDisplay;
     }
 
     // 添加到骨架容器中
     _addDisplay() {
-        if (this._renderDisplay.parent) {this._renderDisplay.parent.removeChild(this._renderDisplay);}
+        if (this._renderDisplay.parent) { this._renderDisplay.parent.removeChild(this._renderDisplay); }
         this._armature.display.addChild(this._renderDisplay);
     }
 
@@ -48,7 +48,7 @@ class MiniGLSlot extends dragonBones.Slot {
         value.destroy();
     }
 
-     _removeDisplay() {
+    _removeDisplay() {
         this._armatureDisplay.removeChild(this._renderDisplay);
     }
 
@@ -66,8 +66,8 @@ class MiniGLSlot extends dragonBones.Slot {
         this._renderDisplay.visible = visible;
     }
 
-     _updateBlendMode() {
-        const {miniGL: {gl}} = this._armatureDisplay;
+    _updateBlendMode() {
+        const { miniGL: { gl } } = this._armatureDisplay;
         switch (this._blendMode) {
             case BlendMode.Normal:
                 this._renderDisplay.blendMode = gl.ONE_MINUS_SRC_ALPHA;
@@ -90,7 +90,7 @@ class MiniGLSlot extends dragonBones.Slot {
         const alpha = this._colorTransform.alphaMultiplier * this._globalAlpha;
         try {
             this._renderDisplay.uniformData.alpha.value = alpha;
-        } catch (e) {}
+        } catch (e) { }
     }
 
     _updateFrame() {
@@ -132,7 +132,7 @@ class MiniGLSlot extends dragonBones.Slot {
                     const meshDisplay = this._renderDisplay;
 
                     // 这一步生成所需要的点和uv和索引
-                    const uvs = [];const vertices = [];const indices = [];
+                    const uvs = []; const vertices = []; const indices = [];
 
                     for (let i = 0, l = vertexCount * 2; i < l; ++i) {
                         vertices[i] = floatArray[vertexOffset + i] * scale;
@@ -279,7 +279,7 @@ class MiniGLSlot extends dragonBones.Slot {
         this._renderDisplay.setMatrix(newMatrix);
     }
 }
-MiniGLSlot.toString = function() {
+MiniGLSlot.toString = function () {
     return '[class dragonBones.MiniSlot]';
 };
 

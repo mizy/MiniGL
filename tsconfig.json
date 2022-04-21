@@ -11,8 +11,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "outDir": "dist",
-    "module": "es6",
-    "target": "es5",
+    "module": "esnext",
+    "target": "es6",
     "resolveJsonModule": true,
     "moduleResolution": "node"
   }

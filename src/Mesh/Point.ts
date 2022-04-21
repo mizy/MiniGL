@@ -29,14 +29,14 @@ class Point extends Base {
                 type: 'uniform1f'
             },
             antialias: {
-                value: 0.1,
+                value: 0.05,
                 type: 'uniform1f'
             }
         };
         this.init(config);
     }
 
-    setData(data:PointData[]) {
+    setData(data: PointData[]) {
 
         this.dispose();
 
@@ -65,7 +65,7 @@ class Point extends Base {
     setBufferDatas({
         position, color, size, initTime
     }: {
-        position:number[],color:number[],size:number[],initTime:number[]
+        position: number[], color: number[], size: number[], initTime: number[]
     }) {
         const {
             miniGL: { viewport }

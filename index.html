@@ -12,17 +12,14 @@
 		});
 		app.init();
 
-        const arrow = new MiniGL.Arrow();
+		const arrow = new MiniGL.Arrow();
 		app.canvas.add(arrow);
 		const {mat3} = MiniGL.glMatrix;
 		const instanceData = [];
 		for(let i =0;i<100;i++){
 			const mat = mat3.create();
 			mat3.translate(mat,mat,[50*i,50*i]);
-			instanceData.push({
-				instanceOffset:mat,
-				instanceColor:[Math.random(),Math.random(),0,1]
-			})
+			instanceData.push( mat)
 		}
 		arrow.setInstanceData(instanceData)
 	</script>

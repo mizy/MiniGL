@@ -1,7 +1,7 @@
 import Group from "../Group/Group";
 import Texture from "../Texture/Texture";
 import { mat3 } from "gl-matrix";
-import MiniGL from "..";
+import MiniGL from "../MiniGL";
 export interface BaseMeshConfig {
     [key: string]: any;
 }

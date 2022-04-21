@@ -1,8 +1,8 @@
-const { TextureData , BaseObject = null, TextureAtlasData = null} = dragonBones || {};
 import Texture from '../Texture/Texture';
+//<reference path="../../src/dragonBones/DragonBones.d.ts" />
 class MiniGLTextureAtlasData extends dragonBones.TextureAtlasData {
 
-    scale=1;
+    scale = 1;
     disposeEnabled: boolean;
     private _renderTexture: any;
     _onClear() {
@@ -17,7 +17,7 @@ class MiniGLTextureAtlasData extends dragonBones.TextureAtlasData {
     }
 
     createTexture() {
-        const texture = BaseObject.borrowObject(MiniTextureData);
+        const texture = dragonBones.BaseObject.borrowObject(MiniTextureData);
         return texture;
     }
     setRenderTexture(texture, miniGL) {
@@ -26,16 +26,15 @@ class MiniGLTextureAtlasData extends dragonBones.TextureAtlasData {
         if (this._renderTexture !== null) {
             for (let k in this.textures) {
                 const textureData = this.textures[k];
-                if (textureData.region.rotated) {
-                }
+
                 const renderTexture = new Texture(miniGL);
-                renderTexture.create({image: texture, rect: textureData.region, reverseY: false, name: textureData.name});
-                textureData.renderTexture = renderTexture;
+                renderTexture.create({ image: texture, rect: textureData.region, reverseY: false, name: textureData.name });
+                (textureData as any).renderTexture = renderTexture;
             }
         } else {
             for (let k in this.textures) {
                 const textureData = this.textures[k];
-                textureData.renderTexture = null;
+                (textureData as any).renderTexture = null;
             }
         }
         return texture;
@@ -57,10 +56,10 @@ class MiniTextureData extends dragonBones.TextureData {
     }
 }
 
-MiniTextureData.toString = function() {
+MiniTextureData.toString = function () {
     return '[class dragonBones.MiniTextureData]';
 };
-MiniGLTextureAtlasData.toString = function() {
+MiniGLTextureAtlasData.toString = function () {
     return '[class dragonBones.MiniAtlasData]';
 };
 export default MiniGLTextureAtlasData;

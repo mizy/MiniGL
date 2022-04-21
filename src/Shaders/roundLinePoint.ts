@@ -52,7 +52,7 @@ export default {
 	{
 		float l = length(gl_PointCoord - vec2(0.5,0.5));
 		
-		float smoothSideRatio = smoothstep(0.,0.3,(0.5-l));
+		float smoothSideRatio = smoothstep(0.,0.05,(0.5-l));
 		gl_FragColor = color;
 		gl_FragColor.w *= smoothSideRatio;
 	}

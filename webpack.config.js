@@ -1,7 +1,7 @@
 module.exports = {
     cache: true,
     entry: {
-        index: "./src/index.ts"
+        index: "./src/global.ts"
     },
     output: {
         library: "MiniGL",

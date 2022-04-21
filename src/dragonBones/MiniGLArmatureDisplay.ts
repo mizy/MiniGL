@@ -1,15 +1,14 @@
-
-import Group from '../Group/Group.js';
+import Group from '../Group/Group';
 import EventListener from '../Base';
 import Line from '../Mesh/Line';
 /**
  * 骨架显示
  * @class
  */
-class MiniGLArmatureDisplay extends Group implements dragonBones.IArmatureProxy{
+class MiniGLArmatureDisplay extends Group implements dragonBones.IArmatureProxy {
     armature: dragonBones.Armature;
     animation: dragonBones.Animation;
-     _armature=null;
+    _armature = null;
     listener: EventListener;
     drawer: Line;
     mesh: any;
@@ -31,7 +30,7 @@ class MiniGLArmatureDisplay extends Group implements dragonBones.IArmatureProxy{
     dbInit(armature) {
         this._armature = armature;
         this.listener = new EventListener();
-        const mesh = new Line({ color: [0, 0.1, 0.2, 1]});
+        const mesh = new Line({ color: [0, 0.1, 0.2, 1] });
         mesh.drawType = 'LINES';
         this.drawer = mesh;
 
@@ -54,9 +53,9 @@ class MiniGLArmatureDisplay extends Group implements dragonBones.IArmatureProxy{
             const endX = startX + bone.globalTransformMatrix.a * boneLength;
             const endY = startY + bone.globalTransformMatrix.b * boneLength;
             data.push({
-                position: {x: startX, y: startY}
+                position: { x: startX, y: startY }
             }, {
-                position: {x: endX, y: endY}
+                position: { x: endX, y: endY }
             });
         }
 

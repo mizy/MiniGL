@@ -1,8 +1,9 @@
 import MiniGLSlot from "./MiniGLSlot";
 import MiniGLTextureAtlasData from "./MiniGLTextureAtlasData";
 import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay";
-import MiniGL from "../index";
+import MiniGL from "../MiniGL";
 import Image from "../Mesh/Image";
+
 const { BaseObject, Armature } = dragonBones;
 class DragonBoneObject extends dragonBones.BaseFactory {
     miniGL: MiniGL;
@@ -32,8 +33,8 @@ class DragonBoneObject extends dragonBones.BaseFactory {
                 dispatchDBEvent: (event, data) => {
                     this.miniGL.fire(event, data);
                 },
-                addDBEventListener: (type, func) => {},
-                removeDBEventListener: (type, func) => {},
+                addDBEventListener: (type, func) => { },
+                removeDBEventListener: (type, func) => { },
             });
             this.addFrameEvent();
         }
@@ -93,6 +94,6 @@ class DragonBoneObject extends dragonBones.BaseFactory {
         return textureAtlasData;
     }
 
-    destroy() {}
+    destroy() { }
 }
 export default DragonBoneObject;

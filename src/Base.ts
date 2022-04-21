@@ -1,17 +1,17 @@
-import MiniGL from ".";
+import MiniGL from "./MiniGL";
 
 /**
  * 图层基础类
  * @class
  */
 class Base {
-    miniGL:MiniGL
-    _listeners = {}
+    miniGL: MiniGL;
+    _listeners = {};
 
     /**
      * 事件监听,用法同jQuery.on
      */
-    on(type:string, listener:Function) {
+    on(type: string, listener: Function) {
         const listeners = this._listeners;
         if (listeners[type] === undefined) {
             listeners[type] = [];
@@ -26,7 +26,7 @@ class Base {
      * @example
      * this.fire("change",event)
      */
-    fire(type:string, event) {
+    fire(type: string, event) {
         const listeners = this._listeners;
         const listenerArray = listeners[type];
         if (listenerArray !== undefined) {
@@ -42,7 +42,7 @@ class Base {
      * @example
      * this.off('change',onChange)
      */
-    off(type:string, listener) {
+    off(type: string, listener) {
         const listeners = this._listeners;
         const listenerArray = listeners[type];
         if (listenerArray !== undefined) {
@@ -57,23 +57,19 @@ class Base {
         }
     }
 
-    initConfig(config) {
-
-    }
+    initConfig(config) {}
 
     /**
      * 地图添加图层时调用,由子类实现
      */
-    onAdd(map:MiniGL) {
+    onAdd(map: MiniGL) {
         this.miniGL = map;
     }
 
     /**
      * 地图每帧调用该函数
      */
-    update() {
-
-    }
+    update() {}
 
     /**
      * 移除图层时调用
@@ -81,6 +77,5 @@ class Base {
     onRemove() {
         this._listeners = {};
     }
-
 }
 export default Base;

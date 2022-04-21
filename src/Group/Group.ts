@@ -1,5 +1,5 @@
-import BaseMesh, { BaseMeshConfig } from '../Mesh/BaseMesh';
-import MiniGL from '..';
+import BaseMesh, { BaseMeshConfig } from "../Mesh/BaseMesh";
+import MiniGL from "../MiniGL";
 /**
  * 进行批量渲染
  * @class
@@ -8,11 +8,11 @@ class Group extends BaseMesh {
     depthMask = true;
     depthTest = true;
     transparent = true;
-    children:(BaseMesh|Group)[]=[];
+    children: (BaseMesh | Group)[] = [];
     childId = -1;
     static dispose: any;
 
-    constructor(config?:BaseMeshConfig) {
+    constructor(config?: BaseMeshConfig) {
         super();
         this.children = [];
         this.init(config);
@@ -20,22 +20,24 @@ class Group extends BaseMesh {
 
     dispose() {
         super.dispose();
-        this.children.forEach((item, index)=>{
+        this.children.forEach((item, index) => {
             item.destroy && item.destroy();
         });
     }
 
-    onAdd(miniGL:MiniGL) {
+    onAdd(miniGL: MiniGL) {
         this.miniGL = miniGL;
         // 获取顶点数据内存里的指针
         this.gl = miniGL.gl;
         this.indicesPointer = this.gl.createBuffer();
-        this.children.forEach(each=>{
-            if (!each.miniGL) {each.onAdd(miniGL);}
+        this.children.forEach((each) => {
+            if (!each.miniGL) {
+                each.onAdd(miniGL);
+            }
         });
     }
 
-    addChild(child:BaseMesh) {
+    addChild(child: BaseMesh) {
         this.childId++;
         child.childId = this.childId;
         child.parent = this;
@@ -46,7 +48,7 @@ class Group extends BaseMesh {
         }
     }
 
-    addChildAt(child:BaseMesh, index:number) {
+    addChildAt(child: BaseMesh, index: number) {
         child.childId = this.childId++;
         child.parent = this;
         if (this.miniGL) {
@@ -56,17 +58,17 @@ class Group extends BaseMesh {
         child.zOrder = index + 1;
     }
 
-    removeChild(child:BaseMesh) {
+    removeChild(child: BaseMesh) {
         const pos = this.children.indexOf(child);
-        if (pos<0) {
+        if (pos < 0) {
             return;
         }
         this.children[pos].parent = undefined;
-        this.children.splice(pos, 1) ;
+        this.children.splice(pos, 1);
     }
 
-    swapChildren(a:BaseMesh, b:BaseMesh) {
-        this.children.forEach((item, index)=>{
+    swapChildren(a: BaseMesh, b: BaseMesh) {
+        this.children.forEach((item, index) => {
             if (item === a) {
                 this.children[index] = b;
                 this.children[index].zOrder = index;
@@ -77,6 +79,5 @@ class Group extends BaseMesh {
             }
         });
     }
-
 }
 export default Group;

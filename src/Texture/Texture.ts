@@ -1,4 +1,4 @@
-import MiniGL from "..";
+import MiniGL from "../MiniGL";
 
 class Texture {
     /**

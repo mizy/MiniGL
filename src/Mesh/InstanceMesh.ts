@@ -6,7 +6,8 @@ class InstanceMesh extends Base {
     drawType = "TRIANGLES";
     offset = 0; // array.BYTES_PER_ELEMENT * indicesEachLength
     data: PointData[];
-    instanceData: PointData[][];
+    instanceData: number[][];
+    instanceDataBuffers: Record<string, number> = {};
 
     constructor(
         config: BaseMeshConfig = {
@@ -82,18 +83,17 @@ class InstanceMesh extends Base {
     }
 
     // 设置实例数组
-    setInstanceData(instanceData: PointData[][]) {
+    setInstanceData(instanceData: number[][], name = "instanceOffset") {
         this.disposeInstanceData();
         this.instanceData = instanceData;
-        const eachLength = instanceData[0].length;
-        const arr = [];
+        const instanceNums = instanceData[0].length;
+        const arr: number[] = [];
         this.instanceData.forEach((item) => {
             arr.push(...item);
         });
-        this.setInstanceBufferData(arr, "instanceOffset", eachLength);
+        this.setInstanceBufferData(arr, name, instanceNums);
     }
 
-    instanceDataBuffers: Record<string, number> = {};
     setInstanceBufferData(data, name, length, instanceDivisor = 1) {
         this.setBufferData(data, name, length);
         this.instanceDataBuffers[name] = instanceDivisor;
