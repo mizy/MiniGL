@@ -3,15 +3,17 @@
   "include": ["src/**/*"],
   "compileOnSave": true,
   "compilerOptions": {
+    "pretty": true,
+    "sourceMap": true,
     "allowJs": true,
-    "declaration": true,
-    // "emitDeclarationOnly": true,
+    "declaration": false,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "outDir": "dist",
-    "module": "ESNext",
-    "target": "ES6",
-    "paths": {
-        "@/*": ["./src/*"]
-    },
+    "module": "es6",
+    "target": "es5",
+    "resolveJsonModule": true,
     "moduleResolution": "node"
   }
 }

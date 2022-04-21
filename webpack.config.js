@@ -1,48 +1,28 @@
-const path = require('path');
-let webpackConfig = {
+module.exports = {
+    cache: true,
     entry: {
-        index: "./src/index.ts",
+        index: "./src/index.ts"
     },
     output: {
-        library: 'MiniGL',
-        libraryTarget: 'umd',
-        libraryExport: 'default' // 默认导出
+        library: "MiniGL",
+        libraryTarget: "umd",
+        libraryExport: "default", // 默认导出
+        filename: "mini-gl.js"
     },
-    devtool: 'eval-source-map',
-    devServer: {
-        port: 8666,
-        static: {
-            directory: path.join(__dirname),
-        },
-        open: true,
-        host: '0.0.0.0',
-        hot: true,
-    },
-    mode: "development",
-    stats: 'minimal',
+    mode: 'development',
+    devtool: "source-map",
     module: {
         rules: [
             {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: ['file-loader']
-            },
-            {
-                test: /\.(js|jsx|ts|tsx)$/,
-                include: path.resolve(__dirname, "./src/"),
-                use: ["ts-loader"],
-            },
-            {
-                test: /\.less/,
-                use: ["style-loader", "css-loader", "less-loader"],
-            },
+                test: /\.(js|ts)$/,
+                exclude: /node_modules|dist/,
+                use: {
+                    loader: "ts-loader"
+                }
+            }
         ]
     },
     resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'src')
-        }
-    }
-
+        extensions: ['.ts', '.js'],
+    },
 };
-
-module.exports = webpackConfig;

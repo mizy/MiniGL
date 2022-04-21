@@ -1,9 +1,9 @@
-import MiniGLSlot from './MiniGLSlot';
-import MiniGLTextureAtlasData from './MiniGLTextureAtlasData';
-import MiniGLArmatureDisplay from './MiniGLArmatureDisplay';
-import MiniGL from '../index';
-import Image from '@/Mesh/Image';
-const {BaseObject,Armature} = dragonBones
+import MiniGLSlot from "./MiniGLSlot";
+import MiniGLTextureAtlasData from "./MiniGLTextureAtlasData";
+import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay";
+import MiniGL from "../index";
+import Image from "../Mesh/Image";
+const { BaseObject, Armature } = dragonBones;
 class DragonBoneObject extends dragonBones.BaseFactory {
     miniGL: MiniGL;
     display: MiniGLArmatureDisplay;
@@ -16,13 +16,13 @@ class DragonBoneObject extends dragonBones.BaseFactory {
     }
 
     addFrameEvent() {
-        this.miniGL.on('beforerender', this.update);
+        this.miniGL.on("beforerender", this.update);
     }
-    update = (delta)=> {
-       this._dragonBonesInstance.advanceTime(delta * 0.001);
-    }
+    update = (delta) => {
+        this._dragonBonesInstance.advanceTime(delta * 0.001);
+    };
 
-    getDragonBonesInstance = ()=> {
+    getDragonBonesInstance = () => {
         if (!this._dragonBonesInstance) {
             this._dragonBonesInstance = new dragonBones.DragonBones({
                 hasDBEventListener: (event) => {
@@ -32,17 +32,27 @@ class DragonBoneObject extends dragonBones.BaseFactory {
                 dispatchDBEvent: (event, data) => {
                     this.miniGL.fire(event, data);
                 },
-                addDBEventListener: (type, func) => { },
-                removeDBEventListener: (type, func) => { },
+                addDBEventListener: (type, func) => {},
+                removeDBEventListener: (type, func) => {},
             });
             this.addFrameEvent();
         }
         this._dragonBonesInstance = this._dragonBonesInstance;
-    }
+    };
 
     // 构建对象
-    buildArmatureDisplay(armatureName, dragonBonesName = '', skinName = '', textureAtlasName = '') {
-        const armature = this.buildArmature(armatureName, dragonBonesName, skinName, textureAtlasName);
+    buildArmatureDisplay(
+        armatureName,
+        dragonBonesName = "",
+        skinName = "",
+        textureAtlasName = ""
+    ) {
+        const armature = this.buildArmature(
+            armatureName,
+            dragonBonesName,
+            skinName,
+            textureAtlasName
+        );
         this._dragonBonesInstance.clock.add(armature);
         return armature.display;
     }
@@ -53,10 +63,14 @@ class DragonBoneObject extends dragonBones.BaseFactory {
      */
     _buildArmature(dataPackage) {
         const armature = dragonBones.BaseObject.borrowObject(Armature);
-        const armatureDisplay = new MiniGLArmatureDisplay({miniGL: this.miniGL});
+        const armatureDisplay = new MiniGLArmatureDisplay({
+            miniGL: this.miniGL,
+        });
         armature.init(
             dataPackage.armature,
-            armatureDisplay, armatureDisplay, this._dragonBones
+            armatureDisplay,
+            armatureDisplay,
+            this._dragonBones
         );
 
         return armature;
@@ -65,9 +79,7 @@ class DragonBoneObject extends dragonBones.BaseFactory {
     _buildSlot(_dataPackage, slotData, armature) {
         const slot = BaseObject.borrowObject(MiniGLSlot);
         const sprite = new Image();
-        slot.init(
-            slotData, armature, sprite, sprite
-        );
+        slot.init(slotData, armature, sprite, sprite);
         return slot;
     }
 
@@ -81,7 +93,6 @@ class DragonBoneObject extends dragonBones.BaseFactory {
         return textureAtlasData;
     }
 
-    destroy() {
-    }
-} 
+    destroy() {}
+}
 export default DragonBoneObject;
