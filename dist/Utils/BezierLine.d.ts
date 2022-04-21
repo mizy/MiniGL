@@ -1,23 +1,33 @@
-export default BezierLine;
+import { Vector2 } from './vector';
 declare class BezierLine {
-    setControl(v0: any, v1: any, v2: any, v3: any): void;
-    v0: any;
-    v1: any;
-    v2: any;
-    v3: any;
-    setData(data: any): void;
-    data: any;
-    getPoint(t: any): {
+    v0: Vector2;
+    v1: Vector2;
+    v2: Vector2;
+    v3: Vector2;
+    lengths: number[];
+    setControl(v0: Vector2, v1: Vector2, v2: Vector2, v3: Vector2): void;
+    getPoint(t: number): {
         x: number;
         y: number;
     };
-    cubicBezier(t: any, p0: any, p1: any, p2: any, p3: any): number;
-    getSpacedPoints(n: any): {
-        x: number;
-        y: number;
-    }[];
-    lengths: number[];
+    cubicBezier(t: number, p0: number, p1: number, p2: number, p3: number): number;
+    /**
+     * @param n 指定点的个数
+     * @returns
+     */
+    getSpacedPoints(n: number): Vector2[];
+    /**
+     * 返回缓存长度数组
+     * @param n 分割点的个数
+     * @returns
+     */
     getLengths(n?: number): number[];
+    /**
+     * 获取线总长度
+     * @param n
+     * @returns
+     */
     getLength(n: any): number;
-    getUtoTmapping(u: any): number;
+    getUtoTmapping(u: number): number;
 }
+export default BezierLine;

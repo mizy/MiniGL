@@ -1,45 +1,46 @@
-export namespace BlendMode {
-    const Normal: number;
-    const Add: number;
-    const Alpha: number;
-    const Darken: number;
-    const Difference: number;
-    const Erase: number;
-    const HardLight: number;
-    const Invert: number;
-    const Layer: number;
-    const Lighten: number;
-    const Multiply: number;
-    const Overlay: number;
-    const Screen: number;
-    const Subtract: number;
-}
-export namespace BinaryOffset {
-    const WeigthBoneCount: number;
-    const WeigthFloatOffset: number;
-    const WeigthBoneIndices: number;
-    const GeometryVertexCount: number;
-    const GeometryTriangleCount: number;
-    const GeometryFloatOffset: number;
-    const GeometryWeightOffset: number;
-    const GeometryVertexIndices: number;
-    const TimelineScale: number;
-    const TimelineOffset: number;
-    const TimelineKeyFrameCount: number;
-    const TimelineFrameValueCount: number;
-    const TimelineFrameValueOffset: number;
-    const TimelineFrameOffset: number;
-    const FramePosition: number;
-    const FrameTweenType: number;
-    const FrameTweenEasingOrCurveSampleCount: number;
-    const FrameCurveSamples: number;
-    const DeformVertexOffset: number;
-    const DeformCount: number;
-    const DeformValueCount: number;
-    const DeformValueOffset: number;
-    const DeformFloatOffset: number;
-}
-export namespace BoneType {
-    const Bone: number;
-    const Surface: number;
-}
+declare const BlendMode: {
+    Normal: number;
+    Add: number;
+    Alpha: number;
+    Darken: number;
+    Difference: number;
+    Erase: number;
+    HardLight: number;
+    Invert: number;
+    Layer: number;
+    Lighten: number;
+    Multiply: number;
+    Overlay: number;
+    Screen: number;
+    Subtract: number;
+};
+declare const BoneType: {
+    Bone: number;
+    Surface: number;
+};
+declare const BinaryOffset: {
+    WeigthBoneCount: number;
+    WeigthFloatOffset: number;
+    WeigthBoneIndices: number;
+    GeometryVertexCount: number;
+    GeometryTriangleCount: number;
+    GeometryFloatOffset: number;
+    GeometryWeightOffset: number;
+    GeometryVertexIndices: number;
+    TimelineScale: number;
+    TimelineOffset: number;
+    TimelineKeyFrameCount: number;
+    TimelineFrameValueCount: number;
+    TimelineFrameValueOffset: number;
+    TimelineFrameOffset: number;
+    FramePosition: number;
+    FrameTweenType: number;
+    FrameTweenEasingOrCurveSampleCount: number;
+    FrameCurveSamples: number;
+    DeformVertexOffset: number;
+    DeformCount: number;
+    DeformValueCount: number;
+    DeformValueOffset: number;
+    DeformFloatOffset: number;
+};
+export { BlendMode, BinaryOffset, BoneType };

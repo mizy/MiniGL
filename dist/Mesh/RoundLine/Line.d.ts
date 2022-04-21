@@ -1,21 +1,29 @@
-export default RoundLine;
+import Base, { BaseMeshConfig } from '../BaseMesh';
+import { PointData } from '../Mesh';
 declare class RoundLine extends Base {
-    constructor(config: any);
     drawType: string;
-    data: any;
+    shaders: {
+        vertex: string;
+        fragment: string;
+    };
+    offset: number;
+    data: PointData[];
     res: {
         preData: any[];
         nowData: any[];
         nextData: any[];
-        side: number[];
-        status: number[];
+        side: any[];
+        status: any[];
     };
+    constructor(config: BaseMeshConfig);
+    setData(data: PointData[]): void;
     calcSidePoints(data?: any[]): {
         preData: any[];
         nowData: any[];
         nextData: any[];
-        side: number[];
-        status: number[];
+        side: any[];
+        status: any[];
     };
+    render(): void;
 }
-import Base from "../Base";
+export default RoundLine;

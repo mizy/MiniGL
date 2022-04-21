@@ -1,17 +1,22 @@
-export function normalize(v: any): {
+export interface Vector2 {
+    x: number;
+    y: number;
+}
+declare function normalize(v: Vector2): {
     x: number;
     y: number;
 };
-export function addVector(v0: any, v1: any): {
-    x: any;
-    y: any;
-};
-export function multiple(v: any, t: any): {
+declare function addVector(v0: Vector2, v1: Vector2): {
     x: number;
     y: number;
 };
-export function getVectorLength(v: any): number;
-export function subVector(v0: any, v1: any): {
+declare function getVectorLength(v: Vector2): number;
+declare function subVector(v0: Vector2, v1: Vector2): {
     x: number;
     y: number;
 };
+declare function multiple(v: Vector2, t: number): {
+    x: number;
+    y: number;
+};
+export { normalize, addVector, multiple, getVectorLength, subVector };

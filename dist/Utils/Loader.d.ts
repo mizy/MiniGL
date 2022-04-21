@@ -1,11 +1,13 @@
 /**
  * 加载资源
- * @param  {} url
- * @param  {} option={}
+ * @param url
+ * @param option
+ * @returns
  */
-export function load(url: any, option?: any): Promise<any>;
+declare function load(url: string, option?: Record<string, any>): Promise<any>;
 /**
  * 加载图片
  * @param  {} url
  */
-export function loadImage(url: any): Promise<any>;
+declare function loadImage(url: string): Promise<HTMLImageElement>;
+export { load, loadImage };

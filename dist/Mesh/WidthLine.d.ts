@@ -1,20 +1,28 @@
-export default WidthLine;
+import Base, { BaseMeshConfig } from './BaseMesh';
+import { PointData } from './Mesh';
 declare class WidthLine extends Base {
-    constructor(config: any);
     drawType: string;
-    data: any;
+    shaders: {
+        vertex: string;
+        fragment: string;
+    };
+    offset: number;
+    data: PointData[];
     res: {
-        nowData: any[];
-        preData: any[];
+        nowData: number[];
+        preData: number[];
         side: number[];
-        nextData: any[];
+        nextData: number[];
     };
+    constructor(config: BaseMeshConfig);
+    setData(data: PointData[]): void;
     addData(data: any): void;
-    calcSidePoints(data?: any[]): {
-        nowData: any[];
-        preData: any[];
+    calcSidePoints(data?: number[]): {
+        nowData: number[];
+        preData: number[];
+        nextData: number[];
         side: number[];
-        nextData: any[];
     };
+    render(): void;
 }
-import Base from "./Base";
+export default WidthLine;

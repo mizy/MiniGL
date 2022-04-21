@@ -1,7 +1,7 @@
 const path = require('path');
 let webpackConfig = {
     entry: {
-        index: "./src/index.js",
+        index: "./src/index.ts",
     },
     output: {
         library: 'MiniGL',
@@ -27,14 +27,14 @@ let webpackConfig = {
                 use: ['file-loader']
             },
             {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: [
-                    {
-                        loader: 'babel-loader'
-                    }
-                ]
-            }
+                test: /\.(js|jsx|ts|tsx)$/,
+                include: path.resolve(__dirname, "./src/"),
+                use: ["ts-loader"],
+            },
+            {
+                test: /\.less/,
+                use: ["style-loader", "css-loader", "less-loader"],
+            },
         ]
     },
     resolve: {

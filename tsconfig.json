@@ -1,11 +1,17 @@
 {
   // 更改此项以匹配您的项目
   "include": ["src/**/*"],
-
+  "compileOnSave": true,
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
+    // "emitDeclarationOnly": true,
     "outDir": "dist",
+    "module": "ESNext",
+    "target": "ES6",
+    "paths": {
+        "@/*": ["./src/*"]
+    },
+    "moduleResolution": "node"
   }
 }

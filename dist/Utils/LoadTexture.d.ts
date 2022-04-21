@@ -1,1 +1,1 @@
-export default function loadTexture(gl: any, imagePath: any): Promise<any>;
+export default function loadTexture(gl: WebGL2RenderingContext, imagePath: string): Promise<WebGLTexture>;

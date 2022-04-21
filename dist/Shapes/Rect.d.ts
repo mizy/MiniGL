@@ -1,15 +1,8 @@
-export default Rect;
+import Mesh from '../Mesh/Mesh';
 /**
  * @class
  */
 declare class Rect {
-    /**
-     * @param  {} width
-     * @param  {} height
-     * @param  {} x
-     * @param  {} y
-     */
-    constructor(x: any, y: any, width: any, height: any);
     /**
      * 数据
      */
@@ -18,13 +11,14 @@ declare class Rect {
      * 索引
      */
     indices: any[];
-    width: any;
-    height: any;
-    x: any;
-    y: any;
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+    meshKey: any;
+    mesh: Mesh;
+    constructor(x: number, y: number, width: number, height: number);
     makeData(): void;
     addTo(app: any): void;
-    mesh: Mesh;
-    meshKey: any;
 }
-import Mesh from "../Mesh/Mesh";
+export default Rect;

@@ -1,34 +1,32 @@
-export default Base;
+import MiniGL from ".";
 /**
  * 图层基础类
  * @class
  */
 declare class Base {
-    layers: any[];
+    miniGL: MiniGL;
     _listeners: {};
     /**
      * 事件监听,用法同jQuery.on
      */
-    on(type: any, listener: any): void;
+    on(type: string, listener: Function): void;
     /**
      * 触发事件
      * @example
      * this.fire("change",event)
      */
-    fire(type: any, event: any): void;
+    fire(type: string, event: any): void;
     /**
      * 关闭事件
      * @example
      * this.off('change',onChange)
      */
-    off(type: any, listener: any): void;
+    off(type: string, listener: any): void;
     initConfig(config: any): void;
     /**
      * 地图添加图层时调用,由子类实现
-     * @param {any} map
      */
-    onAdd(map: any): void;
-    miniGL: any;
+    onAdd(map: MiniGL): void;
     /**
      * 地图每帧调用该函数
      */
@@ -37,18 +35,5 @@ declare class Base {
      * 移除图层时调用
      */
     onRemove(): void;
-    /**
-     * 添加图层
-     * @param {Layer} layer - 图层
-     */
-    addLayer(layer: Layer): void;
-    /**
-     * 删除图层
-     * @param {Layer} layer - 图层
-     */
-    removeLayer(layer: Layer): void;
-    /**
-     * 获取图层通过id
-     */
-    getLayerById(id: any): any;
 }
+export default Base;

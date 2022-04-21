@@ -1,25 +1,22 @@
-export default DragonBoneObject;
-declare const DragonBoneObject_base: any;
-declare class DragonBoneObject extends DragonBoneObject_base {
-    [x: string]: any;
-    constructor(miniGL: any);
-    miniGL: any;
+import MiniGLSlot from './MiniGLSlot';
+import MiniGLArmatureDisplay from './MiniGLArmatureDisplay';
+import MiniGL from '../index';
+declare class DragonBoneObject extends dragonBones.BaseFactory {
+    miniGL: MiniGL;
     display: MiniGLArmatureDisplay;
+    _dragonBonesInstance: dragonBones.DragonBones;
+    constructor(miniGL: any);
     addFrameEvent(): void;
-    getDragonBonesInstance(): void;
-    _dragonBonesInstance: any;
+    update: (delta: any) => void;
+    getDragonBonesInstance: () => void;
     buildArmatureDisplay(armatureName: any, dragonBonesName?: string, skinName?: string, textureAtlasName?: string): any;
     /**
      * @override 复现方法
      * @param {*} dataPackage
      */
-    override _buildArmature(dataPackage: any): any;
-    _buildSlot(_dataPackage: any, slotData: any, armature: any): any;
+    _buildArmature(dataPackage: any): dragonBones.Armature;
+    _buildSlot(_dataPackage: any, slotData: any, armature: any): MiniGLSlot;
     _buildTextureAtlasData(textureAtlasData: any, textureAtlas: any): any;
     destroy(): void;
 }
-declare namespace DragonBoneObject {
-    export function update(delta: any): void;
-    export { MiniGLArmatureDisplay };
-}
-import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay";
+export default DragonBoneObject;

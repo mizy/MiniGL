@@ -1,12 +1,22 @@
-export default Line;
+import Base from './BaseMesh';
+import { PointData } from './Mesh';
 declare class Line extends Base {
-    constructor(config: any);
     drawType: string;
-    data: any;
+    shaders: {
+        vertex: string;
+        fragment: string;
+    };
+    offset: number;
+    data: PointData[];
+    constructor(config: any);
+    setData(data: PointData[]): void;
     /**
      *
      * @param {any} param 入参
      */
-    setBufferDatas({ position, color }: any): void;
+    setBufferDatas({ position, color }: {
+        position: number[];
+        color: number[];
+    }): void;
 }
-import Base from "./Base";
+export default Line;

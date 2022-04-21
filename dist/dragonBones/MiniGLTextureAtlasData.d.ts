@@ -1,14 +1,16 @@
-export default MiniGLTextureAtlasData;
-declare const MiniGLTextureAtlasData_base: any;
-declare class MiniGLTextureAtlasData extends MiniGLTextureAtlasData_base {
-    [x: string]: any;
+declare class MiniGLTextureAtlasData extends dragonBones.TextureAtlasData {
     scale: number;
-    _onClear(): void;
     disposeEnabled: boolean;
-    _renderTexture: any;
-    createTexture(): any;
+    private _renderTexture;
+    _onClear(): void;
+    createTexture(): MiniTextureData;
     setRenderTexture(texture: any, miniGL: any): any;
 }
-declare namespace MiniGLTextureAtlasData {
-    function toString(): string;
+/**
+ * @internal
+ */
+declare class MiniTextureData extends dragonBones.TextureData {
+    renderTexture: any;
+    _onClear(): void;
 }
+export default MiniGLTextureAtlasData;

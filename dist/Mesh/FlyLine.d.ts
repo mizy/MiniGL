@@ -1,12 +1,46 @@
-export default Line;
+import Base from './BaseMesh';
+import BezierLine from '../Utils/BezierLine';
 declare class Line extends Base {
-    constructor(config: any);
     drawType: string;
+    shaders: {
+        vertex: string;
+        fragment: string;
+    };
+    offset: number;
+    depthMask: boolean;
     bezierLine: BezierLine;
-    data: any;
-    start(): void;
+    data: {
+        startXY?: {
+            x: number;
+            y: number;
+        };
+        endXY?: {
+            x: number;
+            y: number;
+        };
+        start: {
+            x: number;
+            y: number;
+        };
+        end: {
+            x: number;
+            y: number;
+        };
+    };
     startFlag: boolean;
+    constructor(config: any);
+    setData(data: {
+        start: {
+            x: number;
+            y: number;
+        };
+        end: {
+            x: number;
+            y: number;
+        };
+    }): void;
+    start(): void;
     pause(): void;
+    render(): void;
 }
-import Base from "./Base";
-import BezierLine from "../Utils/BezierLine";
+export default Line;

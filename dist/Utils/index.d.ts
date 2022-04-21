@@ -1,5 +1,5 @@
+import * as Loader from './Loader';
+declare const Util: {
+    Loader: typeof Loader;
+};
 export default Util;
-declare namespace Util {
-    export { Loader };
-}
-import * as Loader from "./Loader";

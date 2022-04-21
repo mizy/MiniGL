@@ -1,5 +1,5 @@
-declare namespace _default {
-    const vertexShader: string;
-    const fragmentShader: string;
-}
+declare const _default: {
+    vertexShader: string;
+    fragmentShader: string;
+};
 export default _default;

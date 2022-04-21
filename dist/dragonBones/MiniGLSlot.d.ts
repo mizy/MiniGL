@@ -1,15 +1,12 @@
-export default MiniGLSlot;
-declare const MiniGLSlot_base: any;
 /**
  * 骨骼插槽
  * @class
  */
-declare class MiniGLSlot extends MiniGLSlot_base {
-    [x: string]: any;
+declare class MiniGLSlot extends dragonBones.Slot {
+    private _armatureDisplay;
+    private _renderDisplay;
+    private _colorFilter;
     _onClear(): void;
-    _armatureDisplay: any;
-    _renderDisplay: any;
-    _colorFilter: any;
     _initDisplay(value: any, isRetain: any): void;
     _disposeDisplay(value: any, isRelease: any): void;
     _onUpdateDisplay(): void;
@@ -21,11 +18,8 @@ declare class MiniGLSlot extends MiniGLSlot_base {
     _updateBlendMode(): void;
     _updateColor(): void;
     _updateFrame(): void;
-    _visibleDirty: boolean;
     _updateMesh(): void;
     _identityTransform(): void;
     _updateTransform(): void;
 }
-declare namespace MiniGLSlot {
-    function toString(): string;
-}
+export default MiniGLSlot;

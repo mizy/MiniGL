@@ -1,17 +1,25 @@
-export default ViewPort;
+import { mat3 } from 'gl-matrix';
+import MiniGL, { MiniGLConfig } from '..';
 /**
  * @class
  */
 declare class ViewPort {
-    constructor(config: any);
-    miniGL: any;
-    gl: any;
-    config: any;
+    miniGL: MiniGL;
+    gl: WebGL2RenderingContext;
+    config: MiniGLConfig;
     transform: mat3;
     convertTransform: mat3;
     scale: number;
     translate: number[];
     rotation: number;
+    width: number;
+    height: number;
+    pixelRatio: number;
+    renderWidth: number;
+    renderHeight: number;
+    ratio: number;
+    matrix: mat3;
+    constructor(config: MiniGLConfig);
     convertScreenToWorld(x?: number, y?: number): {
         x: number;
         y: number;
@@ -24,7 +32,7 @@ declare class ViewPort {
      * @param  {} x=0
      * @param  {} y=0
      */
-    convertScreenToClip(x?: any, y?: any): {
+    convertScreenToClip(x?: number, y?: number): {
         x: number;
         y: number;
     };
@@ -32,7 +40,7 @@ declare class ViewPort {
      * @param  {} x=0
      * @param  {} y=0
      */
-    convertClipToScreen(x?: any, y?: any): {
+    convertClipToScreen(x?: number, y?: number): {
         x: number;
         y: number;
     };
@@ -40,13 +48,6 @@ declare class ViewPort {
      * 重新布局
      */
     resize(): void;
-    pixelRatio: number;
-    renderWidth: number;
-    renderHeight: number;
-    width: any;
-    height: any;
-    ratio: number;
     makeMatrix(): void;
-    matrix: mat3;
 }
-import { mat3 } from "gl-matrix";
+export default ViewPort;

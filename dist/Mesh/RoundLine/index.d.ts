@@ -1,16 +1,18 @@
-export default RoundLine;
+import MiniGL from '@/index.js';
+import { PointData } from '../Mesh.js';
+import Line from './Line.js';
+import LinePoint from './LinePoint';
 declare class RoundLine {
-    constructor(config: any);
     depthMask: boolean;
     depthTest: boolean;
     transparent: boolean;
     line: Line;
     linePoint: LinePoint;
-    onAdd(...args: any[]): void;
-    setData(...args: any[]): void;
-    dispose(...args: any[]): void;
-    destroy(...args: any[]): void;
-    render(...args: any[]): void;
+    constructor(config: any);
+    onAdd(miniGL: MiniGL): void;
+    setData(data: PointData[]): void;
+    dispose(): void;
+    destroy(): void;
+    render(): void;
 }
-import Line from "./Line.js";
-import LinePoint from "./LinePoint";
+export default RoundLine;
