@@ -101,7 +101,6 @@ typings/
 
 # TernJS port file
 .tern-port
-yarn.lock
 lib
 dist
 types
