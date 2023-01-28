@@ -1,9 +1,6 @@
 import { mat3 } from "gl-matrix";
 import MiniGL, { MiniGLConfig } from "../MiniGL";
 
-/**
- * @class
- */
 class ViewPort {
     miniGL: MiniGL;
     gl: WebGL2RenderingContext;

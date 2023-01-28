@@ -1,8 +1,5 @@
 /**
  * 加载资源
- * @param url 
- * @param option 
- * @returns 
  */
 function load(url:string, option: Record<string,any> = {}) {
     if (option.type === 'image') {
@@ -21,7 +18,6 @@ function load(url:string, option: Record<string,any> = {}) {
 }
 /**
  * 加载图片
- * @param  {} url
  */
 function loadImage(url:string):Promise<HTMLImageElement> {
    return new Promise((resolve, reject)=>{

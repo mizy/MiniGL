@@ -42,7 +42,7 @@ class Canvas {
     }
 
     toDataUrl() {
-        return this.gl.canvas.toDataURL();
+        return (this.gl.canvas as HTMLCanvasElement).toDataURL()
     }
 
     status = "update";
