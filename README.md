@@ -22,6 +22,7 @@
 	* [自定义shader](https://mizy.github.io/MiniGL/demo/customShader/index.html)
 + InstanceMesh(webGL2)
 	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/index.html)
+  * [instanceArrow](https://mizy.github.io/MiniGL/demo/arrow/arrow.html)
 + DragonBones动画 
 	* [骨骼动画](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
     * [Mesh动画-眼部追踪](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)

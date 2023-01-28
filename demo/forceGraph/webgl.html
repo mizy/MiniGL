@@ -1,92 +1,95 @@
 <html>
-	<head>
-		<title>MiniGL</title>
-	</head>
-	<body>
-		<div id="root" style="width:100%;height:100%"></div>
-		<script src="../../dist/mini-gl.js"></script> 
-        <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
-        <script src="https://cdn.bootcdn.net/ajax/libs/d3/7.0.0/d3.min.js"></script>
-	</body>
-	<script>
-        const colors = [[0.1,0.1,0.4],[0.4,0.1,0.1],[0.1,0.4,0.1]]
-		const app = new MiniGL({
-			container:document.querySelector("#root"),
-            pointConfig:{
-                sizeAttenuation:true
-            }
-		});
-		app.init();
-		const width = document.querySelector("#root").clientWidth;
-		const height = document.querySelector("#root").clientHeight;
-		const points = [];
-		const size = [];
-        const links = [];
-        const number = 10000;
-		for(let i = 0;i<number;i+=1){
-            const x = Math.random()*width;
-            const y = Math.random()*height
-            points.push(
-                {
-                    id:i,
-                    x,y,
-                    position:{x,y},
-                    color:[x/width,y/height,i/width,1],
-                    size:30
-                }
-            );
-		}
 
-        const linkPoints = [];
-        for(let i = 1;i<number;i+=1){
-            const source = Math.floor(Math.random()*number);
-            const target = Math.floor(Math.random()*number);
-            links.push(
-                {
-                    source,
-                    target
-                }
-            );
-            linkPoints.push({position:points[source]},{position:points[target]})
-		}
+<head>
+  <title>MiniGL</title>
+</head>
 
-        app.canvas.point.setData(points);
-        app.canvas.line.config.color = [0.8,0.1,0,1];
-        app.canvas.line.uniformData.z.value = 0.8;
-        app.canvas.line.setData(linkPoints);
+<body>
+  <div id="root" style="width:100%;height:100%"></div>
+  <script src="../../dist/mini-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-force@3"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/d3/7.0.0/d3.min.js"></script>
+</body>
+<script>
+  const colors = [[0.1, 0.1, 0.4], [0.4, 0.1, 0.1], [0.1, 0.4, 0.1]]
+  const app = new MiniGL({
+    container: document.querySelector("#root"),
+    pointConfig: {
+      sizeAttenuation: true
+    }
+  });
+  app.init();
+  const width = document.querySelector("#root").clientWidth;
+  const height = document.querySelector("#root").clientHeight;
+  const points = [];
+  const size = [];
+  const links = [];
+  const number = 100000;
+  for (let i = 0; i < number; i += 1) {
+    const x = Math.random() * width;
+    const y = Math.random() * height
+    points.push(
+      {
+        id: i,
+        x, y,
+        position: { x, y },
+        color: [x / width, y / height, i / width, 1],
+        size: 30
+      }
+    );
+  }
 
-        const simulation = d3.forceSimulation(points)
-        .force("link", d3.forceLink(links))
-        .force("charge", d3.forceManyBody())
-        .force("collide", d3.forceCollide(30).strength(0.2))
-        .force("center", d3.forceCenter(width/2,height/2))
-        .alpha(0.2)
-        simulation.on("tick",()=>{
-            const vertex = [];
-            points.forEach(item=>{
-                vertex.push(item.x,item.y)
-            })
-            const linksPoints = [];
-            linkPoints.forEach(item=>{
-                linksPoints.push(item.position.x,item.position.y)
-            })
-            app.canvas.point.updateBufferData(vertex, 'position');
-            app.canvas.line.updateBufferData(linksPoints, 'position');
-        });
-        app.canvas.line.drawType = 'LINES';
-        app.container.addEventListener("click",(e)=>{
-            const {offsetX,offsetY} = e;
-            const {x,y} = app.viewport.convertScreenToWorld(offsetX,offsetY);
-            points.forEach(item=>{
-                const dis = Math.sqrt(Math.pow(item.x - x,2)+Math.pow(item.y - y,2));
-                if(dis<15){
-                    console.log(item,x,y)
-                }
-            })
-        });
-        const time = new Date().getTime();
-        simulation.on("end",()=>{
-            console.log(new Date().getTime() - time);
-        })
-	</script>
+  const linkPoints = [];
+  for (let i = 1; i < number; i += 1) {
+    const source = Math.floor(Math.random() * number);
+    const target = Math.floor(Math.random() * number);
+    links.push(
+      {
+        source,
+        target
+      }
+    );
+    linkPoints.push({ position: points[source] }, { position: points[target] })
+  }
+
+  app.canvas.point.setData(points);
+  app.canvas.line.config.color = [0.8, 0.1, 0, 1];
+  app.canvas.line.uniformData.z.value = 0.8;
+  app.canvas.line.setData(linkPoints);
+
+  const simulation = d3.forceSimulation(points)
+    .force("link", d3.forceLink(links))
+    .force("charge", d3.forceManyBody())
+    .force("collide", d3.forceCollide(30).strength(0.2))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .alpha(0.2)
+  simulation.on("tick", () => {
+    const vertex = [];
+    points.forEach(item => {
+      vertex.push(item.x, item.y)
+    })
+    const linksPoints = [];
+    linkPoints.forEach(item => {
+      linksPoints.push(item.position.x, item.position.y)
+    })
+    app.canvas.point.updateBufferData(vertex, 'position');
+    app.canvas.line.updateBufferData(linksPoints, 'position');
+  });
+  app.canvas.line.drawType = 'LINES';
+  app.container.addEventListener("click", (e) => {
+    const { offsetX, offsetY } = e;
+    const { x, y } = app.viewport.convertScreenToWorld(offsetX, offsetY);
+    points.forEach(item => {
+      const dis = Math.sqrt(Math.pow(item.x - x, 2) + Math.pow(item.y - y, 2));
+      if (dis < 15) {
+        console.log(item, x, y)
+      }
+    })
+  });
+  const time = new Date().getTime();
+  simulation.on("end", () => {
+    console.log(new Date().getTime() - time);
+  })
+</script>
+
 </html>
