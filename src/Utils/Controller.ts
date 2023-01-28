@@ -1,8 +1,9 @@
 import { mat3 } from "gl-matrix";
 import MiniGL, { MiniGLConfig } from "../MiniGL";
+import ViewPort from '../View/Viewport';
 class Controller {
     miniGL: MiniGL;
-    viewport: import("/Users/mizy/projects/MiniGL/src/View/Viewport").default;
+    viewport: ViewPort;
     gl: WebGL2RenderingContext;
     status: string;
     config: MiniGLConfig;
