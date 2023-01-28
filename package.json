@@ -8,7 +8,7 @@
     "build:esm": "npx -p typescript tsc src/**/*.ts  --outDir lib",
     "build": "webpack --mode=production ",
     "doc": "typedoc ",
-    "build:all": "npm run build && build:esm && npm run makeDts",
+    "build:all": "npm run build && npm run build:esm && npm run makeDts",
     "makeDts": "npx -p typescript tsc -p ./dts.json"
   },
   "types": "./types/index.d.ts",
