@@ -2,7 +2,7 @@ import MiniGLSlot from "./MiniGLSlot";
 import MiniGLTextureAtlasData from "./MiniGLTextureAtlasData";
 import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay";
 import MiniGL from "../MiniGL";
-import Image from "../Mesh/Image";
+import Image from "../Shapes/Image";
 
 class DragonBoneObject extends (window.dragonBones ? dragonBones.BaseFactory : null) {
   miniGL: MiniGL;

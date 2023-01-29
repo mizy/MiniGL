@@ -1,7 +1,7 @@
 import lineShader from '../Shaders/flyline';
 import Base from './BaseMesh';
 import BezierLine from '../Utils/BezierLine';
-import {normalize, addVector, getVectorLength, subVector, multiple } from '../Utils/vector';
+import {normalize, addVector, getVectorLength, subVector, multiple } from '../Utils/Vector';
 
 class Line extends Base {
 	drawType = 'LINE_STRIP';

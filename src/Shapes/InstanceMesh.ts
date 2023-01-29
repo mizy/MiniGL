@@ -1,5 +1,5 @@
 import instanceMeshShader from "../Shaders/instanceMeshShader";
-import loadTexture from "../Utils/LoadTexture";
+import { loadTexture } from "../Utils/Loader";
 import Base, { BaseMeshConfig } from "./BaseMesh";
 import { PointData } from "./Mesh";
 class InstanceMesh extends Base {

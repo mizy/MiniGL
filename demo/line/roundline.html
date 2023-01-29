@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <title>MiniGL</title>
+</head>
+
+<body style="margin:0">
+  <div id="root" style="width: 100%; height: 100%;"></div>
+  <script src="../../dist/mini-gl.js"></script>
+</body>
+<script>
+  const app = new MiniGL({
+    container: document.querySelector("#root"),
+  });
+  app.init();
+  const roundLine = new MiniGL.Shape.RoundLine({
+    color: [1, 0, 0, 1],
+    width: 5,
+    offset: 0,
+  });
+  app.canvas.add(roundLine);
+  roundLine.setData([
+    { position: { x: 100, y: 500 } },
+    { position: { x: 200, y: 100 } }
+
+  ]);
+  const roundLine2 = new MiniGL.Shape.RoundLine({
+    color: [1, 1, 0, 1],
+    width: 5,
+    offset: -20,
+  });
+  app.canvas.add(roundLine2);
+  roundLine2.setData([
+    { position: { x: 220, y: 400 } },
+    { position: { x: 220, y: 300 } },
+    { position: { x: 300, y: 400 } },
+    { position: { x: 350, y: 300 } },
+
+  ]);
+
+  app.canvas.line.setData([
+    { position: { x: 0, y: 0 } },
+    { position: { x: 0, y: 100 } },
+    { position: { x: 0, y: 0 } },
+    { position: { x: 100, y: 0 } },
+  ]);
+</script>
+
+</html>

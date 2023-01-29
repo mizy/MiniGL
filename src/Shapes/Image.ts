@@ -1,6 +1,6 @@
 import shader from '../Shaders/image';
 import Base, { BaseMeshConfig } from './BaseMesh';
-import loadTexture from '../Utils/LoadTexture';
+import { loadTexture } from '../Utils/Loader';
 export interface ImageMeshData {
     width: number, height: number,
     src?: string, texture?: WebGLTexture,

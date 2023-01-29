@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <title>MiniGL</title>
+</head>
+
+<body style="margin:0">
+  <div id="root" style="width: 100%; height: 100%;"></div>
+  <script src="../../dist/mini-gl.js"></script>
+</body>
+<script>
+  const app = new MiniGL({
+    container: document.querySelector("#root"),
+  });
+  app.init();
+
+
+  const height = window.innerHeight;
+  const width = window.innerWidth;
+  // init ground
+  const groundData = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
+  const ground = new MiniGL.Shape.Mesh({
+    color: [0.2, 0.7, 0.2, 1],
+    miniGL: app
+  });
+  ground.drawType = 'TRIANGLE_STRIP';
+  const groundPositions = [];
+  const groundIndices = [];
+  let index = 0;
+  [...groundData, 1].forEach((item, i) => {
+    groundPositions.push({ position: { x: i * 100, y: window.innerHeight - 200 } });
+    groundPositions.push({ position: { x: i * 100, y: window.innerHeight } });
+    groundIndices.push(index, index + 1);
+    index += 2;
+    if (item === 0) {
+      groundPositions.push({ position: { x: i * 100, y: window.innerHeight } });
+      groundPositions.push({ position: { x: (i + 1) * 100, y: window.innerHeight } });
+      groundPositions.push({ position: { x: (i + 1) * 100, y: window.innerHeight } });
+      groundIndices.push(index, index + 1, index + 2);
+      index += 3;
+    }
+  });
+
+  ground.setData(groundPositions, groundIndices);
+
+  app.canvas.point.setData([
+    { position: { x: 200, y: window.innerHeight - 200 - 30, }, size: 60 }
+  ]);
+</script>
+
+</html>

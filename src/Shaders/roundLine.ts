@@ -1,8 +1,8 @@
 export default {
-    // 先求连接线然后再求垂线
-    // 求出等比放大的值
-    vertexShader: `
-	precision lowp float;
+  // 先求连接线然后再求垂线
+  // 求出等比放大的值
+  vertexShader: `
+	precision highp float;
 	attribute vec2 now;
 	attribute vec2 pre;
 	attribute vec2 next;
@@ -51,7 +51,7 @@ export default {
 	}
 	`,
 
-    fragmentShader: `
+  fragmentShader: `
 	precision lowp float;
 	uniform vec4 color;
 	varying float vSide;

@@ -1,5 +1,5 @@
 export default {
-	vertexShader: `
+  vertexShader: `
 	precision highp float;
 	attribute vec2 position;
 	attribute vec2 uv;
@@ -15,7 +15,7 @@ export default {
 		gl_Position = vec4(mPosition.xy,z,1.0);
 	}
 	`,
-	fragmentShader: `
+  fragmentShader: `
 	precision highp float;
     varying vec2 vUv;
     uniform vec4 alphaColor;

@@ -1,4 +1,4 @@
-import {getVectorLength, subVector, Vector2} from './vector';
+import {getVectorLength, subVector, Vector2} from './Vector';
 class BezierLine {
 	v0: Vector2;
 	v1: Vector2;

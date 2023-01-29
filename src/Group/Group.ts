@@ -1,4 +1,4 @@
-import BaseMesh, { BaseMeshConfig } from "../Mesh/BaseMesh";
+import BaseMesh, { BaseMeshConfig } from "../Shapes/BaseMesh";
 import MiniGL from "../MiniGL";
 /**
  * 进行批量渲染

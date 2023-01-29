@@ -1,6 +1,6 @@
 import Group from '../Group/Group';
 import EventListener from '../Base';
-import Line from '../Mesh/Line';
+import Line from '../Shapes/Line';
 /**
  * 骨架显示
  * @class

@@ -1,8 +1,8 @@
 export default {
-    // 先求连接线然后再求垂线
-    // 求出等比放大的值
-    vertexShader: `
-	precision lowp float;
+  // 先求连接线然后再求垂线
+  // 求出等比放大的值
+  vertexShader: (config: { sizeAttenuation?: boolean }) => `
+	precision highp float;
 	attribute vec2 now;
 	attribute vec2 pre;
 	attribute vec2 next;
@@ -11,6 +11,7 @@ export default {
 	uniform float aspect;
 	uniform mat3 transform;
 	uniform float offset;
+  uniform float scale;
 	varying float vSide;
 	void main()
 	{
@@ -38,14 +39,14 @@ export default {
 
 		//这个算法下先放大,求出的Normal比例在放大的坐标系下是对的，根据这个normal求出放大的比例
 		float ratio = sqrt(1.0 - pow(dot(normal,point0_1),2.0));
-		vec2 dir = normal * width/ratio * .5 * side + offsets;
+		vec2 dir = normal * width${config.sizeAttenuation ? "* scale" : ""}/ratio * .5 * side + offsets${config.sizeAttenuation ? "* scale" : ""};
 
 		// 得出的x坐标会被放大，这里要除掉,记得要用转换后坐标进行加减
 		gl_Position = vec4(mNow.x + dir.x/aspect,mNow.y+dir.y , 1., 1.);
 	}
 	`,
 
-    fragmentShader: `
+  fragmentShader: `
 	precision lowp float;
 	uniform vec4 color;
 	varying float vSide;

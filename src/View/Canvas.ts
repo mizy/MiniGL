@@ -1,7 +1,7 @@
-import Mesh from "../Mesh/Mesh";
-import Point from "../Mesh/Point";
-import Line from "../Mesh/Line";
-import WidthLine from "../Mesh/WidthLine";
+import Mesh from "../Shapes/Mesh";
+import Point from "../Shapes/Point";
+import Line from "../Shapes/Line";
+import WidthLine from "../Shapes/WidthLine";
 import { mat3 } from "gl-matrix";
 import MiniGL, { MiniGLConfig } from "../MiniGL";
 /**

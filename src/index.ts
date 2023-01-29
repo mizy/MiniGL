@@ -1,16 +1,10 @@
 export { default as MiniGL } from "./MiniGL";
-export { default as Arrow } from "./Mesh/Arrow";
-export { default as Texture } from "./Texture/Texture";
-export { default as RoundLine } from "./Mesh/RoundLine";
-export { default as BaseMesh } from "./Mesh/BaseMesh";
-export { default as FlyLine } from "./Mesh/FlyLine";
-export { default as InstanceMesh } from "./Mesh/InstanceMesh";
-export { default as Mesh } from "./Mesh/Mesh";
-export { default as Point } from "./Mesh/Point";
-export { default as Line } from "./Mesh/Line";
-export { default as Image } from "./Mesh/Image";
-export { default as WidthLine } from "./Mesh/WidthLine";
-export { default as Group } from "./Group/Group";
-export { default as Utils } from "./Utils";
+export { default as Canvas } from "./View/Canvas";
+export { default as Viewport } from "./View/Viewport";
 export { default as DragonBones } from "./dragonBones";
+export { default as Texture } from "./Texture/Texture";
+export { default as Group } from "./Group/Group";
+
+export * as Shape from "./Shapes";
+export * as Utils from "./Utils";
 export * as glMatrix from "gl-matrix";
