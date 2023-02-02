@@ -9,43 +9,91 @@
   <script src="../../dist/mini-gl.js"></script>
 </body>
 <script>
+  const glMatrix = MiniGL.glMatrix;
   const app = new MiniGL({
     container: document.querySelector("#root"),
   });
   app.init();
 
+  const game = {
+    height: window.innerHeight,
+    width: window.innerWidth,
+    // init ground
+    initGround() {
+      const groundData = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
+      const ground = new MiniGL.Shape.Mesh({
+        color: [0.2, 0.7, 0.2, 1],
+        miniGL: app
+      });
+      ground.drawType = 'TRIANGLE_STRIP';
+      const groundPositions = [];
+      const groundIndices = [];
+      let index = 0;
+      [...groundData, 1].forEach((item, i) => {
+        groundPositions.push({ position: { x: i * 100, y: game.height - 200 } });
+        groundPositions.push({ position: { x: i * 100, y: game.height } });
+        groundIndices.push(index, index + 1);
+        index += 2;
+        if (item === 0) {
+          groundPositions.push({ position: { x: i * 100, y: game.height } });
+          groundPositions.push({ position: { x: (i + 1) * 100, y: game.height } });
+          groundPositions.push({ position: { x: (i + 1) * 100, y: game.height } });
+          groundIndices.push(index, index + 1, index + 2);
+          index += 3;
+        }
+      });
+      ground.setData(groundPositions, groundIndices);
+    },
+    avatar: {
+      shape: undefined,
+      vx: 0,
+      vy: 0,
+    },
+    initAvatar() {
+      app.canvas.point.setData([
+        { position: { x: 200, y: window.innerHeight - 200 - 30, }, size: 60 }
+      ]);
+      game.avatar.shape = app.canvas.point;
+    },
+    keyPressed: {},
+    initControl() {
+      window.addEventListener('keydown', (e) => {
+        game.keyPressed[e.key] = true;
+      });
+      window.addEventListener('keyup', (e) => {
+        game.keyPressed[e.key] = false;
+      });
+      app.on('beforerender', game.update)
+    },
 
-  const height = window.innerHeight;
-  const width = window.innerWidth;
-  // init ground
-  const groundData = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
-  const ground = new MiniGL.Shape.Mesh({
-    color: [0.2, 0.7, 0.2, 1],
-    miniGL: app
-  });
-  ground.drawType = 'TRIANGLE_STRIP';
-  const groundPositions = [];
-  const groundIndices = [];
-  let index = 0;
-  [...groundData, 1].forEach((item, i) => {
-    groundPositions.push({ position: { x: i * 100, y: window.innerHeight - 200 } });
-    groundPositions.push({ position: { x: i * 100, y: window.innerHeight } });
-    groundIndices.push(index, index + 1);
-    index += 2;
-    if (item === 0) {
-      groundPositions.push({ position: { x: i * 100, y: window.innerHeight } });
-      groundPositions.push({ position: { x: (i + 1) * 100, y: window.innerHeight } });
-      groundPositions.push({ position: { x: (i + 1) * 100, y: window.innerHeight } });
-      groundIndices.push(index, index + 1, index + 2);
-      index += 3;
+    update(delta) {
+      game.updateControl(delta);
+    },
+
+    updateControl(delta) {
+      if (game.keyPressed['w']) {
+        const point = app.canvas.point.matrix;
+        glMatrix.mat3.translate(point, point, [0, -1 * delta]);
+      }
+      if (game.keyPressed['s']) {
+        const point = app.canvas.point.matrix;
+        glMatrix.mat3.translate(point, point, [0, 1 * delta]);
+      }
+      if (game.keyPressed['a']) {
+        const point = app.canvas.point.matrix;
+        glMatrix.mat3.translate(point, point, [-1 * delta, 0]);
+      }
+      if (game.keyPressed['d']) {
+        const point = app.canvas.point.matrix;
+        glMatrix.mat3.translate(point, point, [1 * delta, 0]);
+      }
     }
-  });
+  }
 
-  ground.setData(groundPositions, groundIndices);
+  game.initGround();
+  game.initAvatar();
+  game.initControl();
 
-  app.canvas.point.setData([
-    { position: { x: 200, y: window.innerHeight - 200 - 30, }, size: 60 }
-  ]);
 </script>
 
 </html>

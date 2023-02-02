@@ -38,6 +38,7 @@ class BaseMesh {
   buffersSize: Record<string, number> = {};
   indices: number[] = [];
   matrix: mat3;
+  worldMatrix: mat3;
   shaders: {
     vertex: string;
     fragment: string;
@@ -65,7 +66,7 @@ class BaseMesh {
 
     // 初始化模型转换矩阵，这个矩阵按需引用
     this.matrix = mat3.create();
-
+    this.worldMatrix = mat3.create();
     if (config.shaders) {
       this.shaders = { ...this.shaders, ...config.shaders };
     }

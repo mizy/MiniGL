@@ -11,14 +11,15 @@ export default {
 		varying vec4 vColor;
 		uniform float t;
 		uniform float scale;
-        uniform float pixelRatio;
+    uniform float pixelRatio;
+    uniform mat3 modelView;
 		varying float vTime;
 		
 		void main()
 		{
 			vColor = color;
 			gl_PointSize = size * pixelRatio ${config.sizeAttenuation ? "* scale" : ""};
-			vec3 mPosition = transform * vec3(position,1.);
+			vec3 mPosition = transform * modelView * vec3(position,1.);
 			gl_Position = vec4(mPosition.xy,z,1.);
 			vTime = initTime;
 		}
