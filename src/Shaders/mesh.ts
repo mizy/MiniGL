@@ -4,8 +4,8 @@ export default {
 	attribute vec2 position;
 	attribute vec4 color;
 	varying vec4 vColor;
-    uniform mat3 transform;
-    uniform mat3 modelView;
+  uniform mat3 transform;
+  uniform mat3 modelView;
 	uniform float z;
 	void main()
 	{

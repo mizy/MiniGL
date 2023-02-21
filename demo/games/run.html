@@ -6,6 +6,14 @@
 
 <body style="margin:0">
   <div id="root" style="width: 100%; height: 100%;"></div>
+  <div style="position: fixed;left:20px;top:20px;">
+    <p>
+    <h1>game cotnrol:</h1>
+    Jump: space
+    <br />
+    WASD: move
+    </p>
+  </div>
   <script src="../../dist/mini-gl.js"></script>
 </body>
 <script>
@@ -14,13 +22,13 @@
     container: document.querySelector("#root"),
   });
   app.init();
+  const groundData = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
 
   const game = {
     height: window.innerHeight,
     width: window.innerWidth,
     // init ground
     initGround() {
-      const groundData = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1];
       const ground = new MiniGL.Shape.Mesh({
         color: [0.2, 0.7, 0.2, 1],
         miniGL: app
@@ -48,17 +56,22 @@
       shape: undefined,
       vx: 0,
       vy: 0,
+      size: 30,
     },
     initAvatar() {
       app.canvas.point.setData([
-        { position: { x: 200, y: window.innerHeight - 200 - 30, }, size: 60 }
+        { position: { x: 0, y: 0, }, size: game.avatar.size }
       ]);
+      glMatrix.mat3.translate(app.canvas.point.matrix, app.canvas.point.matrix, [100, game.height - 200 - game.avatar.size / 2]);
       game.avatar.shape = app.canvas.point;
     },
     keyPressed: {},
     initControl() {
       window.addEventListener('keydown', (e) => {
         game.keyPressed[e.key] = true;
+        if (e.key === ' ') {
+          game.avatar.vy = -10;// jump 
+        }
       });
       window.addEventListener('keyup', (e) => {
         game.keyPressed[e.key] = false;
@@ -68,24 +81,76 @@
 
     update(delta) {
       game.updateControl(delta);
+      game.updateCollision(delta);
+      game.updateGrivity(delta);
     },
 
     updateControl(delta) {
+      delta /= 1000;
       if (game.keyPressed['w']) {
         const point = app.canvas.point.matrix;
-        glMatrix.mat3.translate(point, point, [0, -1 * delta]);
-      }
-      if (game.keyPressed['s']) {
+        game.avatar.vy += -1 * delta;
+      } else if (game.keyPressed['s']) {
         const point = app.canvas.point.matrix;
-        glMatrix.mat3.translate(point, point, [0, 1 * delta]);
+        game.avatar.vy += 1 * delta;
+      } else {
+        game.avatar.vy -= game.avatar.vy / 60;
       }
       if (game.keyPressed['a']) {
         const point = app.canvas.point.matrix;
-        glMatrix.mat3.translate(point, point, [-1 * delta, 0]);
-      }
-      if (game.keyPressed['d']) {
+        game.avatar.vx += -1 * delta;
+      } else if (game.keyPressed['d']) {
         const point = app.canvas.point.matrix;
-        glMatrix.mat3.translate(point, point, [1 * delta, 0]);
+        game.avatar.vx += 1 * delta;
+      } else {
+        const beforeStatus = game.avatar.vx > 0;
+        game.avatar.vx -= game.avatar.vx / 60;
+        if (beforeStatus !== game.avatar.vx > 0) {
+          game.avatar.vx = 0;
+        }
+      }
+    },
+
+    updateGrivity(delta) {
+      const point = app.canvas.point.matrix;
+      glMatrix.mat3.translate(point, point, [game.avatar.vx, game.avatar.vy]);
+      const x = point[6];
+      const y = point[7];
+      const i = Math.floor(x / 100);
+      let deltaY = game.height - y;
+      if (groundData[i]) {
+        deltaY = game.height - 215 - y;
+      }
+      if (deltaY < 0) {// add bounce
+        game.avatar.vy = -game.avatar.vy * 0.5;
+        console.log("bounce", game.avatar.vy)
+      } else {// in air need to add gravity
+        game.avatar.vy += 9.8 / 1000 * delta;
+      }
+    },
+
+    updateCollision(delta) {
+      const point = app.canvas.point.matrix;
+      const x = point[6];
+      const y = point[7];
+      let index = Math.floor(x / 100);
+      let deltaX = 0;
+      for (let i = index; i < index + 1; i++) {
+        if (!groundData[i]) continue;
+        // just calc left and right side
+        const left = (i - 1) * 100;
+        const right = i * 100;
+        if (x + game.avatar.size / 2 > left && y > game.height - 200) {
+          deltaX = left - x - game.avatar.size;
+          console.log(deltaX)
+        }
+        if (x - game.avatar.size / 2 < right && y > game.height - 200) {
+          deltaX = right - x + game.avatar.size;
+          console.log(deltaX)
+        }
+      }
+      if (deltaX != 0) {
+        game.avatar.vx = -deltaX * 0.1;
       }
     }
   }
