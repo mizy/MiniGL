@@ -28,6 +28,7 @@ A 2d WebGL renderer，
 	* [dragonbone demo](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
   * [dragonbone eyetrack demo](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
 * game
+  * [game demo](https://mizy.github.io/MiniGL/demo/games/run.html)
 
 ## shader uniform
 the uniform below will be auto append to shader
