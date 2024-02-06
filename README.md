@@ -17,16 +17,18 @@ A 2d WebGL renderer，
 + line
   * [fly line animation](https://mizy.github.io/MiniGL/demo/line/flyline.html)
 	* [meshline](https://mizy.github.io/MiniGL/demo/line/meshline.html)
-+ face
-	* [image](https://mizy.github.io/MiniGL/demo/image/index.html)
++ image
+	* [image](https://mizy.github.io/MiniGL/demo/image/image.html)
+	* [point image](https://mizy.github.io/MiniGL/demo/points/imagePoints.html)
 + shader
-	* [custom shader](https://mizy.github.io/MiniGL/demo/customShader/index.html)
+	* [custom shader](https://mizy.github.io/MiniGL/demo/customShader/transform.html)
 + InstanceMesh(webGL2)
-	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/index.html)
+	* [instanceMesh](https://mizy.github.io/MiniGL/demo/instanceMesh/instance.html)
   * [instanceArrow](https://mizy.github.io/MiniGL/demo/arrow/arrow.html)
 + DragonBones animation
-	* [dragonbone demo](https://mizy.github.io/MiniGL/demo/dragonBones/index.html)
+	* [dragonbone demo](https://mizy.github.io/MiniGL/demo/dragonBones/iron.html)
   * [dragonbone eyetrack demo](https://mizy.github.io/MiniGL/demo/dragonBones/eyetrack.html)
+  * [dragonbone ubbie](https://mizy.github.io/MiniGL/demo/dragonBones/ubbie.html)
 * game
   * [game demo](https://mizy.github.io/MiniGL/demo/games/run.html)
 
