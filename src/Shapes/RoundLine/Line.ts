@@ -1,6 +1,6 @@
-import shader from "../../Shaders/roundLine";
-import Base, { BaseMeshConfig } from "../BaseMesh";
-import { PointData } from "../Mesh";
+import shader from "../../Shaders/roundLine.js";
+import Base, { BaseMeshConfig } from "../BaseMesh.js";
+import { PointData } from "../Mesh.js";
 class RoundLine extends Base {
   drawType = "TRIANGLES"; //"TRIANGLE_STRIP";
   shaders = {

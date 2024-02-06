@@ -4,16 +4,14 @@
   "compileOnSave": true,
   "compilerOptions": {
     "pretty": true,
-    "sourceMap": true,
     "allowJs": true,
+    "lib": ["ES2015", "DOM"],
     "declaration": false,
     "importHelpers": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "dist",
-    "module": "esnext",
-    "target": "es6",
-    "resolveJsonModule": true,
+    "module": "ESNext",
+    "target": "ES2015",
     "moduleResolution": "node"
   }
 }

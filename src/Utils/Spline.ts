@@ -1,4 +1,4 @@
-import { Vector2 } from "./Vector";
+import { Vector2 } from "./Vector.js";
 
 // 顺滑度函数
 function CatmullRom(t, p0, p1, p2, p3) {

@@ -1,7 +1,7 @@
-import instanceMeshShader from "../Shaders/instanceMeshShader";
-import { loadTexture } from "../Utils/Loader";
-import Base, { BaseMeshConfig } from "./BaseMesh";
-import { PointData } from "./Mesh";
+import instanceMeshShader from "../Shaders/instanceMeshShader.js";
+import { loadTexture } from "../Utils/Loader.js";
+import Base, { BaseMeshConfig } from "./BaseMesh.js";
+import { PointData } from "./Mesh.js";
 class InstanceMesh extends Base {
     drawType = "TRIANGLES";
     offset = 0; // array.BYTES_PER_ELEMENT * indicesEachLength

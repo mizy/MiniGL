@@ -1,6 +1,6 @@
 import { mat3 } from "gl-matrix";
-import MiniGL, { MiniGLConfig } from "../MiniGL";
-import ViewPort from '../View/Viewport';
+import MiniGL, { MiniGLConfig } from "../MiniGL.js";
+import ViewPort from '../View/Viewport.js';
 class Controller {
     miniGL: MiniGL;
     viewport: ViewPort;

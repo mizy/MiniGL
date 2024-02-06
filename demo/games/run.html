@@ -14,11 +14,12 @@
     WASD: move
     </p>
   </div>
-  <script src="../../dist/mini-gl.js"></script>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/gl-matrix/3.4.2/gl-matrix-min.js"></script>
+  <script src="../../dist/mini-gl.umd.js"></script>
 </body>
 <script>
-  const glMatrix = MiniGL.glMatrix;
-  const app = new MiniGL({
+  const app = new MiniGL.MiniGL({
     container: document.querySelector("#root"),
   });
   app.init();

@@ -1,5 +1,5 @@
-import meshShader from "../Shaders/mesh";
-import Base, { BaseMeshConfig } from "./BaseMesh";
+import meshShader from "../Shaders/mesh.js";
+import Base, { BaseMeshConfig } from "./BaseMesh.js";
 export interface PointData {
   position: {
     x: number;

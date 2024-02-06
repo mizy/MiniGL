@@ -124,7 +124,7 @@ class Line extends Base {
 		if (!this.startFlag) return;
 
 		uniformData.t.value += this.config.speed;
-		if (uniformData.t.value >= length) {
+		if (uniformData.t.value as number >= length) {
 			uniformData.t.value = -this.config.length;
 		}
 

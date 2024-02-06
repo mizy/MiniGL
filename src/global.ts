@@ -1,4 +1,4 @@
-import * as all from "./index";
+import * as all from "./index.js";
 const MiniGL = all.MiniGL;
 for (let key in all) {
     if (key !== "MiniGL") {

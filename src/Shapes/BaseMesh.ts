@@ -1,7 +1,7 @@
-import Group from "../Group/Group";
-import Texture from "../Texture/Texture";
+import Group from "../Group/Group.js";
+import Texture from "../Texture/Texture.js";
 import { mat3 } from "gl-matrix";
-import MiniGL from "../MiniGL";
+import MiniGL from "../MiniGL.js";
 export interface BaseMeshConfig {
   [key: string]: any;
   vertexShader?: string;

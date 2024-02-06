@@ -1,5 +1,5 @@
 import { mat3 } from "gl-matrix";
-import MiniGL, { MiniGLConfig } from "../MiniGL";
+import MiniGL, { MiniGLConfig } from "../MiniGL.js";
 
 class ViewPort {
     miniGL: MiniGL;

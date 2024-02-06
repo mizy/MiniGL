@@ -1,11 +1,10 @@
-import MiniGLTextureAtlasData from './MiniGLTextureAtlasData';
+import MiniGLTextureAtlasData from './MiniGLTextureAtlasData.js';
 import { mat3 } from 'gl-matrix';
-//<reference path="./DragonBones.d.ts" />
 /**
  * 骨骼插槽
  * @class
  */
-class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
+class MiniGLSlot extends (window.dragonBones ?dragonBones.Slot:null) {
   _updateGlueMesh(): void {
   }
   private _armatureDisplay: any;
@@ -68,15 +67,15 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
   _updateBlendMode() {
     const { miniGL: { gl } } = this._armatureDisplay;
     switch (this._blendMode) {
-      case dragonBones.BlendMode.Normal:
+      case 0://dragonBones.BlendMode.Normal:
         this._renderDisplay.blendMode = gl.ONE_MINUS_SRC_ALPHA;
         break;
 
-      case dragonBones.BlendMode.Add:
+      case 1://dragonBones.BlendMode.Add:
         this._renderDisplay.blendMode = gl.ONE_MINUS_DST_ALPHA;
         break;
 
-      case dragonBones.BlendMode.Erase:
+      case 5://dragonBones.BlendMode.Erase:
         this._renderDisplay.blendMode = gl.DST_ALPHA;
         break;
 
@@ -117,9 +116,13 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
           const data = this._geometryData.data;
           const intArray = data.intArray;
           const floatArray = data.floatArray;
-          const vertexCount = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
-          const triangleCount = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryTriangleCount];
-          let vertexOffset = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryFloatOffset];
+          const vertexCount = intArray[this._geometryData.offset + 0];//dragonBones.BinaryOffset.GeometryVertexCount];
+          const triangleCount = intArray[this._geometryData.offset +1
+            // dragonBones.BinaryOffset.GeometryTriangleCount
+          ];
+          let vertexOffset = intArray[this._geometryData.offset +2
+            // dragonBones.BinaryOffset.GeometryFloatOffset
+          ];
 
           if (vertexOffset < 0) {
             vertexOffset += 65536; // Fixed out of bounds bug.
@@ -139,7 +142,9 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
           }
 
           for (let i = 0; i < triangleCount * 3; ++i) {
-            indices[i] = intArray[this._geometryData.offset + dragonBones.BinaryOffset.GeometryVertexIndices + i];
+            indices[i] = intArray[this._geometryData.offset +4
+              // dragonBones.BinaryOffset.GeometryVertexIndices
+              + i];
           }
 
           meshDisplay.dispose();
@@ -151,7 +156,8 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
           meshDisplay.vertex = vertices;
 
           const isSkinned = this._geometryData.weight !== null;
-          const isSurface = this._parent._boneData.type !== dragonBones.BoneType.Bone;
+          //@ts-ignore
+          const isSurface = this._parent._boneData.type !== 0; //dragonBones.BoneType.Bone;
           if (isSkinned || isSurface) {
             this._identityTransform();
           }
@@ -188,15 +194,17 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
       const data = geometryData.data;
       const intArray = data.intArray;
       const floatArray = data.floatArray;
-      const vertexCount = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
-      let weightFloatOffset = intArray[weightData.offset + dragonBones.BinaryOffset.WeigthFloatOffset];
+      const vertexCount = intArray[geometryData.offset + 0]; //dragonBones.BinaryOffset.GeometryVertexCount];
+      let weightFloatOffset = intArray[weightData.offset + 1];// dragonBones.BinaryOffset.WeigthFloatOffset];
 
       if (weightFloatOffset < 0) {
         weightFloatOffset += 65536; // Fixed out of bounds bug.
       }
 
       for (
-        let i = 0, iD = 0, iB = weightData.offset + dragonBones.BinaryOffset.WeigthBoneIndices + bones.length, iV = weightFloatOffset, iF = 0;
+        let i = 0, iD = 0, iB = weightData.offset + 2
+        // dragonBones.BinaryOffset.WeigthBoneIndices
+        + bones.length, iV = weightFloatOffset, iF = 0;
         i < vertexCount;
         ++i
       ) {
@@ -230,12 +238,17 @@ class MiniGLSlot extends (window.dragonBones ? dragonBones.Slot : null) {
       meshDisplay.setBufferData(meshDisplay.vertex, 'position', 2);
 
     } else {
-      const isSurface = this._parent._boneData.type !== dragonBones.BoneType.Bone;
+      // @ts-ignore
+      const isSurface = this._parent._boneData.type !== 0; //dragonBones.BoneType.Bone;
       const data = geometryData.data;
       const intArray = data.intArray;
       const floatArray = data.floatArray;
-      const vertexCount = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryVertexCount];
-      let vertexOffset = intArray[geometryData.offset + dragonBones.BinaryOffset.GeometryFloatOffset];
+      const vertexCount = intArray[geometryData.offset + 0
+        // dragonBones.BinaryOffset.GeometryVertexCount
+      ];
+      let vertexOffset = intArray[geometryData.offset +2
+        // dragonBones.BinaryOffset.GeometryFloatOffset
+      ];
 
       if (vertexOffset < 0) {
         vertexOffset += 65536; // Fixed out of bounds bug.

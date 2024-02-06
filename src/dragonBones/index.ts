@@ -1,10 +1,10 @@
-import MiniGLSlot from "./MiniGLSlot";
-import MiniGLTextureAtlasData from "./MiniGLTextureAtlasData";
-import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay";
-import MiniGL from "../MiniGL";
-import Image from "../Shapes/Image";
+import MiniGLSlot from "./MiniGLSlot.js";
+import MiniGLTextureAtlasData from "./MiniGLTextureAtlasData.js";
+import MiniGLArmatureDisplay from "./MiniGLArmatureDisplay.js";
+import MiniGL from "../MiniGL.js";
+import Image from "../Shapes/Image.js";
 
-class DragonBoneObject extends (window.dragonBones ? dragonBones.BaseFactory : null) {
+class DragonBoneObject extends (window.dragonBones ?dragonBones.BaseFactory:null) {
   miniGL: MiniGL;
   display: MiniGLArmatureDisplay;
   _dragonBonesInstance: dragonBones.DragonBones;

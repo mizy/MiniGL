@@ -1,5 +1,5 @@
-import shader from "../../Shaders/roundLinePoint";
-import Base, { BaseMeshConfig } from "../BaseMesh";
+import shader from "../../Shaders/roundLinePoint.js";
+import Base, { BaseMeshConfig } from "../BaseMesh.js";
 class LinePoint extends Base {
     drawType = "POINTS"; //"TRIANGLE_STRIP";
     shaders = {

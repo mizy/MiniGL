@@ -1,5 +1,5 @@
-import BaseMesh, { BaseMeshConfig } from "../Shapes/BaseMesh";
-import MiniGL from "../MiniGL";
+import BaseMesh, { BaseMeshConfig } from "../Shapes/BaseMesh.js";
+import MiniGL from "../MiniGL.js";
 /**
  * 进行批量渲染
  * @class

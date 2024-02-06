@@ -1,6 +1,6 @@
 import Texture from '../Texture/Texture';
-//<reference path="../../src/dragonBones/DragonBones.d.ts" /> 
-class MiniGLTextureAtlasData extends (window.dragonBones ? dragonBones.TextureAtlasData : null) {
+
+class MiniGLTextureAtlasData extends (window.dragonBones ? dragonBones.TextureAtlasData :null) {
   scale = 1;
   disposeEnabled: boolean;
   private _renderTexture: any;

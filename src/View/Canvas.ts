@@ -1,9 +1,9 @@
-import Mesh from "../Shapes/Mesh";
-import Point from "../Shapes/Point";
-import Line from "../Shapes/Line";
-import WidthLine from "../Shapes/WidthLine";
+import Mesh from "../Shapes/Mesh.js";
+import Point from "../Shapes/Point.js";
+import Line from "../Shapes/Line.js";
+import WidthLine from "../Shapes/WidthLine.js";
 import { mat3 } from "gl-matrix";
-import MiniGL, { MiniGLConfig } from "../MiniGL";
+import MiniGL, { MiniGLConfig } from "../MiniGL.js";
 /**
  * @class
  */

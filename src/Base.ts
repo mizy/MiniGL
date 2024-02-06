@@ -1,4 +1,4 @@
-import MiniGL from "./MiniGL";
+import MiniGL from "./MiniGL.js";
 
 /**
  * 图层基础类

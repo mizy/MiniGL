@@ -1,7 +1,7 @@
-import Base from "./Base";
-import Viewport from "./View/Viewport";
-import Canvas from "./View/Canvas";
-import Controller from "./Utils/Controller";
+import Base from "./Base.js";
+import Viewport from "./View/Viewport.js";
+import Canvas from "./View/Canvas.js";
+import Controller from "./Utils/Controller.js";
 export interface MiniGLConfig {
     container: HTMLElement;
     contextOption: WebGLContextAttributes;
